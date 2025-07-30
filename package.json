@@ -1,0 +1,26 @@
+{
+  "name": "mypharmacy-back",
+  "version": "1.0.0",
+  "description": "RESTful backend for user auth, medicine catalog, pharmacy locations, and order processing.",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZorAnderius/myPharmacy-back.git"
+  },
+  "keywords": [
+    "backend"
+  ],
+  "author": "ZorAnderius",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZorAnderius/myPharmacy-back/issues"
+  },
+  "homepage": "https://github.com/ZorAnderius/myPharmacy-back#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
