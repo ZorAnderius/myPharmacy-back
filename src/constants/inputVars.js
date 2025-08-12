@@ -1,9 +1,38 @@
 export const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-export const productStatuses = {
-  AVAILABLE: 'available',
-  OUT_OF_STOCK: 'out_of_stock',
-  BACKORDERED: 'backordered',
-  PREORDER: 'preorder',
-  DISCONTINUED: 'discontinued',
-};
+export const productStatuses = [
+  'available',
+  'out_of_stock',
+  'backordered',
+  'preorder',
+  'discontinued',
+  'coming_soon',
+  'limited_edition',
+  'on_sale',
+  'new_arrival',
+  'featured',
+  'best_seller',
+  'seasonal',
+  'clearance',
+  'archived',
+  'unavailable',
+  'pending_approval',
+];
+export const orderStatuses = [
+  'pending',
+  'processing',
+  'shipped',
+  'delivered',
+  'cancelled',
+  'returned',
+  'refunded',
+  'on_hold',
+  'failed',
+  'completed',
+  'partially_shipped',
+  'awaiting_payment',
+  'awaiting_fulfillment',
+  'awaiting_pickup',
+  'awaiting_dispatch',
+  'awaiting_confirmation',
+];
