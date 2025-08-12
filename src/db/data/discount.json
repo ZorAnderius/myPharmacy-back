@@ -1,0 +1,122 @@
+[
+    {
+        "id": "d1e8b9c0-0a1b-4f9d-8e9a-0a1b2c3d4e5f",
+        "code": "SUMMER10",
+        "percentage": 10.0,
+        "start_date": "2025-06-01T00:00:00.000Z",
+        "end_date": "2025-06-30T23:59:59.999Z",
+        "product_id": "a1f3c8b4-4f2e-4b3a-b6f9-1234567890ab"
+    },
+    {
+        "id": "d2f9c0d1-1b2c-4eaf-9f0b-1b2c3d4e5f6a",
+        "code": "WINTER15",
+        "percentage": 15.0,
+        "start_date": "2025-12-01T00:00:00.000Z",
+        "end_date": "2025-12-31T23:59:59.999Z",
+        "product_id": "b2e4d7c9-53a1-462e-9c24-2345678901bc"
+    },
+    {
+        "id": "d3f0d1e2-2c3d-5fb0-0a1c-2c3d4e5f6a7b",
+        "code": "HEALTH20",
+        "percentage": 20.0,
+        "start_date": "2025-07-01T00:00:00.000Z",
+        "end_date": "2025-07-31T23:59:59.999Z",
+        "product_id": "c3f5e8da-6b92-4a3d-8d14-3456789012cd"
+    },
+    {
+        "id": "d4e1f2a3-3d4e-6fc1-1b2d-3d4e5f6a7b8c",
+        "code": "PHARMA25",
+        "percentage": 25.0,
+        "start_date": "2025-08-01T00:00:00.000Z",
+        "end_date": "2025-08-15T23:59:59.999Z",
+        "product_id": "d4a6f9eb-7c83-4b4e-9f25-4567890123de"
+    },
+    {
+        "id": "d5f2a3b4-4e5f-7gd2-2c3e-4e5f6a7b8c9d",
+        "code": "VITAMIN30",
+        "percentage": 30.0,
+        "start_date": "2025-09-01T00:00:00.000Z",
+        "end_date": "2025-09-30T23:59:59.999Z",
+        "product_id": "e5b7g0fc-8d74-4c5f-a036-5678901234ef"
+    },
+    {
+        "id": "d6a3b4c5-5f6a-8he3-3d4f-5f6a7b8c9d0e",
+        "code": "SKINCARE15",
+        "percentage": 15.0,
+        "start_date": "2025-10-01T00:00:00.000Z",
+        "end_date": "2025-10-31T23:59:59.999Z",
+        "product_id": "f6c8h1gd-9e65-4d70-b147-6789012345f0"
+    },
+    {
+        "id": "d7b4c5d6-6a7b-9if4-4e50-6a7b8c9d0e1f",
+        "code": "RELAX20",
+        "percentage": 20.0,
+        "start_date": "2025-11-01T00:00:00.000Z",
+        "end_date": "2025-11-30T23:59:59.999Z",
+        "product_id": "g7d9i2he-af56-4e81-c258-789012345601"
+    },
+    {
+        "id": "d8c5d6e7-7b8c-ajg5-5f61-7b8c9d0e1f2a",
+        "code": "EYECARE10",
+        "percentage": 10.0,
+        "start_date": "2025-05-01T00:00:00.000Z",
+        "end_date": "2025-05-31T23:59:59.999Z",
+        "product_id": "h8e0j3if-bg47-4f92-d369-890123456712"
+    },
+    {
+        "id": "d9d6e7f8-8c9d-bkh6-6072-8c9d0e1f2a3b",
+        "code": "BABYCARE12",
+        "percentage": 12.0,
+        "start_date": "2025-04-01T00:00:00.000Z",
+        "end_date": "2025-04-30T23:59:59.999Z",
+        "product_id": "i9f1k4jg-ch38-4093-e47a-901234567823"
+    },
+    {
+        "id": "dae7f809-9d0e-cli7-7183-9d0e1f2a3b4c",
+        "code": "FIRSTAID18",
+        "percentage": 18.0,
+        "start_date": "2025-03-01T00:00:00.000Z",
+        "end_date": "2025-03-31T23:59:59.999Z",
+        "product_id": "j0g2l5kh-di29-41a4-f58b-a01234567834"
+    },
+    {
+        "id": "dbf8091a-a1b2-dmj8-8294-a1b2c3d4e5f6",
+        "code": "WEIGHT20",
+        "percentage": 20.0,
+        "start_date": "2025-02-01T00:00:00.000Z",
+        "end_date": "2025-02-28T23:59:59.999Z",
+        "product_id": "k1h3m6li-ej1a-42b5-069c-b12345678945"
+    },
+    {
+        "id": "dc0a1b2c-b2c3-enk9-9305-b2c3d4e5f607",
+        "code": "MENHEALTH22",
+        "percentage": 22.0,
+        "start_date": "2025-01-01T00:00:00.000Z",
+        "end_date": "2025-01-31T23:59:59.999Z",
+        "product_id": "l2i4n7mj-fk0b-43c6-17ad-c23456789456"
+    },
+    {
+        "id": "dd1b2c3d-c3d4-fol0-a416-c3d4e5f60718",
+        "code": "WOMENHEALTH25",
+        "percentage": 25.0,
+        "start_date": "2025-06-15T00:00:00.000Z",
+        "end_date": "2025-07-15T23:59:59.999Z",
+        "product_id": "m3j5o8nk-gl9c-44d7-28be-d34567890567"
+    },
+    {
+        "id": "de2c3d4e-d4e5-gpm1-b527-d4e5f6071829",
+        "code": "SPORTSNUTR30",
+        "percentage": 30.0,
+        "start_date": "2025-07-15T00:00:00.000Z",
+        "end_date": "2025-08-15T23:59:59.999Z",
+        "product_id": "n4k6p9ol-hm8d-45e8-39cf-e45678901678"
+    },
+    {
+        "id": "df3d4e5f-e5f6-hqn2-c638-e5f60718293a",
+        "code": "SLEEPRELAX15",
+        "percentage": 15.0,
+        "start_date": "2025-09-15T00:00:00.000Z",
+        "end_date": "2025-10-15T23:59:59.999Z",
+        "product_id": "o5l7qaml-in7e-46f9-4ad0-f56789012789"
+    }
+]

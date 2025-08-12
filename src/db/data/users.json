@@ -1,0 +1,102 @@
+[
+    {
+        "id": "1f5e6cfa-9b15-4a36-bfa1-3c6a8572f41a",
+        "firstName": "Olena",
+        "lastName": "Koval",
+        "email": "olena.koval@example.ua",
+        "password": "$2b$10$zJX8LcGPaW7X9zH0zUOaEOXy3OXJKHu5jD4s5ZC1mjRMJN/ZJYF4a",
+        "phoneNumber": "+380501234567",
+        "avatarUrl": "https://example.com/avatars/olena.jpg",
+        "address_id": "a5c7f8b1-9931-4d39-b0a2-df0f57b4e90c"
+    },
+    {
+        "id": "2b8fa8ae-9d9f-4c23-854d-5ec13f570aa2",
+        "firstName": "Taras",
+        "lastName": "Melnyk",
+        "email": "taras.melnyk@example.ua",
+        "password": "$2b$10$V/bxQ9cFZgRnz4E3RMX/2OjSj4JzrZOU0nYkRf5u6BtPqhc07HgX6",
+        "phoneNumber": "+380671112233",
+        "avatarUrl": null,
+        "address_id": null
+    },
+    {
+        "id": "0e5416d3-f0a2-4b4e-b72b-56561eb3d8a4",
+        "firstName": "Svitlana",
+        "lastName": "Petrenko",
+        "email": "svitlana.petrenko@example.ua",
+        "password": "$2b$10$W2G0W6FgGv/l+Tb7wGpMkuUAYtTOYfL9T1xVZH6Wr1Szf6N1GcnSO",
+        "phoneNumber": "+380938765432",
+        "avatarUrl": "https://example.com/avatars/svitlana.png",
+        "address_id": "bfb79fcd-75f9-43c2-8bbd-347f6b685e26"
+    },
+    {
+        "id": "3cf5e06a-6ee0-4337-bd06-f146e1e0d45d",
+        "firstName": "Mykola",
+        "lastName": "Shevchenko",
+        "email": "mykola.shevchenko@example.ua",
+        "password": "$2b$10$PQnWvJxFzi1dOcLRU1hcReJLbZj7zqYH5Pdp8oRZxkL5tv8vF0/BG",
+        "phoneNumber": "+380671234567",
+        "avatarUrl": null,
+        "address_id": "39a4794b-0a4e-4d1f-bc07-42e210f0249e"
+    },
+    {
+        "id": "4d20d547-cf27-49bc-91d1-b9e541e1c995",
+        "firstName": "Kateryna",
+        "lastName": "Bondarenko",
+        "email": "kateryna.bondarenko@example.ua",
+        "password": "$2b$10$7cPph7jf9g7FQjY8klXVPO2q8kI/Qp0woyjgrvGf8v9dq7Tz3X2kK",
+        "phoneNumber": "+380631234567",
+        "avatarUrl": "https://example.com/avatars/kateryna.jpg",
+        "address_id": null
+    },
+    {
+        "id": "6fbb540f-e3d3-474d-b49b-87d17d61e467",
+        "firstName": "Andriy",
+        "lastName": "Moroz",
+        "email": "andriy.moroz@example.ua",
+        "password": "$2b$10$HwQqO5I5SY3fVJpR5I3X.ea3rPfWbsLZEdz1OTxWk75f/wbU1hpaO",
+        "phoneNumber": "+380507654321",
+        "avatarUrl": null,
+        "address_id": "c173a7de-124f-4b9f-8f14-54df3d4e8e6f"
+    },
+    {
+        "id": "81a45b94-3d0b-4b11-b11d-685be52f5a5f",
+        "firstName": "Olga",
+        "lastName": "Kravchenko",
+        "email": "olga.kravchenko@example.ua",
+        "password": "$2b$10$yHGU8l1G1rVdpzDhFtC1qe4AFAF4qzI4h2N9FfMiz07JBo5Fg8gW6",
+        "phoneNumber": "+380661234567",
+        "avatarUrl": "https://example.com/avatars/olga.png",
+        "address_id": null
+    },
+    {
+        "id": "9143b8b4-1180-4ae5-85af-253e2358c69c",
+        "firstName": "Viktor",
+        "lastName": "Lysenko",
+        "email": "viktor.lysenko@example.ua",
+        "password": "$2b$10$NUE5j4XqQ5ldUxTbQfFfOeOVZCqqpYDl3Ne8Oz/nrdXPw1m7SzzcO",
+        "phoneNumber": "+380671298765",
+        "avatarUrl": null,
+        "address_id": "e8bc1e0b-12ea-4087-b7ed-c18f8fdb9ef1"
+    },
+    {
+        "id": "a2b81f72-e4f6-4ae0-8314-98cf22fbd7b7",
+        "firstName": "Inna",
+        "lastName": "Hrytsenko",
+        "email": "inna.hrytsenko@example.ua",
+        "password": "$2b$10$SjLWyjAcYwz3jqKIkI3RIeF1q5LoC3UaK7TwQ7E0nQ6lCey8L0zCa",
+        "phoneNumber": "+380631122334",
+        "avatarUrl": "https://example.com/avatars/inna.jpg",
+        "address_id": null
+    },
+    {
+        "id": "b3e2f3c7-52d6-4db0-a1f1-6a6d1bb5e7f1",
+        "firstName": "Dmytro",
+        "lastName": "Zinchenko",
+        "email": "dmytro.zinchenko@example.ua",
+        "password": "$2b$10$el9Mw0w7bZhZWdk6hUQ2Y.j/6PqN9q7P7FsZ1sQ49MHpKjP1hOT7K",
+        "phoneNumber": "+380671556677",
+        "avatarUrl": null,
+        "address_id": "0d1c45be-9b63-4fc6-9824-cd4811f3ee55"
+    }
+]

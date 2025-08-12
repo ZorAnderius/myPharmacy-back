@@ -1,0 +1,62 @@
+[
+    {
+        "id": "a1f3c8b4-4f2e-4b3a-b6f9-1234567890ab",
+        "name": "Pain Relief"
+    },
+    {
+        "id": "b2e4d7c9-53a1-462e-9c24-2345678901bc",
+        "name": "Vitamins & Supplements"
+    },
+    {
+        "id": "c3f5e8da-6b92-4a3d-8d14-3456789012cd",
+        "name": "Cold & Flu"
+    },
+    {
+        "id": "d4a6f9eb-7c83-4b4e-9f25-4567890123de",
+        "name": "Allergy Relief"
+    },
+    {
+        "id": "e5b7g0fc-8d74-4c5f-a036-5678901234ef",
+        "name": "Digestive Health"
+    },
+    {
+        "id": "f6c8h1gd-9e65-4d70-b147-6789012345f0",
+        "name": "Skin Care"
+    },
+    {
+        "id": "g7d9i2he-af56-4e81-c258-789012345601",
+        "name": "Eye Care"
+    },
+    {
+        "id": "h8e0j3if-bg47-4f92-d369-890123456712",
+        "name": "Oral Care"
+    },
+    {
+        "id": "i9f1k4jg-ch38-4093-e47a-901234567823",
+        "name": "Baby & Child Care"
+    },
+    {
+        "id": "j0g2l5kh-di29-41a4-f58b-a01234567834",
+        "name": "First Aid"
+    },
+    {
+        "id": "k1h3m6li-ej1a-42b5-069c-b12345678945",
+        "name": "Weight Management"
+    },
+    {
+        "id": "l2i4n7mj-fk0b-43c6-17ad-c23456789456",
+        "name": "Men's Health"
+    },
+    {
+        "id": "m3j5o8nk-gl9c-44d7-28be-d34567890567",
+        "name": "Women's Health"
+    },
+    {
+        "id": "n4k6p9ol-hm8d-45e8-39cf-e45678901678",
+        "name": "Sports Nutrition"
+    },
+    {
+        "id": "o5l7qaml-in7e-46f9-4ad0-f56789012789",
+        "name": "Sleep & Relaxation"
+    }
+]

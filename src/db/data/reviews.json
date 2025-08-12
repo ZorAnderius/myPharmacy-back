@@ -1,0 +1,282 @@
+[
+    {
+        "id": "10000000-0000-0000-0000-000000000001",
+        "content": "Great product, highly recommend!",
+        "rating": 9,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "d2c6e0a9-5930-4d0a-9286-5f53e7a14cfa"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000002",
+        "content": "Good quality but a bit pricey.",
+        "rating": 7,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "a0b1c2d3-e4f5-6789-abcd-ef0123456789"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000003",
+        "content": "Not what I expected, disappointed.",
+        "rating": 4,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "c12a4f65-27f3-4c64-8b93-2a67671a4e2f"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000004",
+        "content": "Fast delivery and good packaging.",
+        "rating": 8,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "bfa8e12d-4e63-46ae-b8b2-3f6c721d6b07"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000005",
+        "content": "Product works as described.",
+        "rating": 9,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "ea752ce8-3f69-4b96-8b9e-6e5b3d4d7a22"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000006",
+        "content": "Could be better, average product.",
+        "rating": 5,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "c874b123-2e91-4a1c-a2db-0d73a3b372f7"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000007",
+        "content": "Highly satisfied, will order again!",
+        "rating": 10,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "f9a0b6b3-93f0-4a77-bbbd-3b49e5d3c231"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000008",
+        "content": "Good price and fast shipping.",
+        "rating": 8,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "d2bfa638-8eb9-4ef5-ae59-6e0c1a796f23"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000009",
+        "content": "Not worth the price.",
+        "rating": 3,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "a4f6c9e3-2f1a-4e87-b9b8-fc96b5a3bb0d"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000010",
+        "content": "Excellent quality, fast delivery!",
+        "rating": 9,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "f1c0b18d-71e7-47f6-bcde-18f6b02d423c"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000011",
+        "content": "Satisfied with the purchase.",
+        "rating": 8,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "d2c6e0a9-5930-4d0a-9286-5f53e7a14cfa"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000012",
+        "content": "Product arrived late but good quality.",
+        "rating": 7,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "a0b1c2d3-e4f5-6789-abcd-ef0123456789"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000013",
+        "content": "The packaging was damaged.",
+        "rating": 4,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "c12a4f65-27f3-4c64-8b93-2a67671a4e2f"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000014",
+        "content": "Customer service was very helpful.",
+        "rating": 9,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "bfa8e12d-4e63-46ae-b8b2-3f6c721d6b07"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000015",
+        "content": "Good product, will recommend.",
+        "rating": 8,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "ea752ce8-3f69-4b96-8b9e-6e5b3d4d7a22"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000016",
+        "content": "Affordable and effective.",
+        "rating": 9,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "c874b123-2e91-4a1c-a2db-0d73a3b372f7"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000017",
+        "content": "Not as described, disappointed.",
+        "rating": 3,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "f9a0b6b3-93f0-4a77-bbbd-3b49e5d3c231"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000018",
+        "content": "Quick shipping and excellent quality.",
+        "rating": 10,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "d2bfa638-8eb9-4ef5-ae59-6e0c1a796f23"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000019",
+        "content": "Product was defective, returned it.",
+        "rating": 2,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "a4f6c9e3-2f1a-4e87-b9b8-fc96b5a3bb0d"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000020",
+        "content": "Will buy again from this store.",
+        "rating": 9,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "f1c0b18d-71e7-47f6-bcde-18f6b02d423c"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000021",
+        "content": "Great customer support.",
+        "rating": 8,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "d2c6e0a9-5930-4d0a-9286-5f53e7a14cfa"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000022",
+        "content": "Product works perfectly.",
+        "rating": 9,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "a0b1c2d3-e4f5-6789-abcd-ef0123456789"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000023",
+        "content": "Delivery was late.",
+        "rating": 5,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "c12a4f65-27f3-4c64-8b93-2a67671a4e2f"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000024",
+        "content": "Very happy with the purchase.",
+        "rating": 9,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "bfa8e12d-4e63-46ae-b8b2-3f6c721d6b07"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000025",
+        "content": "The product exceeded my expectations.",
+        "rating": 10,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "ea752ce8-3f69-4b96-8b9e-6e5b3d4d7a22"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000026",
+        "content": "Average quality, nothing special.",
+        "rating": 6,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "c874b123-2e91-4a1c-a2db-0d73a3b372f7"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000027",
+        "content": "Quick response from support.",
+        "rating": 8,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "f9a0b6b3-93f0-4a77-bbbd-3b49e5d3c231"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000028",
+        "content": "Highly recommend this product.",
+        "rating": 10,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "d2bfa638-8eb9-4ef5-ae59-6e0c1a796f23"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000029",
+        "content": "Packaging was poor.",
+        "rating": 4,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "a4f6c9e3-2f1a-4e87-b9b8-fc96b5a3bb0d"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000030",
+        "content": "Good value for money.",
+        "rating": 9,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "f1c0b18d-71e7-47f6-bcde-18f6b02d423c"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000031",
+        "content": "Fast shipping, product as expected.",
+        "rating": 8,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "d2c6e0a9-5930-4d0a-9286-5f53e7a14cfa"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000032",
+        "content": "Product was defective.",
+        "rating": 3,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "a0b1c2d3-e4f5-6789-abcd-ef0123456789"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000033",
+        "content": "Good experience shopping here.",
+        "rating": 9,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "c12a4f65-27f3-4c64-8b93-2a67671a4e2f"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000034",
+        "content": "Slow delivery, but product is good.",
+        "rating": 6,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "bfa8e12d-4e63-46ae-b8b2-3f6c721d6b07"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000035",
+        "content": "Excellent product quality.",
+        "rating": 10,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "ea752ce8-3f69-4b96-8b9e-6e5b3d4d7a22"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000036",
+        "content": "Not as good as expected.",
+        "rating": 5,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "c874b123-2e91-4a1c-a2db-0d73a3b372f7"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000037",
+        "content": "Quick and easy transaction.",
+        "rating": 8,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "f9a0b6b3-93f0-4a77-bbbd-3b49e5d3c231"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000038",
+        "content": "Very happy with product quality.",
+        "rating": 9,
+        "product_id": "bbbbbbbb-cccc-dddd-eeee-ffffffffffff",
+        "user_id": "d2bfa638-8eb9-4ef5-ae59-6e0c1a796f23"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000039",
+        "content": "Will purchase again soon.",
+        "rating": 9,
+        "product_id": "66666666-7777-8888-9999-aaaaaaaaaaaa",
+        "user_id": "a4f6c9e3-2f1a-4e87-b9b8-fc96b5a3bb0d"
+    },
+    {
+        "id": "10000000-0000-0000-0000-000000000040",
+        "content": "Great value and fast delivery.",
+        "rating": 10,
+        "product_id": "11111111-2222-3333-4444-555555555555",
+        "user_id": "f1c0b18d-71e7-47f6-bcde-18f6b02d423c"
+    }
+]
