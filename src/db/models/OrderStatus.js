@@ -1,22 +1,25 @@
 import { Model, DataTypes } from 'sequelize';
 import { orderStatuses } from '../../constants/inputVars.js';
 
+/**
+ * Represents the status of an order.
+ * Stores predefined values like "Pending", "Shipped", "Delivered".
+ */
 class OrderStatus extends Model {
+  /**
+   * Initializes the OrderStatus model in Sequelize.
+   *
+   * @param {import('sequelize').Sequelize} sequelize - Sequelize connection instance.
+   * @returns {typeof OrderStatus} The initialized OrderStatus model.
+   */
   static initModel(sequelize) {
     return OrderStatus.init(
       {
-        id: {
-          type: DataTypes.UUID,
-          defaultValue: DataTypes.UUIDV4,
-          primaryKey: true,
-        },
+        id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         name: {
           type: DataTypes.STRING,
           allowNull: false,
-          values: orderStatuses,
-          validate: {
-            isIn: [orderStatuses],
-          },
+          validate: { isIn: [orderStatuses] },
         },
       },
       {
@@ -29,6 +32,11 @@ class OrderStatus extends Model {
     );
   }
 
+  /**
+   * Defines model associations for OrderStatus.
+   *
+   * @param {Object} models - All Sequelize models.
+   */
   static associate(models) {
     OrderStatus.hasMany(models.Order, { foreignKey: 'status_id' });
   }

@@ -1,7 +1,17 @@
 import { Model, DataTypes } from 'sequelize';
 import { emailRegexp } from '../../constants/inputVars.js';
 
+/**
+ * Represents an application user.
+ * Stores personal information, authentication data, and related orders, cart, reviews, and wishlist items.
+ */
 class User extends Model {
+  /**
+   * Initializes the User model in Sequelize.
+   *
+   * @param {import('sequelize').Sequelize} sequelize - Sequelize connection instance.
+   * @returns {typeof User} The initialized User model.
+   */
   static initModel(sequelize) {
     return User.init(
       {
@@ -23,6 +33,11 @@ class User extends Model {
     );
   }
 
+  /**
+   * Defines model associations for User.
+   *
+   * @param {Object} models - All Sequelize models.
+   */
   static associate(models) {
     User.belongsTo(models.Address, { foreignKey: 'address_id' });
     User.hasMany(models.Order, { foreignKey: 'user_id' });

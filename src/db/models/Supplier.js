@@ -1,7 +1,17 @@
 import { Model, DataTypes } from 'sequelize';
 import { emailRegexp } from '../../constants/inputVars.js';
 
+/**
+ * Represents a supplier who provides products.
+ * Stores supplier details, contact info, and links to their address and products.
+ */
 class Supplier extends Model {
+  /**
+   * Initializes the Supplier model in Sequelize.
+   *
+   * @param {import('sequelize').Sequelize} sequelize - Sequelize connection instance.
+   * @returns {typeof Supplier} The initialized Supplier model.
+   */
   static initModel(sequelize) {
     return Supplier.init(
       {
@@ -22,6 +32,11 @@ class Supplier extends Model {
     );
   }
 
+  /**
+   * Defines model associations for Supplier.
+   *
+   * @param {Object} models - All Sequelize models.
+   */
   static associate(models) {
     Supplier.belongsTo(models.Address, { foreignKey: 'address_id' });
     Supplier.hasMany(models.Product, { foreignKey: 'supplier_id', onDelete: 'CASCADE' });
