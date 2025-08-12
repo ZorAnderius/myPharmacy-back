@@ -9,18 +9,9 @@ class Address extends Model {
           defaultValue: DataTypes.UUIDV4,
           primaryKey: true,
         },
-        street: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        city: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        apartment: {
-          type: DataTypes.STRING,
-          allowNull: true,
-        },
+        street: { type: DataTypes.STRING, allowNull: false },
+        city: { type: DataTypes.STRING, allowNull: false },
+        apartment: { type: DataTypes.STRING, allowNull: true },
       },
       {
         sequelize,
@@ -33,7 +24,7 @@ class Address extends Model {
   }
 
   static associate(models) {
-    Address.hasMany(models.User, { foreignKey: 'address_id', onDelete: 'CASCADE' });
+    Address.hasMany(models.User, { foreignKey: 'address_id', onDelete: 'SET NULL' });
     Address.hasMany(models.Supplier, { foreignKey: 'address_id', onDelete: 'CASCADE' });
   }
 }
