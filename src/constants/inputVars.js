@@ -36,3 +36,18 @@ export const orderStatuses = [
   'awaiting_dispatch',
   'awaiting_confirmation',
 ];
+
+export const categoryNames = [
+  'Pharmacy',
+  'Supplements',
+  'Personal Care',
+  'Medical Devices',
+  'Vitamins',
+  'Skincare',
+  'Dental',
+  'Haircare',
+  'Baby Care',
+  'First Aid',
+  'Wellness',
+  'Nutrition',
+];

@@ -1,6 +1,6 @@
 import app from './app.js';
 import DB from './db/models/index.js';
-import seedFromJson from './db/seedsFromJSON.js';
+import seedDatabase from './db/seeds.js';
 
 const PORT = 8000;
 
@@ -12,11 +12,11 @@ const PORT = 8000;
  */
 const setupServer = async () => {
   try {
-    // await DB.sequelize.sync({ alter: true });
+    // await DB.sequelize.sync({ force: true });
     // console.log(' All models synced');
 
     // // Seed initial data
-    // await seedFromJson();
+    // await seedDatabase();
 
     app.listen(PORT, () => {
       console.log(`\x1b[35mServer is running on the port ${PORT}\x1b[0m`);
