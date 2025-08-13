@@ -46,6 +46,6 @@ async function initializeModels() {
   return db;
 }
 
-const initializedDb = await initializeModels();
+const DB = await initializeModels();
 
-export default initializedDb;
+export default DB;

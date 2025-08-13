@@ -22,7 +22,6 @@ const sequelize = new Sequelize({
         underscored: true
     },
     models: [path.join(process.cwd(), 'src', 'db', 'models')],
-    logging: false
 });
 
 try {
