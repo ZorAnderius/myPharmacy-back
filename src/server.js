@@ -14,7 +14,8 @@ const PORT = env(ENV_VARIABLES.PORT, 3000);
  */
 const setupServer = async () => {
   try {
-    await db.sequelize.authenticate(); // перевірка підключення
+    await db.sequelize.authenticate();
+    // await db.sequelize.sync({force: true});
     console.log('\x1b[32mDatabase connected successfully!\x1b[0m');
     // // Seed initial data
     // await seedDatabase();

@@ -21,7 +21,7 @@ class User extends Model {
         email: { type: DataTypes.STRING, allowNull: false, validate: { isEmail: true, is: emailRegexp } },
         password: { type: DataTypes.STRING, allowNull: false },
         phoneNumber: { type: DataTypes.STRING, allowNull: false },
-        avatarUrl: { type: DataTypes.STRING, allowNull: true, validate: { isUrl: true } },
+        avatarUrl: { type: DataTypes.STRING, allowNull: true },
         address_id: { type: DataTypes.UUID, allowNull: true },
         isAdmin: { type: DataTypes.BOOLEAN, defaultValue: false },
       },
