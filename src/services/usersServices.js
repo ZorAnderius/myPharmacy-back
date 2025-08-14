@@ -1,8 +1,8 @@
-import DB from "../db/models/index.js"
+import User from "../db/models/User.js";
 
 export const getUsers = async () => {
-    const users = await DB.User.findAll({
-        attributes: {exclude: ['password', 'createdAt', 'updatedAt']}
+    const users = await User.findAll({
+      attributes: { exclude: ['password', 'isAdmin'] },
     });
     return users;
 }

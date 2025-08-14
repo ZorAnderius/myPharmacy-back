@@ -1,4 +1,5 @@
 const ENV_VARIABLES = Object.freeze({
+    NODE_ENV: 'NODE_ENV',
     PORT: 'PORT',
     POSTGRES: {
         DB_PORT: 'DB_PORT',

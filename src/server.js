@@ -1,8 +1,10 @@
 import app from './app.js';
-import DB from './db/models/index.js';
+import ENV_VARIABLES from './constants/ENV_VARIABLES.js';
+import db from './db/models/index.js';
 import seedDatabase from './db/seeds.js';
+import env from './utils/envConfig.js';
 
-const PORT = 8000;
+const PORT = env(ENV_VARIABLES.PORT, 3000);
 
 /**
  * Sets up the Express server, syncs Sequelize models,
@@ -12,9 +14,8 @@ const PORT = 8000;
  */
 const setupServer = async () => {
   try {
-    // await DB.sequelize.sync({ force: true });
-    // console.log(' All models synced');
-
+    await db.sequelize.authenticate(); // перевірка підключення
+    console.log('\x1b[32mDatabase connected successfully!\x1b[0m');
     // // Seed initial data
     // await seedDatabase();
 

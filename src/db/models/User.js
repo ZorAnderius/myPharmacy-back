@@ -23,6 +23,7 @@ class User extends Model {
         phoneNumber: { type: DataTypes.STRING, allowNull: false },
         avatarUrl: { type: DataTypes.STRING, allowNull: true, validate: { isUrl: true } },
         address_id: { type: DataTypes.UUID, allowNull: true },
+        isAdmin: { type: DataTypes.BOOLEAN, defaultValue: false },
       },
       {
         sequelize,
