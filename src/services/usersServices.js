@@ -13,12 +13,12 @@ export const register = async userData => {
   const { firstName, lastName, email, password, phoneNumber } = userData;
 
  if (!firstName || !lastName || !email || !password || !phoneNumber) {
-    return createHttpError(400, 'All fields are required');
+    throw createHttpError(400, 'All fields are required');
  }
 
   const existingUser = await User.findOne({ where: { email } });
   if (existingUser) {
-    return createHttpError(409, 'Email already in use');
+    throw createHttpError(409, 'Email already in use');
   }
 
   const hashedPassword = password && (await bcrypt.hash(password, 11));
