@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { emailRegexp } from '../constants/inputVars.js';
+import { emailRegexp } from '../../constants/inputVars.js';
 
 /**
  * Joi schema for validating user login credentials.

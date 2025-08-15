@@ -6,10 +6,10 @@ import usersRouter from './routes/usersRouter.js';
 
 app.use('/api/users', usersRouter);
 
-//if route is not correct 
+//if route is not correct
 app.use(notFoundHandler);
 
-//error handler middleware 
+//error handler middleware
 app.use(errorHandler);
 
 export default app;
