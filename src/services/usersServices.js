@@ -1,6 +1,9 @@
 import bcrypt from 'bcrypt';
 import User from '../db/models/User.js';
 import createHttpError from 'http-errors';
+import { generateTokens } from '../utils/tokenServices.js';
+import { Op } from 'sequelize';
+import RefreshToken from '../db/models/RefreshToken.js';
 
 /**
  * Finds a single user by the given query.
@@ -13,21 +16,37 @@ export const getUser = async query => {
 };
 
 /**
- * Registers a new user.
- * Validates required fields, checks if the email is already in use,
- * hashes the password, and creates a new user record.
- * 
- * @param {Object} userData - Object containing user data.
- * @param {string} userData.firstName - First name of the user.
- * @param {string} userData.lastName - Last name of the user.
- * @param {string} userData.email - Email of the user.
- * @param {string} userData.password - Plain text password.
- * @param {string} userData.phoneNumber - User's phone number.
- * @returns {Promise<Object>} - Returns the newly created user object (without password).
- * @throws {HttpError} - Throws 400 if any required field is missing.
- * @throws {HttpError} - Throws 409 if email is already in use.
+ * Registers a new user, stores their credentials in the database, and generates authentication tokens.
+ *
+ * @async
+ * @function register
+ * @param {Object} params - The parameters object.
+ * @param {Object} params.userData - The registration data.
+ * @param {string} params.userData.firstName - User's first name.
+ * @param {string} params.userData.lastName - User's last name.
+ * @param {string} params.userData.email - User's email address (must be unique).
+ * @param {string} params.userData.password - User's plaintext password.
+ * @param {string} params.userData.phoneNumber - User's phone number.
+ * @param {string} params.ip - IP address of the client making the request.
+ * @param {string} params.userAgent - User agent string of the client.
+ *
+ * @throws {HttpError} 400 - If any required field is missing.
+ * @throws {HttpError} 409 - If the email is already registered.
+ * @throws {HttpError} 500 - If user creation or token generation fails.
+ *
+ * @returns {Promise<Object>} An object containing:
+ * @returns {Object} return.user - Public user information.
+ * @returns {string} return.user.id - User's unique ID.
+ * @returns {string} return.user.firstName - User's first name.
+ * @returns {string} return.user.lastName - User's last name.
+ * @returns {string} return.user.email - User's email address.
+ * @returns {string} return.user.phoneNumber - User's phone number.
+ * @returns {string} return.user.avatarUrl - User's avatar URL (empty if not set).
+ * @returns {Object} return.tokens - JWT tokens for authentication.
+ * @returns {string} return.tokens.accessToken - Short-lived JWT access token.
+ * @returns {string} return.tokens.refreshToken - Long-lived JWT refresh token (stored in DB).
  */
-export const register = async userData => {
+export const register = async ({ userData, ip, userAgent }) => {
   const { firstName, lastName, email, password, phoneNumber } = userData;
   if (!firstName || !lastName || !email || !password || !phoneNumber) {
     throw createHttpError(400, 'All fields are required');
@@ -46,28 +65,51 @@ export const register = async userData => {
     phoneNumber,
     avatarUrl,
   });
+  const { accessToken, refreshToken } = await generateTokens({ id: newUser.id, email: newUser.email, ip, userAgent });
   return {
-    id: newUser.id,
-    firstName: newUser.firstName,
-    lastName: newUser.lastName,
-    email: newUser.email,
-    phoneNumber: newUser.phoneNumber,
-    avatarUrl: newUser.avatarUrl,
+    user: {
+      id: newUser.id,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      phoneNumber: newUser.phoneNumber,
+      avatarUrl: newUser.avatarUrl,
+    },
+    accessToken,
+    refreshToken,
   };
 };
 
 /**
- * Authenticates a user with email and password.
- * Validates input, checks if user exists, and compares password hashes.
- * 
- * @param {Object} credentials - Object containing login credentials.
- * @param {string} credentials.email - User's email.
- * @param {string} credentials.password - Plain text password.
- * @returns {Promise<Object>} - Returns the authenticated user object (without password).
- * @throws {HttpError} - Throws 400 if email or password is missing.
- * @throws {HttpError} - Throws 401 if email or password is invalid.
+ * Authenticates a user by validating credentials, generating JWT tokens, and returning user data.
+ *
+ * @async
+ * @function login
+ * @param {Object} params - The parameters object.
+ * @param {Object} params.userData - The login credentials.
+ * @param {string} params.userData.email - The user's email address.
+ * @param {string} params.userData.password - The user's plaintext password.
+ * @param {string} params.ip - The IP address of the client making the request.
+ * @param {string} params.userAgent - The user agent string of the client.
+ *
+ * @throws {HttpError} 400 - If email or password is missing.
+ * @throws {HttpError} 401 - If authentication fails due to invalid email or password.
+ * @throws {HttpError} 500 - If token generation or database interaction fails.
+ *
+ * @returns {Promise<Object>} An object containing:
+ * @returns {Object} return.user - Public user information (excluding sensitive fields).
+ * @returns {string} return.user.id - User's unique ID.
+ * @returns {string} return.user.firstName - User's first name.
+ * @returns {string} return.user.lastName - User's last name.
+ * @returns {string} return.user.email - User's email address.
+ * @returns {string} [return.user.phoneNumber] - Optional user's phone number.
+ * @returns {string} [return.user.avatarUrl] - Optional URL to the user's avatar.
+ * @returns {Object} return.tokens - JWT tokens for authentication.
+ * @returns {string} return.tokens.accessToken - Short-lived JWT access token.
+ * @returns {string} return.tokens.refreshToken - Long-lived JWT refresh token (stored in DB).
  */
-export const login = async ({ email, password }) => {
+export const login = async ({ userData, ip, userAgent }) => {
+  const { email, password } = userData;
   if (!email || !password) {
     throw createHttpError(400, 'Email and password are required');
   }
@@ -77,12 +119,27 @@ export const login = async ({ email, password }) => {
   if (!isPasswordValid) {
     throw createHttpError(401, 'Invalid email or password');
   }
+  const dbRefreshToken = await RefreshToken.findOne({
+    where: {
+      user_id: user.id,
+      ip,
+      user_agent: userAgent,
+      revoked: false,
+      expires_at: { [Op.gt]: new Date() }
+    }
+  });
+
+  const { accessToken, refreshToken } = await generateTokens({ id: user.id, email: user.email, ip, userAgent, previousToken: dbRefreshToken });
   return {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    phoneNumber: user.phoneNumber,
-    avatarUrl: user.avatarUrl,
+    user: {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      avatarUrl: user.avatarUrl,
+    },
+    accessToken,
+    refreshToken,
   };
 };

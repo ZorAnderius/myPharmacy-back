@@ -7,10 +7,13 @@ import userRegisterSchema from '../schemas/usersSchema/register.js';
 import userLoginSchema from '../schemas/usersSchema/login.js';
 import { loginController, registerController } from '../controllers/usersControllers.js';
 import csrfProtection from '../middlewares/secureConf/csrfHeaderCheck.js';
+import clientCheck from '../middlewares/clientCheck.js.js';
 
 const usersRouter = express.Router();
 
-usersRouter.post('/register', isEmptyBody, csrfProtection, validateBody(userRegisterSchema), ctrlWrapper(registerController));
-usersRouter.post('/login', isEmptyBody, csrfProtection, validateBody(userLoginSchema), loginLimit, ctrlWrapper(loginController));
+const authMiddleware = [isEmptyBody, csrfProtection, clientCheck];
+
+usersRouter.post('/register', [...authMiddleware, validateBody(userRegisterSchema)], ctrlWrapper(registerController));
+usersRouter.post('/login', [...authMiddleware, validateBody(userLoginSchema), loginLimit], ctrlWrapper(loginController));
 
 export default usersRouter;
