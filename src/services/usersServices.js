@@ -75,10 +75,8 @@ export const login = async ({ email, password }) => {
   if (!user) throw createHttpError(401, 'Invalid email or password');
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    console.log("Invalid password");
     throw createHttpError(401, 'Invalid email or password');
   }
-  console.log(user);
   return {
     id: user.id,
     firstName: user.firstName,

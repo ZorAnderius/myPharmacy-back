@@ -33,7 +33,6 @@ export const registerController = async (req, res, next) => {
 export const loginController = async (req, res, next) => {
   const { email, password } = req.body;
   const result = await service.login({ email, password });
-  console.log(result);
   res.json({
     status: 200,
     message: 'Login successful',
