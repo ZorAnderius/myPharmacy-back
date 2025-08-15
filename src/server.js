@@ -1,6 +1,7 @@
 import app from './app.js';
 import ENV_VARIABLES from './constants/ENV_VARIABLES.js';
 import db from './db/models/index.js';
+import './cron/cleanupToken.js';
 import seedDatabase from './db/seeds.js';
 import env from './utils/envConfig.js';
 
