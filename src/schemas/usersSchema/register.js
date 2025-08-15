@@ -1,7 +1,20 @@
 import Joi from 'joi';
 import { emailRegexp } from '../constants/inputVars.js';
 
-export const userRegisterSchema = Joi.object({
+/**
+ * Joi schema for user registration.
+ * Validates the following fields:
+ * - firstName: string, 3-30 characters, required
+ * - lastName: string, 3-30 characters, required
+ * - email: string, must match `emailRegexp`, required
+ * - password: string, 8-50 characters, required
+ * - phoneNumber: string, exactly 10 digits, required
+ *
+ * Custom error messages are provided for each validation rule.
+ *
+ * @type {import('joi').ObjectSchema}
+ */
+const userRegisterSchema = Joi.object({
   firstName: Joi.string().min(3).max(30).required().messages({
     'string.base': `"firstName" should be a type of 'text'`,
     'string.empty': `"firstName" cannot be an empty field`,
@@ -41,19 +54,4 @@ export const userRegisterSchema = Joi.object({
     }),
 });
 
-
-export const userLoginSchema = Joi.object({
-    email: Joi.string().trim().pattern(emailRegexp).required().messages({
-        'string.base': `"email" should be a type of 'text'`,
-        'string.empty': `"email" cannot be an empty field`,
-        'string.pattern.base': `"email" must be a valid email address as example@example.com`,
-        'any.required': `"email" is a required field`,
-    }),
-    password: Joi.string().min(8).max(50).required().messages({
-        'string.base': `"password" should be a type of 'text'`,
-        'string.empty': `"password" cannot be an empty field`,
-        'string.min': `"password" should have a minimum length of {#limit}`,
-        'string.max': `"password" should have a maximum length of {#limit}`,
-        'any.required': `"password" is a required field`,
-    }),
-})
+export default userRegisterSchema;

@@ -1,5 +1,17 @@
+/**
+ * Regular expression to validate email addresses.
+ * Matches standard emails like example@example.com.
+ *
+ * @constant {RegExp}
+ */
 export const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+/**
+ * List of possible product statuses.
+ * Used to define or validate the state of products in the system.
+ * 
+ * @constant {string[]}
+ */
 export const productStatuses = [
   'available',
   'out_of_stock',
@@ -18,6 +30,13 @@ export const productStatuses = [
   'unavailable',
   'pending_approval',
 ];
+
+/**
+ * List of possible order statuses.
+ * Used to track the progress or state of customer orders.
+ * 
+ * @constant {string[]}
+ */
 export const orderStatuses = [
   'pending',
   'processing',
@@ -37,6 +56,12 @@ export const orderStatuses = [
   'awaiting_confirmation',
 ];
 
+/**
+ * List of predefined product category names.
+ * Used for categorizing products in the system.
+ * 
+ * @constant {string[]}
+ */
 export const categoryNames = [
   'Pharmacy',
   'Supplements',
