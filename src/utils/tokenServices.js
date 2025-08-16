@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
-import { Op } from 'sequelize';
+import bcrypt from 'bcrypt';
 import env from './envConfig.js';
 import ENV_VARIABLES from '../constants/ENV_VARIABLES.js';
-import RefreshToken from '../db/models/RefreshToken.js';
 import createHttpError from 'http-errors';
+import { createRefreshToken } from '../services/refreshTokenServices.js';
 
 /**
  * JWT secrets for signing access and refresh tokens.
@@ -60,14 +60,16 @@ export const generateRefreshToken = async ({ id, ip, userAgent, previousToken = 
     await previousToken.save();
   }
   const token = jwt.sign({ sub: id, jti }, refreshSecret, { expiresIn: '7d' });
+  const hashedToken = await bcrypt.hash(token, 11);
 
   try {
-    await RefreshToken.create({
+    await createRefreshToken({
       user_id: id,
       jti,
       expires_at: expires,
       ip,
       user_agent: userAgent,
+      token_hash: hashedToken,
     });
   } catch (error) {
     throw createHttpError(500, 'Error creating refresh token');
@@ -98,4 +100,34 @@ export const generateTokens = async ({ id, email, ip, userAgent, previousToken =
   const accessToken = generateAccessToken(id, email);
   const refreshToken = await generateRefreshToken({ id, ip, userAgent, previousToken });
   return { accessToken, refreshToken };
+};
+
+/**
+ * Verifies the validity of a refresh token.
+ *
+ * This function:
+ *  - Decodes and verifies the JWT signature and expiration.
+ *  - Fetches the token record from the database by its JTI.
+ *  - Ensures the token exists, has not been revoked, and has not expired.
+ *  - Compares the provided token against the stored hashed token for extra security.
+ *
+ * @async
+ * @param {string} refreshToken - The raw refresh token provided by the client.
+ * @returns {Promise<Object>} The decoded JWT payload if the token is valid.
+ * @throws {import('http-errors').HttpError} 401 error if the token is invalid, expired, revoked, or not found.
+ */
+export const verifyRefreshToken = async refreshToken => {
+  try {
+    const decoded = jwt.verify(refreshToken, refreshSecret);
+    const tokenRecord = await getRefreshToken(decoded.jti);
+    if (!tokenRecord) throw createHttpError(401, 'Token not found');
+    if (tokenRecord?.revoked) throw createHttpError(401, 'Refresh token has been revoked');
+    if (new Date() > tokenRecord.expires_at) throw createHttpError(401, 'Refresh token has expired');
+
+    const isMatch = await bcrypt.compare(refreshToken, tokenRecord.token_hash);
+    if (!isMatch) throw createHttpError(401, 'Invalid refresh token');
+    return decoded;
+  } catch (error) {
+    throw createHttpError(401, 'Invalid refresh token');
+  }
 };
