@@ -42,10 +42,11 @@ class User extends Model {
    */
   static associate(models) {
     User.belongsTo(models.Address, { foreignKey: 'address_id' });
-    User.hasMany(models.Order, { foreignKey: 'user_id' });
-    User.hasOne(models.Cart, { foreignKey: 'user_id' });
-    User.hasMany(models.Review, { foreignKey: 'user_id' });
-    User.hasMany(models.Wishlist, { foreignKey: 'user_id' });
+    User.hasMany(models.Order, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+    User.hasOne(models.Cart, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+    User.hasMany(models.Review, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+    User.hasMany(models.Wishlist, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+    User.hasMany(models.RefreshToken, { foreignKey: 'user_id', onDelete: 'CASCADE' });
   }
 }
 

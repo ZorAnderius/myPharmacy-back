@@ -12,6 +12,7 @@ class RefreshToken extends Model {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         user_id: { type: DataTypes.UUID, allowNull: false },
         jti: { type: DataTypes.STRING, allowNull: false, unique: true },
+        token_hash: { type: DataTypes.STRING, allowNull: false },
         revoked: { type: DataTypes.BOOLEAN, defaultValue: false },
         replaced_by: { type: DataTypes.UUID, allowNull: true },
         expires_at: { type: DataTypes.DATE, allowNull: false },
@@ -34,7 +35,7 @@ class RefreshToken extends Model {
    * @param {Object} models - All Sequelize models.
    */
   static associate(models) {
-    RefreshToken.belongsTo(models.User, { foreignKey: 'user_id' });
+    RefreshToken.belongsTo(models.User, { foreignKey: 'user_id', onDelete: 'CASCADE' });
   }
 }
 
