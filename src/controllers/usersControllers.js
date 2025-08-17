@@ -1,6 +1,5 @@
 import * as service from '../services/usersServices.js';
-import setRefreshTokenCookie from '../utils/setRefreshTokenCookie.js';
-import { getJTI } from '../utils/tokenServices.js';
+import { setRefreshTokenCookie, clearRefreshTokenCookie } from '../utils/setRefreshTokenCookie.js';
 
 /**
  * Controller for registering a new user.
@@ -71,8 +70,8 @@ export const loginController = async (req, res, next) => {
  */
 export const logoutController = async (req, res, next) => {
   const userId = req.user.id;
-  const { refreshToken } = req.cookies;
-  const jti = getJTI(refreshToken);
+  const jti = req.jti;
   await service.logout({ userId, jti });
+  clearRefreshTokenCookie(res);
   res.status(204).send();
 };

@@ -172,7 +172,7 @@ export const login = async ({ userData, ip, userAgent }) => {
  * @throws {HttpError} 403 - If the refresh token does not belong to the provided user.
  */
 export const logout = async ({ userId, jti }) => {
-  const token = await getRefreshToken(jti);
+  const token = await getRefreshToken({jti});
   if (!token) throw createHttpError(404, 'Refresh token not found');
   if (token.user_id !== userId) {
     throw createHttpError(403, 'Forbidden');

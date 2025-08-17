@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import env from './envConfig.js';
 import ENV_VARIABLES from '../constants/ENV_VARIABLES.js';
 import createHttpError from 'http-errors';
-import { createRefreshToken } from '../services/refreshTokenServices.js';
+import { createRefreshToken, getRefreshToken } from '../services/refreshTokenServices.js';
 
 /**
  * JWT secrets for signing access and refresh tokens.
