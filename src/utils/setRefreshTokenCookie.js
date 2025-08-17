@@ -1,5 +1,5 @@
 import ENV_VARIABLES from '../constants/ENV_VARIABLES.js';
-import { MAX_AGE_REFRESH_TOKENS, REFRESH_TOKEN_COOKIE } from '../constants/vars.js';
+import { MAX_AGE_REFRESH_TOKENS, REFRESH_TOKEN_COOKIE } from '../constants/tokensVars.js';
 import env from './envConfig.js';
 
 /**
@@ -17,7 +17,7 @@ export const setRefreshTokenCookie = (res, token) => {
     httpOnly: true,
     secure: env(ENV_VARIABLES.NODE_ENV) === 'production',
     sameSite: 'Strict',
-    maxAge: MAX_AGE_REFRESH_TOKENS, // 7 days
+    maxAge: MAX_AGE_REFRESH_TOKENS * 1000, // 7 days
   };
   res.cookie(REFRESH_TOKEN_COOKIE, token, cookieOptions);
 };

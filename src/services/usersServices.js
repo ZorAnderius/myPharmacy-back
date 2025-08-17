@@ -134,17 +134,7 @@ export const login = async ({ userData, ip, userAgent }) => {
   if (!isPasswordValid) {
     throw createHttpError(401, 'Invalid email or password');
   }
-  const dbRefreshToken = await RefreshToken.findOne({
-    where: {
-      user_id: user.id,
-      ip,
-      user_agent: userAgent,
-      revoked: false,
-      expires_at: { [Op.gt]: new Date() },
-    },
-  });
-
-  const { accessToken, refreshToken } = await generateTokens({ id: user.id, email: user.email, ip, userAgent, previousToken: dbRefreshToken });
+  const { accessToken, refreshToken } = await generateTokens({ id: user.id, email: user.email, ip, userAgent});
   return {
     user: {
       id: user.id,
