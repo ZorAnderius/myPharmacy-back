@@ -75,3 +75,42 @@ export const logoutController = async (req, res, next) => {
   clearRefreshTokenCookie(res);
   res.status(204).send();
 };
+
+/**
+ * Express controller for retrieving the currently authenticated user.
+ *
+ * Uses the `userId` from `req.user` (set during authentication middleware) to fetch
+ * the user from the database. If found, returns user details along with the access token.
+ *
+ * @async
+ * @function currentUserController
+ * @param {import('express').Request} req - Express request object.  
+ *   Requires `req.user.id` and optionally `req.accessToken`.
+ * @param {import('express').Response} res - Express response object.
+ * @param {import('express').NextFunction} next - Express next middleware function.
+ * @returns {Promise<void>} Sends a JSON response containing the user data and access token.
+ *
+ * @throws {HttpError} 404 - If the user cannot be found in the database.
+ */
+export const currentUserController = async (req, res, next) => {
+  const userId = req.user.id;
+  const user = await service.getUserById(userId);
+  if (!user) {
+    return next(createHttpError(404, 'User not found'));
+  }
+  res.json({
+    status: 200,
+    message: 'Current user retrieved successfully',
+    data: {
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phoneNumber: user.phoneNumber,
+        avatarUrl: user.avatarUrl,
+      },
+      accessToken: req.accessToken,
+    },
+  });
+};

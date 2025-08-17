@@ -52,6 +52,7 @@ const auth = async (req, res, next) => {
     if (!user) {
       return next(createHttpError(401, 'User not found'));
     }
+    req.accessToken = token;
     req.jti = jti;
     req.user = {
       id: user.id,
