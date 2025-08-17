@@ -74,8 +74,5 @@ export const logoutController = async (req, res, next) => {
   const { refreshToken } = req.cookies;
   const jti = getJTI(refreshToken);
   await service.logout({ userId, jti });
-  res.json({
-    status: 200,
-    message: 'Logout successful',
-  });
+  res.status(204).send();
 };
