@@ -131,3 +131,15 @@ export const verifyRefreshToken = async refreshToken => {
     throw createHttpError(401, 'Invalid refresh token');
   }
 };
+
+/**
+ * Extracts the `jti` (JWT ID) claim from a given refresh token.
+ *
+ * @param {string} token - The JSON Web Token (JWT) string to verify and decode.
+ * @returns {string} The `jti` value contained in the verified token.
+ * @throws {Error} If the token is invalid, expired, or cannot be verified using the `refreshSecret`.
+ */
+export const getJTI = token => {
+  const decoded = jwt.verify(token, refreshSecret);
+  return decoded.jti;
+}

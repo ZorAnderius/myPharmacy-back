@@ -4,6 +4,7 @@ import createHttpError from 'http-errors';
 import { generateTokens } from '../utils/tokenServices.js';
 import { Op } from 'sequelize';
 import RefreshToken from '../db/models/RefreshToken.js';
+import { getRefreshToken } from './refreshTokenServices.js';
 
 /**
  * Finds a single user by the given query.
@@ -156,4 +157,26 @@ export const login = async ({ userData, ip, userAgent }) => {
     accessToken,
     refreshToken,
   };
+};
+
+/**
+ * Logs out a user by revoking their refresh token.
+ *
+ * @async
+ * @param {Object} params - The parameters for logout.
+ * @param {string|number} params.userId - The ID of the user requesting logout.
+ * @param {string} params.jti - The JWT ID used to identify the refresh token.
+ * @returns {Promise<void>} Resolves when the refresh token is successfully revoked.
+ *
+ * @throws {HttpError} 404 - If the refresh token is not found.
+ * @throws {HttpError} 403 - If the refresh token does not belong to the provided user.
+ */
+export const logout = async ({ userId, jti }) => {
+  const token = await getRefreshToken(jti);
+  if (!token) throw createHttpError(404, 'Refresh token not found');
+  if (token.user_id !== userId) {
+    throw createHttpError(403, 'Forbidden');
+  }
+  token.revoked = true;
+  await token.save();
 };

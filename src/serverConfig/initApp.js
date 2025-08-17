@@ -5,6 +5,7 @@ import morgan from './morganConfig.js';
 import corsOptions from '../middlewares/secureConf/corsConf.js';
 import helmetOptions from '../middlewares/secureConf/helmetConf.js';
 import csrfHeaderCheck from '../middlewares/secureConf/csrfHeaderCheck.js';
+import cookieParser from 'cookie-parser';
 
 /**
  * Express application instance with configured middlewares.
@@ -24,6 +25,7 @@ app.use(morgan('tiny-colored'));
 app.use(cors(corsOptions));
 app.use(helmet(helmetOptions));
 app.use(csrfHeaderCheck);
+app.use(cookieParser());
 app.use(
   express.json({
     type: ['application/json'],

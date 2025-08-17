@@ -29,18 +29,17 @@ const auth = async (req, res, next) => {
     if (!user) {
       return next(createHttpError(401, 'User not found'));
     }
+    req.user = {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phoneNumber: user.phoneNumber,
+      avatarUrl: user.avatarUrl
+    };
   } catch (error) {
     return next(createHttpError(401, 'Invalid token'));
   }
-
-  req.user = {
-    id: user.id,
-    email: user.email,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    phoneNumber: user.phoneNumber,
-    avatarUrl: user.avatarUrl,
-  };
   next();
 };
 

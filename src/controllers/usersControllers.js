@@ -1,5 +1,6 @@
 import * as service from '../services/usersServices.js';
 import setRefreshTokenCookie from '../utils/setRefreshTokenCookie.js';
+import { getJTI } from '../utils/tokenServices.js';
 
 /**
  * Controller for registering a new user.
@@ -50,5 +51,31 @@ export const loginController = async (req, res, next) => {
       user,
       accessToken,
     },
+  });
+};
+
+/**
+ * Express controller for handling user logout.
+ *
+ * Extracts the user ID from the authenticated request, verifies the provided
+ * refresh token, and revokes it via the logout service.
+ *
+ * @async
+ * @function logoutController
+ * @param {import('express').Request} req - Express request object.
+ * @param {import('express').Response} res - Express response object.
+ * @param {import('express').NextFunction} next - Express next middleware function.
+ * @returns {Promise<void>} Sends a JSON response with logout status.
+ *
+ * @throws {Error} If the refresh token is invalid or logout fails in the service.
+ */
+export const logoutController = async (req, res, next) => {
+  const userId = req.user.id;
+  const { refreshToken } = req.cookies;
+  const jti = getJTI(refreshToken);
+  await service.logout({ userId, jti });
+  res.json({
+    status: 200,
+    message: 'Logout successful',
   });
 };

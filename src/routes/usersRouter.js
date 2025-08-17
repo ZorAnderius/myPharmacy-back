@@ -5,15 +5,16 @@ import ctrlWrapper from '../utils/controllerWrapper.js';
 import loginLimit from '../middlewares/loginLimit/loginLimit.js';
 import userRegisterSchema from '../schemas/usersSchema/register.js';
 import userLoginSchema from '../schemas/usersSchema/login.js';
-import { loginController, registerController } from '../controllers/usersControllers.js';
+import { loginController, logoutController, registerController } from '../controllers/usersControllers.js';
 import csrfProtection from '../middlewares/secureConf/csrfHeaderCheck.js';
 import clientCheck from '../middlewares/clientCheck.js.js';
+import auth from '../middlewares/authenticate.js';
 
 const usersRouter = express.Router();
 
-const authMiddleware = [isEmptyBody, csrfProtection, clientCheck];
+const authMiddleware = [ csrfProtection, clientCheck];
 
-usersRouter.post('/register', [...authMiddleware, validateBody(userRegisterSchema)], ctrlWrapper(registerController));
-usersRouter.post('/login', [...authMiddleware, validateBody(userLoginSchema), loginLimit], ctrlWrapper(loginController));
-
+usersRouter.post('/register', [isEmptyBody,...authMiddleware, validateBody(userRegisterSchema)], ctrlWrapper(registerController));
+usersRouter.post('/login', [isEmptyBody, ...authMiddleware, validateBody(userLoginSchema), loginLimit], ctrlWrapper(loginController));
+usersRouter.post('/logout', [...authMiddleware, auth], ctrlWrapper(logoutController));
 export default usersRouter;
