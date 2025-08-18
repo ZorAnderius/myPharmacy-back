@@ -3,8 +3,10 @@ import app from './serverConfig/initApp.js';
 import notFoundHandler from './middlewares/notFoundHandler.js';
 import errorHandler from './middlewares/errorHandler.js';
 import usersRouter from './routes/usersRouter.js';
+import shopsRouter from './routes/shopsRouter.js';
 
 app.use('/api/users', usersRouter);
+app.use('/api/shops', shopsRouter);
 
 //if route is not correct
 app.use(notFoundHandler);
