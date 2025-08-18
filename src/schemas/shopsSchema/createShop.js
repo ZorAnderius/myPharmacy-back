@@ -1,6 +1,21 @@
 import Joi from 'joi';
 import { emailRegexp, phoneRegexp, zipCodeRegexp } from '../../constants/inputVars.js';
 
+/**
+ * Joi validation schema for creating a new shop.
+ *
+ * Validates the following fields:
+ * 
+ * @property {string} name - Shop name, required, 3-50 characters.
+ * @property {string} ownerName - Owner's name, required, 3-50 characters.
+ * @property {string} phone - Phone number, required, must match UK format (07XXXXXXXXX).
+ * @property {string} email - Email address, required, must match standard email format.
+ * @property {string} street - Street address, required, 3-100 characters.
+ * @property {string} city - City name, required, 2-100 characters.
+ * @property {string} apartment - Apartment or unit identifier, required, 3-100 characters.
+ * @property {string} zipCode - Zip/post code, required, must match UK postcode format.
+ * @property {boolean} hasDelivery - Indicates if the shop provides delivery, required.
+ */
 const createShopSchema = Joi.object({
   name: Joi.string().min(3).max(50).required().messages({
     'string.base': 'Name must be a string',
@@ -25,12 +40,6 @@ const createShopSchema = Joi.object({
     'string.pattern.base': `"email" must be a valid email address as example@example.com`,
     'any.required': `"email" is a required field`,
   }),
-  hasDelivery: Joi.boolean()
-    .messages({
-      'boolean.base': `"hasDelivery" should be a type of 'boolean'`,
-      'any.required': `"hasDelivery" is a required field`,
-    })
-    .default(false),
   street: Joi.string().min(3).max(100).required().messages({
     'string.base': `"street" should be a type of 'text'`,
     'string.empty': `"street" cannot be an empty field`,
@@ -57,4 +66,11 @@ const createShopSchema = Joi.object({
     'string.empty': 'Zip Code is required',
     'string.pattern.base': 'Zip Code must be a valid UK postcode',
   }),
+  hasDelivery: Joi.boolean().required()
+    .messages({
+      'boolean.base': `"hasDelivery" should be a type of 'boolean'`,
+      'any.required': `"hasDelivery" is a required field`,
+    })
 });
+
+export default createShopSchema;

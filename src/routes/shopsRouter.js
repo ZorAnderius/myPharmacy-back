@@ -4,11 +4,12 @@ import { requestIntegrityChecks } from '../middlewares/generalMiddlewareList.js'
 import ctrlWrapper from '../utils/controllerWrapper.js';
 import { createShopController } from '../controllers/shopsControllers.js';
 import validateBody from '../utils/validateBody.js';
+import createShopSchema from '../schemas/shopsSchema/createShop.js';
 
 const shopsRouter = express.Router();
 
 shopsRouter.use(auth);
 
-shopsRouter.post('/create', [...requestIntegrityChecks, validateBody()], ctrlWrapper(createShopController));
+shopsRouter.post('/create', [...requestIntegrityChecks, validateBody(createShopSchema)], ctrlWrapper(createShopController));
 
 export default shopsRouter;

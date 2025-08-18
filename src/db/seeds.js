@@ -9,6 +9,7 @@ import Supplier from './models/Supplier.js';
 import Product from './models/Product.js';
 import Review from './models/Review.js';
 import { productStatuses as product_stat, orderStatuses as order_stat, categoryNames } from '../constants/inputVars.js';
+import ZipCode from './models/ZipCode.js';
 
 /**
  * Seeds the database with initial sample data for testing or development.
@@ -54,19 +55,34 @@ async function seedDatabase() {
     categories.push(category);
   }
 
-  // =================== 4. Seed addresses (UK) ===================
+  // =================== 4. Seed zip codes (UK) ===================
+  const zipCodes = [];
+  const sampleZipCodes = ['SW1A 1AA', 'EC1A 1BB', 'W1A 0AX', 'M1 1AE', 'B33 8TH', 'CR2 6XH'];
+
+  for (let code of sampleZipCodes) {
+    const zip = await ZipCode.create({
+      id: uuidv4(),
+      code,
+      city: faker.location.city('en-GB'),
+      region: faker.location.state('en-GB'),
+      country: 'UK',
+    });
+    zipCodes.push(zip);
+  }
+
+  // =================== 5. Seed addresses ===================
   const addresses = [];
   for (let i = 0; i < 6; i++) {
     const address = await Address.create({
       id: uuidv4(),
       street: faker.location.street(),
-      city: faker.location.city('en-GB'), // UK city
       apartment: faker.helpers.arrayElement([faker.location.buildingNumber(), null]),
+      zip_code_id: faker.helpers.arrayElement(zipCodes).id,
     });
     addresses.push(address);
   }
 
-  // =================== 5. Seed users ===================
+  // =================== 6. Seed users ===================
   const users = [];
   for (let i = 0; i < 6; i++) {
     const user = await User.create({
@@ -75,37 +91,32 @@ async function seedDatabase() {
       lastName: faker.person.lastName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
-      phoneNumber: faker.phone.number(),
+      phoneNumber: faker.phone.number({ style: 'national' }),
       avatarUrl: faker.image.avatar(),
       address_id: faker.helpers.arrayElement(addresses).id,
     });
     users.push(user);
   }
 
-  // =================== 6. Seed suppliers ===================
+  // =================== 7. Seed suppliers ===================
   const suppliers = [];
   for (let i = 0; i < 6; i++) {
     const supplier = await Supplier.create({
       id: uuidv4(),
       name: faker.company.name(),
       company: faker.company.name(),
-      phone: faker.phone.number(),
+      phone: faker.phone.number({ style: 'national' }),
       email: faker.internet.email(),
       address_id: faker.helpers.arrayElement(addresses).id,
     });
     suppliers.push(supplier);
   }
 
-  // =================== 7. Seed products ===================
-  const productTypes = ['Vitamin', 'Syrup', 'Tablet', 'Capsule', 'Cream', 'Spray', 'Gel'];
-  const productAdjectives = ['Strong', 'Quick', 'Daily', 'Extra', 'Children', 'Adult'];
+  // =================== 8. Seed products ===================
   const products = [];
-
   for (let category of categories) {
     for (let i = 0; i < 5; i++) {
-      // 5 products per category
       const name = `${faker.commerce.productAdjective()} ${faker.commerce.productMaterial()} ${category.name}`;
-
       const product = await Product.create({
         id: uuidv4(),
         name,
@@ -121,7 +132,7 @@ async function seedDatabase() {
     }
   }
 
-  // =================== 8. Seed reviews ===================
+  // =================== 9. Seed reviews ===================
   const reviews = [];
   for (let i = 0; i < 10; i++) {
     const review = await Review.create({

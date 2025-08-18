@@ -12,7 +12,7 @@ class ZipCode extends Model {
       {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         code: { type: DataTypes.STRING, allowNull: false },
-        city: { type: DataTypes.STRING, allowNull: true },
+        city: { type: DataTypes.STRING, allowNull: false },
         region: { type: DataTypes.STRING, allowNull: true },
         country: { type: DataTypes.STRING, allowNull: true, defaultValue: 'UK' },
       },
@@ -35,3 +35,5 @@ class ZipCode extends Model {
     ZipCode.hasMany(models.Address, { foreignKey: 'zip_code_id', onDelete: 'CASCADE' });
   }
 }
+
+export default ZipCode;
