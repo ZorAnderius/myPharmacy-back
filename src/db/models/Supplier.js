@@ -17,9 +17,10 @@ class Supplier extends Model {
       {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         name: { type: DataTypes.STRING, allowNull: false },
-        company: { type: DataTypes.STRING, allowNull: true },
+        ownerName: { type: DataTypes.STRING, allowNull: true },
         phone: { type: DataTypes.STRING, allowNull: false },
         email: { type: DataTypes.STRING, allowNull: false, validate: { isEmail: true, is: emailRegexp } },
+        hasDelivery: { type: DataTypes.BOOLEAN, defaultValue: false },
         address_id: { type: DataTypes.UUID, allowNull: false },
       },
       {

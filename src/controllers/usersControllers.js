@@ -1,4 +1,5 @@
 import * as service from '../services/usersServices.js';
+import { generateAuthUrl } from '../utils/googleOAuth.js';
 import { setRefreshTokenCookie, clearRefreshTokenCookie } from '../utils/setRefreshTokenCookie.js';
 
 /**
@@ -84,7 +85,7 @@ export const logoutController = async (req, res, next) => {
  *
  * @async
  * @function currentUserController
- * @param {import('express').Request} req - Express request object.  
+ * @param {import('express').Request} req - Express request object.
  *   Requires `req.user.id` and optionally `req.accessToken`.
  * @param {import('express').Response} res - Express response object.
  * @param {import('express').NextFunction} next - Express next middleware function.
@@ -112,5 +113,22 @@ export const currentUserController = async (req, res, next) => {
       },
       accessToken: req.accessToken,
     },
+  });
+};
+
+/**
+ * Express controller that responds with a Google OAuth2 authentication URL.
+ *
+ * This endpoint generates a URL that the client can use to authenticate with Google.
+ *
+ * @function userGoogleOAuthController
+ * @param {import('express').Request} req - The Express request object.
+ * @param {import('express').Response} res - The Express response object.
+ */
+export const userGoogleOAuthController = (req, res) => {
+  const url = generateAuthUrl();
+  res.json({
+    message: 'Successfully requested OAuth URL',
+    data: { url },
   });
 };
