@@ -5,6 +5,7 @@ import createHttpError from 'http-errors';
 import { generateTokens } from '../utils/tokenServices.js';
 import { getRefreshToken } from './refreshTokenServices.js';
 import { validateCode } from '../utils/googleOAuth.js';
+import saveToCloudinary from '../utils/saveToClaudinary.js';
 
 /**
  * Finds a single user by the given query.
@@ -138,7 +139,7 @@ export const login = async ({ userData, ip, userAgent }) => {
     id: user.id,
     email: user.email,
     ip,
-    userAgent
+    userAgent,
   });
   return {
     user: {
@@ -238,11 +239,47 @@ export const authenticateWithGoogleOAuth = async ({ code, ip, userAgent }) => {
  * @throws {HttpError} 403 - If the refresh token does not belong to the provided user.
  */
 export const logout = async ({ userId, jti }) => {
-  const token = await getRefreshToken({jti});
+  const token = await getRefreshToken({ jti });
   if (!token) throw createHttpError(404, 'Refresh token not found');
   if (token.user_id !== userId) {
     throw createHttpError(403, 'Forbidden');
   }
   token.revoked = true;
   await token.save();
+};
+
+/**
+ * Updates a user's avatar by uploading a new file to Cloudinary.
+ *
+ * @async
+ * @function updateAvatar
+ * @param {Object} params - Parameters for updating the avatar.
+ * @param {number|string} params.id - ID of the user whose avatar will be updated.
+ * @param {Object} params.file - File object to be uploaded (from multer).
+ * @param {Buffer} params.file.buffer - File buffer.
+ * @param {string} params.file.originalname - Original name of the file.
+ * @param {string} [params.folderName] - Optional folder name in Cloudinary to store the avatar.
+ *
+ * @throws {HttpError} 400 - If no file is provided.
+ * @throws {HttpError} 401 - If the user is not found or unauthorized.
+ * @throws {HttpError} 500 - If the avatar upload or update fails.
+ *
+ * @returns {Promise<Object>} Returns an object containing the user's id and new avatar URL.
+ * @returns {number|string} return.id - The user's ID.
+ * @returns {string} return.avatarUrl - The updated avatar URL.
+ */
+export const updateAvatar = async ({ id, file, folderName }) => {
+  if (!file) throw createHttpError(400, 'File is required');
+  const user = await getUserById(id);
+  if (!user) throw createHttpError(401, 'Not authorized');
+  try {
+    const avatarUrl = await saveToCloudinary(file, folderName);
+    await user.update({ avatarUrl }, { returning: true });
+    return {
+      id: user.id,
+      avatarUrl: user.avatarUrl,
+    };
+  } catch (error) {
+    throw createHttpError(500, 'Failed to update avatar');
+  }
 };

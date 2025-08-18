@@ -171,3 +171,31 @@ export const userGoogleOAuthController = (req, res) => {
     data: { url },
   });
 };
+
+/**
+ * Controller to update a user's avatar.
+ *
+ * Handles the HTTP request to upload a new avatar file, sends it to Cloudinary,
+ * updates the user's avatar URL in the database, and returns the updated information.
+ *
+ * @async
+ * @function updateAvatarController
+ * @param {import('express').Request} req - Express request object.
+ * @param {Object} req.user - Authenticated user data injected by auth middleware.
+ * @param {number|string} req.user.id - ID of the authenticated user.
+ * @param {import('express').Express.Multer.File} req.file - Uploaded avatar file (from multer).
+ * @param {import('express').Response} res - Express response object.
+ * @param {import('express').NextFunction} next - Express next middleware function for error handling.
+ *
+ * @returns {Promise<void>} Sends a JSON response with status, message, and updated avatar data.
+ * @throws Will forward any errors from the updateAvatar service to the next middleware.
+ */
+export const updateAvatarController = async (req, res, next) => {
+  const { id } = req.user;
+  const data = await service.updateAvatar({ id, file: req.file, folderName: "pharmacyAvatars" });
+  res.json({
+    status: 200,
+    message: 'Avatar updated successfully',
+    data
+  })
+}

@@ -11,16 +11,18 @@ import {
   loginController,
   logoutController,
   registerController,
+  updateAvatarController,
   userGoogleOAuthController,
 } from '../controllers/usersControllers.js';
-import csrfProtection from '../middlewares/secureConf/csrfHeaderCheck.js';
+import csrfHeaderCheck from '../middlewares/secureConf/csrfHeaderCheck.js';
 import clientCheck from '../middlewares/clientCheck.js.js';
 import auth from '../middlewares/authenticate.js';
 import authWithGoogleOAuthSchema from '../schemas/usersSchema/googleOAuth.js';
+import upload from '../middlewares/upload.js';
 
 const usersRouter = express.Router();
 
-const authMiddleware = [csrfProtection, clientCheck];
+const authMiddleware = [csrfHeaderCheck, clientCheck];
 
 usersRouter.post('/register', [isEmptyBody, ...authMiddleware, validateBody(userRegisterSchema)], ctrlWrapper(registerController));
 usersRouter.post('/login', [isEmptyBody, ...authMiddleware, validateBody(userLoginSchema), loginLimit], ctrlWrapper(loginController));
@@ -28,4 +30,6 @@ usersRouter.post('/logout', [...authMiddleware, auth], ctrlWrapper(logoutControl
 usersRouter.get('/current', [auth], ctrlWrapper(currentUserController));
 usersRouter.get('/request-google-oauth', ctrlWrapper(userGoogleOAuthController));
 usersRouter.post('/confirm-oauth', [isEmptyBody, ...authMiddleware, validateBody(authWithGoogleOAuthSchema)], ctrlWrapper(authenticateWithGoogleOAuthController));
+usersRouter.patch('/update-avatar', [auth, ...authMiddleware, upload.single('avatar')], ctrlWrapper(updateAvatarController));
+
 export default usersRouter;
