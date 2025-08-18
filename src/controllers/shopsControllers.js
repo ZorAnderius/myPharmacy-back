@@ -16,10 +16,28 @@ import * as services from '../services/shopsServices.js';
  */
 export const createShopController = async (req, res, next) => {
   const data = await services.createShop(req.body);
-  res.status(201).
-    json({
-      status: 201,
-      message: 'Shop was created successfully',
-      data,
-    });
+  res.status(201).json({
+    status: 201,
+    message: 'Shop was created successfully',
+    data,
+  });
+};
+
+/**
+ * Controller to retrieve all shops.
+ *
+ * @async
+ * @function getAllShopsController
+ * @param {import('express').Request} req - Express request object.
+ * @param {import('express').Response} res - Express response object.
+ * @param {import('express').NextFunction} next - Express next middleware function.
+ * @returns {Promise<void>} Sends a JSON response with all shops.
+ */
+export const getAllShopsController = async (req, res, next) => {
+  const result = await services.getAllShops();
+  res.json({
+    status: 200,
+    message: 'Shops retrieved successfully',
+    data: result,
+  });
 };

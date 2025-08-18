@@ -29,7 +29,7 @@ export const findShop = async (query, option) => {
  * @param {string} params.apartment - The apartment/suite number for the shop.
  * @param {string} params.zipCode - The postal code of the shop's address.
  * @param {boolean} params.hasDelivery - Whether the shop offers delivery.
- * 
+ *
  * @throws {Error} Throws a 409 error if the shop already exists.
  * @throws {Error} Throws a 500 error if creation fails.
  *
@@ -55,4 +55,19 @@ export const createShop = async ({ name, ownerName, phone, email, street, city, 
       options
     );
   });
+};
+
+/**
+ * Retrieves all shops matching the given query.
+ *
+ * @async
+ * @function getAllShops
+ * @param {Object} [query={}] - Optional Sequelize query object to filter shops.
+ * @param {string} [query.name] - Filter by shop name.
+ * @param {string} [query.phone] - Filter by shop phone number.
+ * @param {string} [query.email] - Filter by shop email.
+ * @returns {Promise<Array<Object>>} - A promise that resolves to an array of shop objects.
+ */
+export const getAllShops = async (query = {}) => {
+  return await Supplier.findAll({ where: query });
 };
