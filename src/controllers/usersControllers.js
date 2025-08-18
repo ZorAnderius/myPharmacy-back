@@ -55,6 +55,45 @@ export const loginController = async (req, res, next) => {
 };
 
 /**
+ * Express controller for handling Google OAuth2 authentication.
+ *
+ * Accepts an authorization code from the client, exchanges it for tokens,
+ * authenticates/creates the user, and responds with the user data plus access token.
+ * A refresh token is stored in a secure HTTP-only cookie.
+ *
+ * @async
+ * @function authenticateWithGoogleOAuthController
+ * @param {import('express').Request} req - The Express request object.
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.code - The authorization code returned from Google OAuth2.
+ * @param {import('express').Response} res - The Express response object.
+ * @param {import('express').NextFunction} next - The Express next middleware function.
+ * @returns {Promise<void>} Sends a JSON response with user data and access token.
+ *
+ * @example
+ * // Client request:
+ * POST /api/auth/google
+ * {
+ *   "code": "4/0AVHE...xyz"
+ * }
+ */
+export const authenticateWithGoogleOAuthController = async (req, res, next) => {
+  const { code } = req.body;
+  const ip = req.ip;
+  const userAgent = req.get('User-Agent');
+  const { user, accessToken, refreshToken } = await service.authenticateWithGoogleOAuth({ code, ip, userAgent });
+  setRefreshTokenCookie(res, refreshToken);
+  res.json({
+    status: 200,
+    message: 'Google OAuth authentication successful',
+    data: {
+      user,
+      accessToken,
+    },
+  });
+};
+
+/**
  * Express controller for handling user logout.
  *
  * Extracts the user ID from the authenticated request, verifies the provided

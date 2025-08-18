@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
+import { randomBytes } from 'crypto';
 import User from '../db/models/User.js';
 import createHttpError from 'http-errors';
 import { generateTokens } from '../utils/tokenServices.js';
-import { Op } from 'sequelize';
-import RefreshToken from '../db/models/RefreshToken.js';
 import { getRefreshToken } from './refreshTokenServices.js';
+import { validateCode } from '../utils/googleOAuth.js';
 
 /**
  * Finds a single user by the given query.
@@ -134,7 +134,83 @@ export const login = async ({ userData, ip, userAgent }) => {
   if (!isPasswordValid) {
     throw createHttpError(401, 'Invalid email or password');
   }
-  const { accessToken, refreshToken } = await generateTokens({ id: user.id, email: user.email, ip, userAgent});
+  const { accessToken, refreshToken } = await generateTokens({
+    id: user.id,
+    email: user.email,
+    ip,
+    userAgent
+  });
+  return {
+    user: {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      avatarUrl: user.avatarUrl,
+    },
+    accessToken,
+    refreshToken,
+  };
+};
+
+/**
+ * Authenticates or registers a user via Google OAuth2.
+ *
+ * - Validates the provided authorization code with Google.
+ * - If the user exists, retrieves them from the database.
+ * - If the user does not exist, creates a new one with Google profile data.
+ * - Generates access and refresh tokens for the session.
+ *
+ * @async
+ * @function authenticateWithGoogleOAuth
+ * @param {Object} params - The parameters object.
+ * @param {string} params.code - The authorization code from Google OAuth2.
+ * @param {string} params.ip - The client's IP address.
+ * @param {string} params.userAgent - The client's User-Agent string.
+ * @returns {Promise<Object>} An object containing the authenticated user and issued tokens.
+ * @returns {Object} return.user - The user object.
+ * @returns {string} return.user.id - The user's ID.
+ * @returns {string} return.user.firstName - The user's first name.
+ * @returns {string} return.user.lastName - The user's last name.
+ * @returns {string} return.user.email - The user's email.
+ * @returns {string|null} return.user.phoneNumber - The user's phone number (if any).
+ * @returns {string|null} return.user.avatarUrl - The user's Google profile picture.
+ * @returns {string} return.accessToken - The generated access token.
+ * @returns {string} return.refreshToken - The generated refresh token.
+ *
+ * @throws {import('http-errors').HttpError} 401 - If validation fails or payload is missing.
+ *
+ * @example
+ * const { user, accessToken, refreshToken } = await authenticateWithGoogleOAuth({
+ *   code: "4/0AVHE...",
+ *   ip: "127.0.0.1",
+ *   userAgent: "Mozilla/5.0"
+ * });
+ */
+export const authenticateWithGoogleOAuth = async ({ code, ip, userAgent }) => {
+  const authTicket = await validateCode(code);
+  const { payload } = authTicket;
+  if (!payload) throw createHttpError(401, 'Not authorized');
+  let user = await getUser({ email: payload.email });
+  if (!user) {
+    const pas = randomBytes(10);
+    const password = await bcrypt.hash(pas, 11);
+    user = await User.create({
+      email: payload.email,
+      password,
+      firstName: payload.given_name,
+      lastName: payload.family_name,
+      avatarUrl: payload.picture,
+    });
+  }
+  const { accessToken, refreshToken } = await generateTokens({
+    id: user.id,
+    email: user.email,
+    ip,
+    userAgent,
+  });
+
   return {
     user: {
       id: user.id,
