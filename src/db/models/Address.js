@@ -21,8 +21,8 @@ class Address extends Model {
           primaryKey: true,
         },
         street: { type: DataTypes.STRING, allowNull: false },
-        city: { type: DataTypes.STRING, allowNull: false },
         apartment: { type: DataTypes.STRING, allowNull: true },
+        zip_code_id: { type: DataTypes.UUID, allowNull: false },
       },
       {
         sequelize,
@@ -42,6 +42,7 @@ class Address extends Model {
   static associate(models) {
     Address.hasMany(models.User, { foreignKey: 'address_id', onDelete: 'SET NULL' });
     Address.hasMany(models.Supplier, { foreignKey: 'address_id', onDelete: 'CASCADE' });
+    Address.belongsTo(models.ZipCode, { foreignKey: 'zip_code_id', as: 'zipCode', onDelete: 'CASCADE' });
   }
 }
 

@@ -6,6 +6,10 @@
  */
 export const emailRegexp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+export const zipCodeRegexp = /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i;
+
+export const phoneRegexp = /^07\d{9}$/; // UK phone numbers
+
 /**
  * List of possible product statuses.
  * Used to define or validate the state of products in the system.

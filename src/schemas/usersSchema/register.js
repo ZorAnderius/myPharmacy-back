@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { emailRegexp } from '../../constants/inputVars.js';
+import { emailRegexp, phoneRegexp } from '../../constants/inputVars.js';
 
 /**
  * Joi schema for user registration.
@@ -44,12 +44,12 @@ const userRegisterSchema = Joi.object({
   }),
   phoneNumber: Joi.string()
     .trim()
-    .pattern(/^[0-9]{10}$/)
+    .pattern(phoneRegexp)
     .required()
     .messages({
       'string.base': `"phoneNumber" should be a type of 'text'`,
       'string.empty': `"phoneNumber" cannot be an empty field`,
-      'string.pattern.base': `"phoneNumber" must be a valid phone number with 10 digits`,
+      'string.pattern.base': `"phoneNumber" must be a valid phone number as 07XXXXXXXXX`,
       'any.required': `"phoneNumber" is a required field`,
     }),
 });
