@@ -6,6 +6,7 @@ import corsOptions from '../middlewares/secureConf/corsConf.js';
 import helmetOptions from '../middlewares/secureConf/helmetConf.js';
 import csrfHeaderCheck from '../middlewares/secureConf/csrfHeaderCheck.js';
 import cookieParser from 'cookie-parser';
+import sanitizeRequest from '../middlewares/secureConf/sanitizeRequest.js';
 
 /**
  * Express application instance with configured middlewares.
@@ -18,6 +19,7 @@ import cookieParser from 'cookie-parser';
  * - express.json(): Parses incoming JSON requests with `Content-Type: application/json`.
  * - express.urlencoded(): Parses URL-encoded payloads with a 10kb limit.
  * - express.static(): Serves static files from the 'public' directory.
+ * - Sanitize Request: Cleans and validates incoming request data.
  */
 const app = express();
 
@@ -33,5 +35,7 @@ app.use(
 );
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 app.use(express.static('public'));
+
+app.use(sanitizeRequest());
 
 export default app;

@@ -1,6 +1,6 @@
 import multer from "multer";
 import createHttpError from "http-errors";
-import { ALLOWED_FILE_EXTENSIONS, ALLOWED_MIME_TYPES } from "../constants/FILE_EXTENSIONS.js";
+import { ALLOWED_FILE_EXTENSIONS, ALLOWED_MIME_TYPES } from "../constants/EXTENSIONS.js";
 
 /**
  * Multer configuration for handling file uploads.

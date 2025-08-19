@@ -1,5 +1,5 @@
 import ENV_VARIABLES from '../constants/ENV_VARIABLES.js';
-import { MAX_AGE_REFRESH_TOKENS, REFRESH_TOKEN_COOKIE } from '../constants/tokensVars.js';
+import { MAX_AGE_REFRESH_TOKENS, REFRESH_TOKEN_COOKIE } from '../constants/lifetimeVars.js';
 import env from './envConfig.js';
 
 /**

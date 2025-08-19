@@ -5,7 +5,7 @@ import env from './envConfig.js';
 import ENV_VARIABLES from '../constants/ENV_VARIABLES.js';
 import createHttpError from 'http-errors';
 import { createAndRevokeOldRefreshTokens, getRefreshTokenAndUser } from '../services/refreshTokenServices.js';
-import { MAX_AGE_ACCESS_TOKENS, MAX_AGE_REFRESH_TOKENS } from '../constants/tokensVars.js';
+import { MAX_AGE_ACCESS_TOKENS, MAX_AGE_REFRESH_TOKENS } from '../constants/lifetimeVars.js';
 
 /**
  * JWT secrets for signing access and refresh tokens.
@@ -50,7 +50,7 @@ export const generateAccessToken = (id, email) => {
  *
  * @returns {Promise<string>} Returns the newly generated refresh token as a signed JWT string.
  */
-export const generateRefreshToken = async ({ id, ip, userAgent}) => {
+export const generateRefreshToken = async ({ id, ip, userAgent }) => {
   const jti = uuidv4();
   const expires = new Date();
   expires.setDate(expires.getDate() + MAX_AGE_REFRESH_TOKENS / (24 * 60 * 60)); // 1 days
@@ -131,7 +131,7 @@ export const verifyAccessToken = token => {
  * @returns {Promise<Object>} The decoded JWT payload if the token is valid.
  * @throws {import('http-errors').HttpError} 401 error if the token is invalid, expired, revoked, or not found.
  */
-export const verifyRefreshToken = async (refreshToken, query={}) => {
+export const verifyRefreshToken = async (refreshToken, query = {}) => {
   try {
     const decoded = jwt.verify(refreshToken, refreshSecret);
     const token = await getRefreshTokenAndUser({ jti: decoded.jti, user_id: decoded.sub, ...query });
@@ -141,7 +141,7 @@ export const verifyRefreshToken = async (refreshToken, query={}) => {
 
     const isMatch = await bcrypt.compare(refreshToken, token.token_hash);
     if (!isMatch) throw createHttpError(401, 'Invalid refresh token');
-    return {payload: decoded, user: token.User, revoked: token.revoked};
+    return { payload: decoded, user: token.User, revoked: token.revoked };
   } catch (error) {
     throw createHttpError(401, 'Invalid refresh token');
   }
