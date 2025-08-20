@@ -3,6 +3,8 @@ import sequelize from '../db/sequelize.js';
 import Supplier from '../db/models/Supplier.js';
 import { createNewAddress } from './addressServices.js';
 import { createZipCode } from './zipCodeServices.js';
+import defaultPagination from '../constants/defaultPagination.js';
+import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
 
 /**
  * Finds a single shop (Supplier) matching the given query.
@@ -68,6 +70,22 @@ export const createShop = async ({ name, ownerName, phone, email, street, city, 
  * @param {string} [query.email] - Filter by shop email.
  * @returns {Promise<Array<Object>>} - A promise that resolves to an array of shop objects.
  */
-export const getAllShops = async (query = {}) => {
-  return await Supplier.findAll({ where: query });
+export const getAllShops = async ({ pagination: { page = defaultPagination.page, limit = defaultPagination.limit }, filter, ...restQuery }) => {
+  const offset = (page = 1) * limit;
+  const query = { ...restQuery, ...filter };
+
+  const { count, rows: shops } = await Supplier.findAndCountAll({
+    where: query,
+    offset,
+    limit,
+  });
+
+  const paginationValues = countPaginationQuery(count, page, limit);
+  if (page > paginationValues.totalPages || page < 1) throw createHttpError(400, 'Page is out of range');
+  return shops?.length > 0
+    ? {
+        shops,
+        ...paginationValues,
+      }
+    : shops;
 };

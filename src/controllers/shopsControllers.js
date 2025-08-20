@@ -1,4 +1,6 @@
 import * as services from '../services/shopsServices.js';
+import parseFilterQuery from '../utils/pagination/parseFilterQuery.js';
+import parsePaginationQuery from '../utils/pagination/parsePaginationQuery.js';
 
 /**
  * Controller to handle creating a new shop.
@@ -34,7 +36,9 @@ export const createShopController = async (req, res, next) => {
  * @returns {Promise<void>} Sends a JSON response with all shops.
  */
 export const getAllShopsController = async (req, res, next) => {
-  const result = await services.getAllShops();
+  const pagination = parsePaginationQuery(req.query);
+  const filter = parseFilterQuery(req.query);
+  const result = await services.getAllShops({ pagination, filter });
   res.json({
     status: 200,
     message: 'Shops retrieved successfully',

@@ -67,6 +67,7 @@ export const orderStatuses = [
  * @constant {string[]}
  */
 export const categoryNames = [
+  'All',
   'Pharmacy',
   'Supplements',
   'Personal Care',
