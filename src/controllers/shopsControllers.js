@@ -34,6 +34,9 @@ export const createShopController = async (req, res, next) => {
  * @param {import('express').Response} res - Express response object.
  * @param {import('express').NextFunction} next - Express next middleware function.
  * @returns {Promise<void>} Sends a JSON response with all shops.
+ * 
+ *  @example
+ * // GET /shops?page=2&limit=10&username=john&category=electronics
  */
 export const getAllShopsController = async (req, res, next) => {
   const pagination = parsePaginationQuery(req.query);
