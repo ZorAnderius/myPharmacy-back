@@ -5,6 +5,9 @@ import { createNewAddress } from './addressServices.js';
 import { createZipCode } from './zipCodeServices.js';
 import defaultPagination from '../constants/defaultPagination.js';
 import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
+import Address from '../db/models/Address.js';
+import ZipCode from '../db/models/ZipCode.js';
+import Category from '../db/models/Category.js';
 
 /**
  * Finds a single shop (Supplier) matching the given query.
@@ -104,4 +107,53 @@ export const getAllShops = async ({ pagination: { page = defaultPagination.page,
         ...paginationValues,
       }
     : shops;
+};
+
+export const getShopById = async ({ id, ...options }) => {
+  const include = [
+    {
+      model: Address,
+      include: [
+        {
+          model: ZipCode,
+          as: 'zipCode',
+        },
+      ],
+    },
+    {
+      model: Product,
+      include: {
+        model: Category,
+        attributes: ['id', 'name'],
+      },
+    },
+  ];
+
+  const shop = await findShop({ id }, options);
+  return {
+    id: shop.id,
+    title: shop.name,
+    owner: shop.ownerName,
+    phone: shop.phone,
+    email: shop.email,
+    address: {
+      street: shop.Address.street,
+      apartment: shop.Address.apartment,
+      zipCode: shop.Address.zipCode.code,
+      city: shop.Address.zipCode.city,
+      region: shop.Address.zipCode.region,
+      country: shop.Address.zipCode.country,
+    },
+    products: shop.Products.map(product => {
+      return {
+        id: product.id,
+        name: product.name,
+        description: product.description,
+        price: product.price,
+        quantity: product.quantity,
+        image_url: product.image_url,
+        category: product.Category ? { id: product.Category.id, name: product.Category.name } : null,
+      };
+    }),
+  };
 };

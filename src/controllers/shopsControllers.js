@@ -34,7 +34,7 @@ export const createShopController = async (req, res, next) => {
  * @param {import('express').Response} res - Express response object.
  * @param {import('express').NextFunction} next - Express next middleware function.
  * @returns {Promise<void>} Sends a JSON response with all shops.
- * 
+ *
  *  @example
  * // GET /shops?page=2&limit=10&username=john&category=electronics
  */
@@ -46,5 +46,15 @@ export const getAllShopsController = async (req, res, next) => {
     status: 200,
     message: 'Shops retrieved successfully',
     data: result,
+  });
+};
+
+export const getShopByIdController = async (req, res, next) => {
+  const { id } = req.params;
+  const data = await services.getShopById({ id });
+  res.json({
+    status: 200,
+    message: "Successfully found shop and it's additional information",
+    data,
   });
 };
