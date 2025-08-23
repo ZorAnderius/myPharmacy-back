@@ -11,9 +11,6 @@ import secureInput from '../middlewares/secureInput.js';
 
 const shopsRouter = express.Router();
 
-//client route for all medical shapeOutside:
-shopsRouter.get('/', [...originGuards, secureInput, apiLimit], ctrlWrapper(getAllMedicalShopsController));
-
 shopsRouter.get('/', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllShopsController));
 
 shopsRouter.use(auth);
@@ -21,4 +18,5 @@ shopsRouter.use(auth);
 shopsRouter.post('/create', [...inputSanitizationGuards, validateBody(createShopSchema), ...sensitiveLimiter], ctrlWrapper(createShopController));
 
 shopsRouter.get('/', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getShopByIdController));
+
 export default shopsRouter;
