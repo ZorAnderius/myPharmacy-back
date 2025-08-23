@@ -49,6 +49,16 @@ export const getAllShopsController = async (req, res, next) => {
   });
 };
 
+export const getAllMedicalShopsController = async (req, res, next) => {
+  const pagination = parsePaginationQuery(req.query);
+  const data = await services.getAllMedicalShopsController(pagination);
+  res.json({
+    status: 200,
+    message: 'All medical shops retrieved successfully',
+    data,
+  });
+};
+
 export const getShopByIdController = async (req, res, next) => {
   const { id } = req.params;
   const data = await services.getShopById({ id });
