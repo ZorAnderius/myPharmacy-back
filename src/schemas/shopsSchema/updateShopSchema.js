@@ -47,8 +47,9 @@ const updateShopSchema = Joi.object({
     'string.empty': 'Zip Code cannot be empty',
     'string.pattern.base': 'Zip Code must be a valid UK postcode',
   }),
-  hasDelivery: Joi.boolean().messages({
+  hasDelivery: Joi.boolean().invalid(null, '').messages({
     'boolean.base': `"hasDelivery" should be a type of 'boolean'`,
+    'any.invalid': `"hasDelivery" cannot be empty'`,
   }),
 });
 

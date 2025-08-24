@@ -5,7 +5,7 @@ import { emailRegexp, phoneRegexp, zipCodeRegexp } from '../../constants/inputVa
  * Joi validation schema for creating a new shop.
  *
  * Validates the following fields:
- * 
+ *
  * @property {string} name - Shop name, required, 3-50 characters.
  * @property {string} ownerName - Owner's name, required, 3-50 characters.
  * @property {string} phone - Phone number, required, must match UK format (07XXXXXXXXX).
@@ -19,20 +19,23 @@ import { emailRegexp, phoneRegexp, zipCodeRegexp } from '../../constants/inputVa
 const createShopSchema = Joi.object({
   name: Joi.string().min(3).max(50).required().messages({
     'string.base': 'Name must be a string',
-    'string.empty': 'Name is required',
+    'string.empty': 'Name cannot be empty',
     'string.min': 'Name must be at least 3 characters long',
     'string.max': 'Name must be at most 50 characters long',
+    'any.required': 'Name is required',
   }),
   ownerName: Joi.string().min(3).max(50).required().messages({
     'string.base': 'Owner Name must be a string',
-    'string.empty': 'Owner Name is required',
+    'string.empty': 'Owner Name cannot be empty',
     'string.min': 'Owner Name must be at least 3 characters long',
     'string.max': 'Owner Name must be at most 50 characters long',
+    'any.required': 'Owner Name is required',
   }),
   phone: Joi.string().pattern(phoneRegexp).required().messages({
     'string.base': 'Phone must be a string',
-    'string.empty': 'Phone is required',
+    'string.empty': 'Phone cannot be empty',
     'string.pattern.base': 'Phone must be a valid UK phone number as 07XXXXXXXXX',
+    'any.required': 'Phone is required',
   }),
   email: Joi.string().trim().pattern(emailRegexp).required().messages({
     'string.base': `"email" should be a type of 'text'`,
@@ -63,14 +66,15 @@ const createShopSchema = Joi.object({
   }),
   zipCode: Joi.string().pattern(zipCodeRegexp).required().messages({
     'string.base': 'Zip Code must be a string',
-    'string.empty': 'Zip Code is required',
+    'string.empty': 'Zip Code cannot be empty',
     'string.pattern.base': 'Zip Code must be a valid UK postcode',
+    'any.required': 'Zip Code is required'
   }),
-  hasDelivery: Joi.boolean().required()
-    .messages({
-      'boolean.base': `"hasDelivery" should be a type of 'boolean'`,
-      'any.required': `"hasDelivery" is a required field`,
-    })
+  hasDelivery: Joi.boolean().invalid(null, '').required().messages({
+    'boolean.base': `"hasDelivery" should be a type of 'boolean'`,
+    'any.invalid': `"hasDelivery" cannot be empty'`,
+    'any.required': `"hasDelivery" is a required field`,
+  }),
 });
 
 export default createShopSchema;
