@@ -8,6 +8,7 @@ import apiLimit from '../middlewares/requestLimit/apiLimit.js';
 import { createShopController, getAllMedicalShopsController, getAllShopsController, getShopByIdController } from '../controllers/shopsControllers.js';
 import { inputSanitizationGuards, originGuards } from '../middlewares/middlewaresSet.js';
 import secureInput from '../middlewares/secureInput.js';
+import { updateShop } from '../services/shopsServices.js';
 
 const shopsRouter = express.Router();
 
@@ -18,5 +19,7 @@ shopsRouter.use(auth);
 shopsRouter.post('/create', [...inputSanitizationGuards, validateBody(createShopSchema), ...sensitiveLimiter], ctrlWrapper(createShopController));
 
 shopsRouter.get('/', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getShopByIdController));
+
+shopsRouter.patch("/:id/update", [...inputSanitizationGuards, ...apiLimit], ctrlWrapper(updateShop));
 
 export default shopsRouter;

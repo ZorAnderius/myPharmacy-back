@@ -1,4 +1,6 @@
 import Address from '../db/models/Address.js';
+import updateObjects from '../utils/updateObjects.js';
+import { updateZipCode } from './zipCodeServices.js';
 
 /**
  * Finds an Address record based on the given query.
@@ -26,4 +28,22 @@ export const findAddress = async (query, options = {}) => {
 export const createNewAddress = async ({ street, apartment, zipCodeId }, options = {}) => {
   const existingAddress = await findAddress({ street, apartment, zip_code_id: zipCodeId }, options);
   return existingAddress ? existingAddress.id : (await Address.create({ street, apartment, zip_code_id: zipCodeId }, options)).id;
+};
+
+export const updateAddress = async ({ id, ...data }, option = {}) => {
+  const currentAddress = await findAddress({ id }, option);
+  const { code, city, addressData } = data;
+  if (code || city) {
+    await updateZipCode(
+      {
+        id: currentAddress.zip_code_id,
+        code,
+        city,
+      },
+      option
+    );
+  }
+  const updateData = updateObjects(addressData);
+  await currentAddress.update(updateData, { returning: true, ...option });
+  return currentAddress;
 };

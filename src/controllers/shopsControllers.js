@@ -1,3 +1,4 @@
+import UpdateShopDTO from '../dto/updateShopDTO.js';
 import * as services from '../services/shopsServices.js';
 import parseFilterQuery from '../utils/pagination/parseFilterQuery.js';
 import parsePaginationQuery from '../utils/pagination/parsePaginationQuery.js';
@@ -65,6 +66,17 @@ export const getShopByIdController = async (req, res, next) => {
   res.json({
     status: 200,
     message: "Successfully found shop and it's additional information",
+    data,
+  });
+};
+
+export const updateShopController = async (req, res, next) => {
+  const { id } = req.params;
+  const dataDTO = new UpdateShopDTO(req.body);
+  const data = await services.updateShop({ query: { id }, data: dataDTO });
+  res.status(200).json({
+    status: 200,
+    message: 'Shop was updated successfully.',
     data,
   });
 };

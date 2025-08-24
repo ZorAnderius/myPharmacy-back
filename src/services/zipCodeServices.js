@@ -1,4 +1,5 @@
 import ZipCode from '../db/models/ZipCode.js';
+import updateObjects from '../utils/updateObjects.js';
 
 /**
  * Finds a ZipCode record that matches the given query.
@@ -27,4 +28,11 @@ export const findZipCode = async (query, options = {}) => {
 export const createZipCode = async ({ code, city, region = '', country = '' }, options = {}) => {
   const existsZipCode = await findZipCode({ code }, options);
   return existsZipCode ? existsZipCode.id : (await ZipCode.create({ code, city, region, country }, options)).id; // <-- також передаємо transaction
+};
+
+export const updateZipCode = async ({ id, ...data }, option = {}) => {
+  const currentZipCode = await findZipCode({ id }, option);
+  const updateDataObj = updateObjects(data);
+  await currentZipCode.update(updateDataObj, { returning: true, ...option });
+  return currentZipCode;
 };

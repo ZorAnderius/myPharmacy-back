@@ -1,13 +1,14 @@
 import createHttpError from 'http-errors';
 import sequelize from '../db/sequelize.js';
 import Supplier from '../db/models/Supplier.js';
-import { createNewAddress } from './addressServices.js';
+import { createNewAddress, updateAddress } from './addressServices.js';
 import { createZipCode } from './zipCodeServices.js';
 import defaultPagination from '../constants/defaultPagination.js';
 import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
 import Address from '../db/models/Address.js';
 import ZipCode from '../db/models/ZipCode.js';
 import Category from '../db/models/Category.js';
+import updateObjects from '../utils/updateObjects.js';
 
 /**
  * Finds a single shop (Supplier) matching the given query.
@@ -158,3 +159,32 @@ export const getShopById = async ({ id, ...options }) => {
   };
 };
 
+export const updateShop = async ({ query, data }) => {
+  return await sequelize.transaction(async t => {
+    const currentShop = await findShop(query, { transaction: t });
+    if (!currentShop) throw createHttpError(404, 'Shop not found');
+
+    const { street, apartment, code, city, ...shopData } = data;
+    if (street || apartment || code || city) {
+      await updateAddress(
+        {
+          id: currentShop.address_id,
+          street,
+          apartment,
+          code,
+          city,
+        },
+        { transaction: t }
+      );
+    }
+    const updateData = updateObjects(shopData);
+    await currentShop.update(updateData, { returning: true, transaction: t });
+    return await findShop(
+      { id: currentShop.id },
+      {
+        transaction: t,
+        include: [{ model: Address, include: [ZipCode] }],
+      }
+    );
+  });
+};
