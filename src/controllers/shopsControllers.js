@@ -1,7 +1,9 @@
+import createHttpError from 'http-errors';
 import UpdateShopDTO from '../dto/updateShopDTO.js';
 import * as services from '../services/shopsServices.js';
 import parseFilterQuery from '../utils/pagination/parseFilterQuery.js';
 import parsePaginationQuery from '../utils/pagination/parsePaginationQuery.js';
+import { createNewProduct, getAllProductsByShopId } from '../services/productsServices.js';
 
 /**
  * Controller to handle creating a new shop.
@@ -62,6 +64,7 @@ export const getAllMedicalShopsController = async (req, res, next) => {
 
 export const getShopByIdController = async (req, res, next) => {
   const { id } = req.params;
+  if (!id) throw createHttpError(400, 'Shop not found');
   const data = await services.getShopById({ id });
   res.json({
     status: 200,
@@ -72,6 +75,7 @@ export const getShopByIdController = async (req, res, next) => {
 
 export const updateShopController = async (req, res, next) => {
   const { id } = req.params;
+  if (!id) throw createHttpError(400, 'Shop not found');
   const dataDTO = new UpdateShopDTO(req.body);
   const data = await services.updateShop({ query: { id }, data: dataDTO });
   res.status(200).json({
@@ -83,12 +87,24 @@ export const updateShopController = async (req, res, next) => {
 
 export const getAllProductsByShopIdController = async (req, res, next) => {
   const { id } = req.params;
+  if (!id) throw createHttpError(400, 'Shop not found');
   const pagination = parsePaginationQuery(req.query);
   const filter = parseFilterQuery(parseFilterQuery.query);
-  const data = await services.getAllProductsByShopId({ supplier_id: id, pagination, filter });
+  const data = await getAllProductsByShopId({ supplier_id: id, pagination, filter });
   res.json({
     status: 200,
     message: 'Products list by shop retrieved successfully.',
+    data,
+  });
+};
+
+export const createNewProductController = async (req, res, next) => {
+  const { id } = req.params;
+  if (!id) throw createHttpError(400, 'Shop not found');
+  const data = await createNewProduct({ supplier_id: id, file: req.file, ...req.body });
+  res.json({
+    status: 201,
+    message: 'Product was created successfully',
     data,
   });
 };

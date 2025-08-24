@@ -9,7 +9,6 @@ import Address from '../db/models/Address.js';
 import ZipCode from '../db/models/ZipCode.js';
 import Category from '../db/models/Category.js';
 import updateObjects from '../utils/updateObjects.js';
-import { getAllProductsByShop } from './productsServices.js';
 
 /**
  * Finds a single shop (Supplier) matching the given query.
