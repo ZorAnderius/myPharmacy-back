@@ -14,6 +14,7 @@ import {
   getShopByIdController,
   updateShopController,
 } from '../controllers/shopsControllers.js';
+import updateShopSchema from '../schemas/shopsSchema/updateShopSchema.js';
 
 const shopsRouter = express.Router();
 
@@ -25,7 +26,7 @@ shopsRouter.post('/create', [...inputSanitizationGuards, validateBody(createShop
 
 shopsRouter.get('/', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getShopByIdController));
 
-shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit], ctrlWrapper(updateShopController));
+shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, validateBody(updateShopSchema)], ctrlWrapper(updateShopController));
 
 shopsRouter.get('/:id/product', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllProductsByShopIdController));
 
