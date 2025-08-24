@@ -80,3 +80,15 @@ export const updateShopController = async (req, res, next) => {
     data,
   });
 };
+
+export const getAllProductsByShopIdController = async (req, res, next) => {
+  const { id } = req.params;
+  const pagination = parsePaginationQuery(req.query);
+  const filter = parseFilterQuery(parseFilterQuery.query);
+  const data = await services.getAllProductsByShopId({ supplier_id: id, pagination, filter });
+  res.json({
+    status: 200,
+    message: 'Products list by shop retrieved successfully.',
+    data,
+  });
+};

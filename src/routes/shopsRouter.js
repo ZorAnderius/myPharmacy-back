@@ -7,7 +7,13 @@ import sensitiveLimiter from '../middlewares/requestLimit/sensitiveLimit.js';
 import apiLimit from '../middlewares/requestLimit/apiLimit.js';
 import secureInput from '../middlewares/secureInput.js';
 import { inputSanitizationGuards, originGuards } from '../middlewares/middlewaresSet.js';
-import { createShopController, getAllShopsController, getShopByIdController, updateShopController } from '../controllers/shopsControllers.js';
+import {
+  createShopController,
+  getAllProductsByShopIdController,
+  getAllShopsController,
+  getShopByIdController,
+  updateShopController,
+} from '../controllers/shopsControllers.js';
 
 const shopsRouter = express.Router();
 
@@ -19,6 +25,8 @@ shopsRouter.post('/create', [...inputSanitizationGuards, validateBody(createShop
 
 shopsRouter.get('/', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getShopByIdController));
 
-shopsRouter.patch("/:id/update", [...inputSanitizationGuards, ...apiLimit], ctrlWrapper(updateShopController));
+shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit], ctrlWrapper(updateShopController));
+
+shopsRouter.get('/:id/product', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllProductsByShopIdController));
 
 export default shopsRouter;
