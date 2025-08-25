@@ -1,10 +1,11 @@
 import createHttpError from 'http-errors';
-import UpdateShopDTO from '../dto/updateShopDTO.js';
 import * as services from '../services/shopsServices.js';
 import parseFilterQuery from '../utils/pagination/parseFilterQuery.js';
 import parsePaginationQuery from '../utils/pagination/parsePaginationQuery.js';
+import UpdateProductDTO from '../dto/product/updateProductDTO.js';
+import ShopDTO from '../dto/shop/ShopDTO.js';
 import { createNewProduct, getAllProductsByShopId, getFullProductInfo, getProductReview, updateProduct } from '../services/productsServices.js';
-import UpdateProductDTO from '../dto/updateProductDTO.js';
+import CreateProductDTO from '../dto/product/createProductDTO.js';
 
 /**
  * Controller to handle creating a new shop.
@@ -21,7 +22,8 @@ import UpdateProductDTO from '../dto/updateProductDTO.js';
  * @returns {Promise<void>} Sends a JSON response with status 201 and the created shop data.
  */
 export const createShopController = async (req, res, next) => {
-  const data = await services.createShop(req.body);
+  const dataDTO = new ShopDTO(req.body);
+  const data = await services.createShop(dataDTO);
   res.status(201).json({
     status: 201,
     message: 'Shop was created successfully',
@@ -77,7 +79,7 @@ export const getShopByIdController = async (req, res, next) => {
 export const updateShopController = async (req, res, next) => {
   const { id } = req.params;
   if (!id) throw createHttpError(404, 'Shop not found');
-  const dataDTO = new UpdateShopDTO(req.body);
+  const dataDTO = new ShopDTO(req.body);
   const data = await services.updateShop({ query: { id }, data: dataDTO });
   res.status(200).json({
     status: 200,
@@ -100,9 +102,10 @@ export const getAllProductsByShopIdController = async (req, res, next) => {
 };
 
 export const createNewProductController = async (req, res, next) => {
-  const { id } = req.params;
-  if (!id) throw createHttpError(404, 'Shop not found');
-  const data = await createNewProduct({ supplier_id: id, file: req.file, ...req.body });
+  const { id: supplier_id } = req.params;
+  if (!supplier_id) throw createHttpError(404, 'Shop not found');
+  const dataDTO = new CreateProductDTO(req.body);
+  const data = await createNewProduct({ id, file: req.file, ...dataDTO });
   res.json({
     status: 201,
     message: 'Product was created successfully',

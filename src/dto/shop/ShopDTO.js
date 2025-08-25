@@ -1,4 +1,4 @@
-class UpdateShopDTO {
+class ShopDTO {
   constructor(body) {
     this.name = body.name;
     this.ownerName = body.ownerName;
@@ -8,9 +8,9 @@ class UpdateShopDTO {
 
     this.street = body.street;
     this.apartment = body.apartment;
-    this.code = body.code;
+    this.code = body.zipCode;
     this.city = body.city;
   }
 }
 
-export default UpdateShopDTO;
+export default ShopDTO;
