@@ -1,14 +1,14 @@
 import createHttpError from 'http-errors';
 import sequelize from '../db/sequelize.js';
 import Supplier from '../db/models/Supplier.js';
-import { createNewAddress, updateAddress } from './addressServices.js';
-import { createZipCode } from './zipCodeServices.js';
-import defaultPagination from '../constants/defaultPagination.js';
-import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
 import Address from '../db/models/Address.js';
 import ZipCode from '../db/models/ZipCode.js';
 import Category from '../db/models/Category.js';
 import updateObjects from '../utils/updateObjects.js';
+import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
+import { defaultPagination } from '../constants/defaultPagination.js';
+import { createNewAddress, updateAddress } from './addressServices.js';
+import { createZipCode } from './zipCodeServices.js';
 
 /**
  * Finds a single shop (Supplier) matching the given query.

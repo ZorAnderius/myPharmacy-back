@@ -1,4 +1,4 @@
-import defaultPagination from '../../constants/defaultPagination.js';
+import { defaultPagination } from '../../constants/defaultPagination.js';
 import parseNumber from '../parseValues/parseNumber.js';
 
 /**

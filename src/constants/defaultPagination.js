@@ -1,6 +1,9 @@
-const defaultPagination = Object.freeze({
+export const defaultPagination = Object.freeze({
   page: 1,
   limit: 10,
 });
 
-export default defaultPagination;
+export const defaultPaginationReview = Object.freeze({
+  page: 1,
+  limit: 5,
+});

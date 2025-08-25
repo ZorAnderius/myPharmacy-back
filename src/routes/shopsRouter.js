@@ -13,6 +13,7 @@ import {
   getAllProductsByShopIdController,
   getAllShopsController,
   getProductByIdController,
+  getProductReviewsController,
   getShopByIdController,
   updateShopController,
 } from '../controllers/shopsControllers.js';
@@ -31,6 +32,8 @@ shopsRouter.post('/create', [...inputSanitizationGuards, validateBody(createShop
 shopsRouter.get('/', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getShopByIdController));
 
 shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, validateBody(updateShopSchema)], ctrlWrapper(updateShopController));
+
+shopsRouter.get('/:id/product/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
 
 shopsRouter.get('/:id/product/:productId', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductByIdController));
 
