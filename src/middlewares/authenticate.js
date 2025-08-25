@@ -63,6 +63,7 @@ const auth = async (req, res, next) => {
         lastName: user.lastName,
         phoneNumber: user.phoneNumber,
         avatarUrl: user.avatarUrl,
+        role: user.role,
       };
     } else {
       return next(createHttpError(401, 'User not found'));

@@ -3,7 +3,7 @@ import UpdateShopDTO from '../dto/updateShopDTO.js';
 import * as services from '../services/shopsServices.js';
 import parseFilterQuery from '../utils/pagination/parseFilterQuery.js';
 import parsePaginationQuery from '../utils/pagination/parsePaginationQuery.js';
-import { createNewProduct, getAllProductsByShopId } from '../services/productsServices.js';
+import { createNewProduct, getAllProductsByShopId, getFullProductInfo } from '../services/productsServices.js';
 
 /**
  * Controller to handle creating a new shop.
@@ -105,6 +105,17 @@ export const createNewProductController = async (req, res, next) => {
   res.json({
     status: 201,
     message: 'Product was created successfully',
+    data,
+  });
+};
+
+export const getProductByIdController = async (req, res, next) => {
+  const { id, productId } = req.params;
+  if (!id || !productId) throw createHttpError(400, 'Bad request');
+  const data = await getFullProductInfo({ id: productId, supplier_id: id });
+  res.json({
+    status: 200,
+    message: 'Product info was retrieved successfully',
     data,
   });
 };

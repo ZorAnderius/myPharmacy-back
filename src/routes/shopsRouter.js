@@ -8,10 +8,11 @@ import apiLimit from '../middlewares/requestLimit/apiLimit.js';
 import secureInput from '../middlewares/secureInput.js';
 import { inputSanitizationGuards, originGuards } from '../middlewares/middlewaresSet.js';
 import {
-    createNewProductController,
+  createNewProductController,
   createShopController,
   getAllProductsByShopIdController,
   getAllShopsController,
+  getProductByIdController,
   getShopByIdController,
   updateShopController,
 } from '../controllers/shopsControllers.js';
@@ -31,7 +32,13 @@ shopsRouter.get('/', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(ge
 
 shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, validateBody(updateShopSchema)], ctrlWrapper(updateShopController));
 
-shopsRouter.post('/:id/product/add', [...inputSanitizationGuards, upload.single('product_image'),...sensitiveLimiter, validateBody(createProductSchema)], ctrlWrapper(createNewProductController))
+shopsRouter.get('/:id/product/:productId', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductByIdController));
+
+shopsRouter.post(
+  '/:id/product/add',
+  [...inputSanitizationGuards, upload.single('product_image'), ...sensitiveLimiter, validateBody(createProductSchema)],
+  ctrlWrapper(createNewProductController)
+);
 
 shopsRouter.get('/:id/product', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllProductsByShopIdController));
 

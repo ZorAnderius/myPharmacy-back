@@ -5,6 +5,10 @@ import Product from '../db/models/Product.js';
 import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
 import sequelize from '../db/sequelize.js';
 import saveToCloudinary from '../utils/saveToClaudinary.js';
+import Supplier from '../db/models/Supplier.js';
+import Address from '../db/models/Address.js';
+import ZipCode from '../db/models/ZipCode.js';
+import Review from '../db/models/Review.js';
 
 export const findProduct = async (query, option = {}) => {
   return await Product.findOne({ where: query, option });
@@ -60,4 +64,30 @@ export const createNewProduct = async ({ supplier_id, name, description, price, 
       { transaction: t }
     );
   });
+};
+
+export const getFullProductInfo = async query => {
+  const products = await Product.findOne({
+    where: query,
+    include: [
+      { model: Category, as: 'category', attributes: ['id', 'name'] },
+      {
+        model: Supplier,
+        as: 'shop',
+        attributes: ['name', 'phone', 'email'],
+        include: [
+          {
+            model: Address,
+            as: 'address',
+            attributes: ['street', 'apartment'],
+            include: [{ model: ZipCode, as: 'zipCode', attributes: ['city', 'code'] }],
+          },
+        ],
+      },
+    ],
+  });
+  if (!products) {
+    throw createHttpError(404, 'Product not found');
+  }
+  return products;
 };
