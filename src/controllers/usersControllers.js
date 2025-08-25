@@ -1,3 +1,6 @@
+import GoogleOAuthDTO from '../dto/user/GoogleOAuthDTO.js';
+import LoginUserDTO from '../dto/user/LoginUserDTO.js';
+import RegisterUserDRO from '../dto/user/registerUserDTO.js';
 import * as service from '../services/usersServices.js';
 import { generateAuthUrl } from '../utils/googleOAuth.js';
 import { setRefreshTokenCookie, clearRefreshTokenCookie } from '../utils/setRefreshTokenCookie.js';
@@ -13,7 +16,7 @@ import { setRefreshTokenCookie, clearRefreshTokenCookie } from '../utils/setRefr
  * @returns {Promise<void>} - Sends JSON response with status 201 and user data and tokens.
  */
 export const registerController = async (req, res, next) => {
-  const userData = req.body;
+  const userData = new RegisterUserDRO(req.body);
   const ip = req.ip;
   const userAgent = req.get('User-Agent');
   const { user, accessToken, refreshToken } = await service.register({ userData, ip, userAgent });
@@ -39,7 +42,7 @@ export const registerController = async (req, res, next) => {
  * @returns {Promise<void>} - Sends JSON response with status 200 and user data if login is successful.
  */
 export const loginController = async (req, res, next) => {
-  const userData = req.body;
+  const userData = new LoginUserDTO(req.body);
   const ip = req.ip;
   const userAgent = req.get('User-Agent');
   const { user, accessToken, refreshToken } = await service.login({ userData, ip, userAgent });
@@ -78,7 +81,7 @@ export const loginController = async (req, res, next) => {
  * }
  */
 export const authenticateWithGoogleOAuthController = async (req, res, next) => {
-  const { code } = req.body;
+  const { code } = new GoogleOAuthDTO(req.body);
   const ip = req.ip;
   const userAgent = req.get('User-Agent');
   const { user, accessToken, refreshToken } = await service.authenticateWithGoogleOAuth({ code, ip, userAgent });
@@ -192,10 +195,10 @@ export const userGoogleOAuthController = (req, res) => {
  */
 export const updateAvatarController = async (req, res, next) => {
   const { id } = req.user;
-  const data = await service.updateAvatar({ id, file: req.file, folderName: "pharmacyAvatars" });
+  const data = await service.updateAvatar({ id, file: req.file, folderName: 'pharmacyAvatars' });
   res.json({
     status: 200,
     message: 'Avatar updated successfully',
-    data
-  })
-}
+    data,
+  });
+};
