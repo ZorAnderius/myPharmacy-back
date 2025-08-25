@@ -10,6 +10,8 @@ import ZipCode from '../db/models/ZipCode.js';
 import Review from '../db/models/Review.js';
 import { defaultPagination, defaultPaginationReview } from '../constants/defaultPagination.js';
 import User from '../db/models/User.js';
+import updateObjects from '../utils/updateObjects.js';
+import { PRODUCT_IMAGE_FOLDER } from '../constants/cloudinary.js';
 
 export const findProduct = async (query, option = {}) => {
   return await Product.findOne({ where: query, option });
@@ -118,4 +120,21 @@ export const getProductReview = async ({ pagination: { page = defaultPaginationR
         product,
         reviews: { data: reviews },
       };
+};
+
+export const updateProduct = async ({ query, data, file = '', folderName = PRODUCT_IMAGE_FOLDER }) => {
+  return sequelize.transaction(async t => {
+    const product = await findProduct(query, { transaction: t });
+    if (!product) throw createHttpError(404, 'Product not found');
+    const updatedData = updateObjects(data);
+    let image_url = '';
+    try {
+      if (file) image_url = await saveToCloudinary(file, folderName);
+    } catch (error) {
+      throw createHttpError(500, 'Failed to save product image');
+    }
+    if (image_url) updatedData.image_url = image_url;
+    const updatedProduct = await product.update({ ...updatedData }, { returning: true, transaction: t });
+    return updatedProduct;
+  });
 };

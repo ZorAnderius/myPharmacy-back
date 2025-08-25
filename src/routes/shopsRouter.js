@@ -15,11 +15,13 @@ import {
   getProductByIdController,
   getProductReviewsController,
   getShopByIdController,
+  updateProductController,
   updateShopController,
 } from '../controllers/shopsControllers.js';
 import updateShopSchema from '../schemas/shopsSchema/updateShopSchema.js';
 import createProductSchema from '../schemas/productSchema/createProductSchema.js';
 import upload from '../middlewares/upload.js';
+import updateProductSchema from '../schemas/productSchema/updateProductSchema.js';
 
 const shopsRouter = express.Router();
 
@@ -36,6 +38,12 @@ shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, valid
 shopsRouter.get('/:id/product/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
 
 shopsRouter.get('/:id/product/:productId', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductByIdController));
+
+shopsRouter.patch(
+  ':id/product/:productId/edit',
+  [...inputSanitizationGuards, upload.single('product_image'), validateBody(updateProductSchema), sensitiveLimiter],
+  ctrlWrapper(updateProductController)
+);
 
 shopsRouter.post(
   '/:id/product/add',
