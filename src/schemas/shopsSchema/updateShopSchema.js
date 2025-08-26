@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { emailRegexp, phoneRegexp } from '../../constants/inputVars.js';
+import { emailRegexp, phoneRegexp, zipCodeRegexp } from '../../constants/inputVars.js';
 
 const updateShopSchema = Joi.object({
   name: Joi.string().min(3).max(50).messages({

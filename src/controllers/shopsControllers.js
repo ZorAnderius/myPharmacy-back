@@ -46,8 +46,7 @@ export const createShopController = async (req, res, next) => {
  */
 export const getAllShopsController = async (req, res, next) => {
   const pagination = parsePaginationQuery(req.query);
-  const filter = parseFilterQuery(req.query);
-  const result = await services.getAllShops({ pagination, filter });
+  const result = await services.getAllShops({ pagination });
   res.json({
     status: 200,
     message: 'Shops retrieved successfully',

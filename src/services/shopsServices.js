@@ -41,11 +41,11 @@ export const findShop = async (query, option) => {
  *
  * @returns {Promise<Object>} The newly created shop record.
  */
-export const createShop = async ({ name, ownerName, phone, email, street, city, apartment, zipCode, hasDelivery }) => {
+export const createShop = async ({ name, ownerName, phone, email, street, city, apartment, code, hasDelivery }) => {
   return await sequelize.transaction(async t => {
     const options = { transaction: t };
 
-    const zipCodeId = await createZipCode({ code: zipCode, city }, options);
+    const zipCodeId = await createZipCode({ code, city }, options);
     const addressId = await createNewAddress({ street, apartment, zipCodeId }, options);
     const existsShop = await findShop({ name, phone, email }, options);
     if (existsShop) throw createHttpError(409, 'Shop already exists');
@@ -90,10 +90,8 @@ export const createShop = async ({ name, ownerName, phone, email, street, city, 
  *
  * @throws {HttpError} Will throw a `400 Bad Request` error if the requested page is out of range.
  */
-export const getAllShops = async ({ pagination: { page = defaultPagination.page, limit = defaultPagination.limit }, filter, ...restQuery }) => {
-  const offset = (page = 1) * limit;
-  const query = { ...restQuery, ...filter };
-
+export const getAllShops = async ({ pagination: { page = defaultPagination.page, limit = defaultPagination.limit }, query={} }) => {
+  const offset = (page - 1) * limit;
   const { count, rows: shops } = await Supplier.findAndCountAll({
     where: query,
     offset,
