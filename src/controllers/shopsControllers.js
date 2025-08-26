@@ -91,7 +91,7 @@ export const getAllProductsByShopIdController = async (req, res, next) => {
   const { id } = req.params;
   if (!id) throw createHttpError(404, 'Shop not found');
   const pagination = parsePaginationQuery(req.query);
-  const filter = parseFilterQuery(parseFilterQuery.query);
+  const filter = parseFilterQuery(req.query);
   const data = await getAllProductsByShopId({ supplier_id: id, pagination, filter });
   res.json({
     status: 200,

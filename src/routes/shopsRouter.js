@@ -51,6 +51,6 @@ shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, valid
 //   ctrlWrapper(createNewProductController)
 // );
 
-// shopsRouter.get('/:id/product', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllProductsByShopIdController));
+shopsRouter.get('/:id/products', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllProductsByShopIdController));
 
 export default shopsRouter;
