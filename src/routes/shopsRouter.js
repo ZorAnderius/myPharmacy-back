@@ -45,11 +45,12 @@ shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, valid
 //   ctrlWrapper(updateProductController)
 // );
 
-// shopsRouter.post(
-//   '/:id/product/add',
-//   [...inputSanitizationGuards, upload.single('product_image'), ...sensitiveLimiter, validateBody(createProductSchema)],
-//   ctrlWrapper(createNewProductController)
-// );
+
+shopsRouter.post(
+  '/:id/products/add',
+  [ upload.single('product_image'), ...inputSanitizationGuards, validateBody(createProductSchema), ...apiLimit,],
+  ctrlWrapper(createNewProductController)
+);
 
 shopsRouter.get('/:id/products', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllProductsByShopIdController));
 

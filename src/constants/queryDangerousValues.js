@@ -64,7 +64,7 @@ export const DANGEROUS_QUERY_VALUES = new Set([
  * @constant
  * @type {RegExp}
  */
-export const DANGEROUS_SYMBOLS = /[.[\]()]/;
+export const DANGEROUS_SYMBOLS = /[[\]()]/;
 
 /**
  * Regular expression that matches double underscores (`__`) in keys,

@@ -1,12 +1,12 @@
-class UpdateProductDTO {
+class ProductDTO {
   constructor(body) {
     this.name = body.name;
     this.description = body.description;
     this.price = body.price;
     this.quantity = body.quantity;
-    this.catalog_id = body.catalog_id;
+    this.category_id = body.category_id;
     this.status_id = body.status_id;
   }
 }
 
-export default UpdateProductDTO;
+export default ProductDTO;

@@ -24,24 +24,24 @@ import { isSafeKey } from './secureConf/sanitizeObjects.js';
 const secureInput = (req, res, next) => {
   try {
     if (req.file) {
-      if (!isSafeKey(req.file.originalname) || !isSafeKey(req.file.filename)) {
+      if (!isSafeKey(req.file.originalname)) {
         return next(createHttpError(400, 'Invalid file metadata'));
       }
     }
 
     if (Array.isArray(req.files)) {
       for (const file of req.files) {
-        if (!isSafeKey(file.originalname) || !isSafeKey(file.filename)) {
+        if (!isSafeKey(file.originalname)) {
           return next(createHttpError(400, 'Invalid file metadata'));
         }
       }
     }
 
     if (req.files && typeof req.files === 'object' && !Array.isArray(req.files)) {
-      for (const field of req.files) {
+      for (const field in req.files) {
         if (!Object.prototype.hasOwnProperty.call(req.files, field)) continue;
         for (const file of req.files[field]) {
-          if (!isSafeKey(file.originalname) || !isSafeKey(file.filename)) {
+          if (!isSafeKey(file.originalname)) {
             return next(createHttpError(400, 'Invalid file metadata'));
           }
         }

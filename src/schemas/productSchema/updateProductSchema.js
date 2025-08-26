@@ -23,9 +23,9 @@ const updateProductSchema = Joi.object({
     'number.integer': `"quantity" must be an integer`,
     'number.min': `"quantity" cannot be negative`,
   }),
-  catalog_id: Joi.string().guid({ version: 'uuidv4' }).messages({
-    'string.base': `"catalog_id" should be a type of 'UUID'`,
-    'string.guid': `"catalog_id" must be a valid UUID v4`,
+  category_id: Joi.string().guid({ version: 'uuidv4' }).messages({
+    'string.base': `"category_id" should be a type of 'UUID'`,
+    'string.guid': `"category_id" must be a valid UUID v4`,
   }),
   status_id: Joi.string().guid({ version: 'uuidv4' }).messages({
     'string.base': `"status_id" should be a type of 'UUID'`,

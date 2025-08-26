@@ -2,10 +2,9 @@ import createHttpError from 'http-errors';
 import * as services from '../services/shopsServices.js';
 import parseFilterQuery from '../utils/pagination/parseFilterQuery.js';
 import parsePaginationQuery from '../utils/pagination/parsePaginationQuery.js';
-import UpdateProductDTO from '../dto/product/updateProductDTO.js';
 import ShopDTO from '../dto/shop/ShopDTO.js';
+import ProductDTO from '../dto/product/ProductDTO.js';
 import { createNewProduct, getAllProductsByShopId, getFullProductInfo, getProductReview, updateProduct } from '../services/productsServices.js';
-import CreateProductDTO from '../dto/product/createProductDTO.js';
 
 /**
  * Controller to handle creating a new shop.
@@ -103,8 +102,8 @@ export const getAllProductsByShopIdController = async (req, res, next) => {
 export const createNewProductController = async (req, res, next) => {
   const { id: supplier_id } = req.params;
   if (!supplier_id) throw createHttpError(404, 'Shop not found');
-  const dataDTO = new CreateProductDTO(req.body);
-  const data = await createNewProduct({ id, file: req.file, ...dataDTO });
+  const dataDTO = new ProductDTO(req.body);
+  const data = await createNewProduct({ ...dataDTO, supplier_id, file: req.file });
   res.json({
     status: 201,
     message: 'Product was created successfully',
@@ -138,7 +137,7 @@ export const getProductReviewsController = async (req, res, next) => {
 export const updateProductController = async (req, res, next) => {
   const { id: supplier_id, product_id: id } = req.params;
   if (!id || !supplier_id) throw createHttpError(404, 'Product not found');
-  const dataDTO = new UpdateProductDTO(req.body);
+  const dataDTO = new ProductDTO(req.body);
   const data = updateProduct({ query: { id, supplier_id }, data: dataDTO, file: req.file });
   res.json({
     status: 200,

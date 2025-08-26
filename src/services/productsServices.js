@@ -14,6 +14,7 @@ import updateObjects from '../utils/updateObjects.js';
 import { PRODUCT_IMAGE_FOLDER } from '../constants/cloudinary.js';
 
 export const findProduct = async (query, option = {}) => {
+  console.log(query);
   return await Product.findOne({ where: query, option });
 };
 
@@ -37,10 +38,10 @@ export const getAllProductsByShopId = async ({ pagination: { page = defaultPagin
     : products;
 };
 
-export const createNewProduct = async ({ supplier_id, name, description, price, quantity, catalog_id, status_id, file, folderName = 'products' }) => {
+export const createNewProduct = async ({ supplier_id, name, description, price, quantity, category_id, status_id, file, folderName = 'products' }) => {
   return await sequelize.transaction(async t => {
     const existProduct = await findProduct(
-      { name, supplier_id, catalog_id },
+      { name, supplier_id, category_id },
       {
         transaction: t,
         lock: t.LOCK.UPDATE,
@@ -61,7 +62,7 @@ export const createNewProduct = async ({ supplier_id, name, description, price, 
         quantity,
         image_url,
         supplier_id,
-        catalog_id,
+        category_id,
         status_id,
       },
       { transaction: t }
