@@ -41,7 +41,7 @@ class Address extends Model {
    */
   static associate(models) {
     Address.hasMany(models.User, { foreignKey: 'address_id', onDelete: 'SET NULL' });
-    Address.hasMany(models.Supplier, { foreignKey: 'address_id', onDelete: 'CASCADE' });
+    Address.hasMany(models.Supplier, { foreignKey: 'address_id', as: 'shops', onDelete: 'CASCADE' });
     Address.belongsTo(models.ZipCode, { foreignKey: 'zip_code_id', as: 'zipCode', onDelete: 'CASCADE' });
   }
 }

@@ -19,7 +19,7 @@ const updateShopSchema = Joi.object({
     'string.pattern.base': 'Phone must be a valid UK phone number as 07XXXXXXXXX',
     'string.empty': 'Phone cannot be empty',
   }),
-  email: Joi.string().trim().pattern(emailRegexp).required().messages({
+  email: Joi.string().trim().pattern(emailRegexp).messages({
     'string.base': `"email" should be a type of 'text'`,
     'string.empty': `"email" cannot be an empty field`,
     'string.pattern.base': `"email" must be a valid email address as example@example.com`,

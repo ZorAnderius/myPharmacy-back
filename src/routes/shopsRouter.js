@@ -33,7 +33,7 @@ shopsRouter.post('/create', [...inputSanitizationGuards, validateBody(createShop
 
 shopsRouter.get('/:id', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getShopByIdController));
 
-// shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, validateBody(updateShopSchema)], ctrlWrapper(updateShopController));
+shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, validateBody(updateShopSchema)], ctrlWrapper(updateShopController));
 
 // shopsRouter.get('/:id/product/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
 

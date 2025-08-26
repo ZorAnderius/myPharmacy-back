@@ -39,7 +39,7 @@ class Supplier extends Model {
    * @param {Object} models - All Sequelize models.
    */
   static associate(models) {
-    Supplier.belongsTo(models.Address, { foreignKey: 'address_id' });
+    Supplier.belongsTo(models.Address, {as: 'address', foreignKey: 'address_id' });
     Supplier.hasMany(models.Product, { foreignKey: 'supplier_id', onDelete: 'CASCADE' });
   }
 }

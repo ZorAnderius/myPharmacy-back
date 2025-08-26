@@ -91,7 +91,7 @@ export const createShop = async ({ name, ownerName, phone, email, street, city, 
  *
  * @throws {HttpError} Will throw a `400 Bad Request` error if the requested page is out of range.
  */
-export const getAllShops = async ({ pagination: { page = defaultPagination.page, limit = defaultPagination.limit }, query={} }) => {
+export const getAllShops = async ({ pagination: { page = defaultPagination.page, limit = defaultPagination.limit }, query = {} }) => {
   const offset = (page - 1) * limit;
   const { count, rows: shops } = await Supplier.findAndCountAll({
     where: query,
@@ -113,6 +113,7 @@ export const getShopById = async ({ id, ...options }) => {
   const include = [
     {
       model: Address,
+      as: 'address',
       include: [
         {
           model: ZipCode,
@@ -129,7 +130,7 @@ export const getShopById = async ({ id, ...options }) => {
     },
   ];
 
-  const shop = await findShop({ id }, {...options, include});
+  const shop = await findShop({ id }, { ...options, include });
   return {
     id: shop.id,
     title: shop.name,
@@ -137,12 +138,12 @@ export const getShopById = async ({ id, ...options }) => {
     phone: shop.phone,
     email: shop.email,
     address: {
-      street: shop.Address.street,
-      apartment: shop.Address.apartment,
-      zipCode: shop.Address.zipCode.code,
-      city: shop.Address.zipCode.city,
-      region: shop.Address.zipCode.region,
-      country: shop.Address.zipCode.country,
+      street: shop.address.street,
+      apartment: shop.address.apartment,
+      zipCode: shop.address.zipCode.code,
+      city: shop.address.zipCode.city,
+      region: shop.address.zipCode.region,
+      country: shop.address.zipCode.country,
     },
     products: shop.Products.map(product => {
       return {
@@ -182,7 +183,7 @@ export const updateShop = async ({ query, data }) => {
       { id: currentShop.id },
       {
         transaction: t,
-        include: [{ model: Address, include: [ZipCode] }],
+        include: [{ model: Address, as: 'address', include: [{ model: ZipCode, as: 'zipCode' }] }],
       }
     );
   });
