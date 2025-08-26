@@ -208,12 +208,31 @@ export const updateShop = async ({ query, data }) => {
     }
     const updateData = updateObjects(shopData);
     await currentShop.update(updateData, { returning: true, transaction: t });
-    return await findShop(
+    const rowShop = await findShop(
       { id: currentShop.id },
       {
         transaction: t,
-        include: [{ model: Address, as: 'address', include: [{ model: ZipCode, as: 'zipCode' }] }],
+        attributes: { exclude: 'address_id' },
+        include: [
+          {
+            model: Address,
+            as: 'address',
+            include: [{ model: ZipCode, as: 'zipCode' }],
+          },
+        ],
       }
     );
+    const shop = rowShop.get({ plain: true });
+    return {
+      ...shop,
+      address: shop.address
+        ? {
+            street: shop.address.street,
+            apartment: shop.address.apartment,
+            zipCode: shop.address.zipCode?.code,
+            city: shop.address.zipCode?.city,
+          }
+        : null,
+    };
   });
 };
