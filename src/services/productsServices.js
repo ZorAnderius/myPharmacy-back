@@ -1,17 +1,19 @@
 import createHttpError from 'http-errors';
-import Category from '../db/models/Category.js';
-import Product from '../db/models/Product.js';
 import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
 import sequelize from '../db/sequelize.js';
 import saveToCloudinary from '../utils/saveToClaudinary.js';
+import Category from '../db/models/Category.js';
+import Product from '../db/models/Product.js';
 import Supplier from '../db/models/Supplier.js';
 import Address from '../db/models/Address.js';
 import ZipCode from '../db/models/ZipCode.js';
 import Review from '../db/models/Review.js';
-import { defaultPagination, defaultPaginationReview } from '../constants/defaultPagination.js';
 import User from '../db/models/User.js';
 import updateObjects from '../utils/updateObjects.js';
+import { defaultPagination, defaultPaginationReview } from '../constants/defaultPagination.js';
 import { PRODUCT_IMAGE_FOLDER } from '../constants/cloudinary.js';
+import buildAddresRes from '../utils/builderFunc/buildAddresRes.js';
+import ProductStatus from '../db/models/ProductStatus.js';
 
 export const findProduct = async (query, option = {}) => {
   console.log(query);
@@ -23,7 +25,7 @@ export const getAllProductsByShopId = async ({ pagination: { page = defaultPagin
   const query = { ...restQuery, ...filter };
   const { count, rows: products } = await Product.findAndCountAll({
     where: query,
-    include: [{ model: Category, attributes: ['id', 'name'] }],
+    include: [{ model: Category, as: 'category', attributes: ['id', 'name'] }],
     offset,
     limit,
   });
@@ -73,8 +75,10 @@ export const createNewProduct = async ({ supplier_id, name, description, price, 
 export const getFullProductInfo = async query => {
   const product = await Product.findOne({
     where: query,
+    attributes: { exclude: ['category_id', 'status_id', 'suppliers_id'] },
     include: [
       { model: Category, as: 'category', attributes: ['id', 'name'] },
+      { model: ProductStatus, as: 'status' },
       {
         model: Supplier,
         as: 'shop',
@@ -93,7 +97,14 @@ export const getFullProductInfo = async query => {
   if (!product) {
     throw createHttpError(404, 'Product not found');
   }
-  return product;
+  const plainProduct = product.get({ plain: true });
+  return {
+    ...plainProduct,
+    shop: {
+      ...plainProduct.shop,
+      address: buildAddresRes(plainProduct.shop.address),
+    },
+  };
 };
 
 export const getProductReview = async ({ pagination: { page = defaultPaginationReview.page, limit = defaultPaginationReview.limit } }, ...query) => {

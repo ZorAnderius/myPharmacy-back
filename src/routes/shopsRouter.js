@@ -35,12 +35,12 @@ shopsRouter.get('/:id', [...originGuards, secureInput, ...apiLimit], ctrlWrapper
 
 shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, validateBody(updateShopSchema)], ctrlWrapper(updateShopController));
 
-// shopsRouter.get('/:id/product/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
+// shopsRouter.get('/:id/products/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
 
-// shopsRouter.get('/:id/product/:productId', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductByIdController));
+shopsRouter.get('/:id/products/:productId', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductByIdController));
 
 // shopsRouter.patch(
-//   ':id/product/:productId/edit',
+//   ':id/products/:productId/edit',
 //   [...inputSanitizationGuards, upload.single('product_image'), validateBody(updateProductSchema), sensitiveLimiter],
 //   ctrlWrapper(updateProductController)
 // );

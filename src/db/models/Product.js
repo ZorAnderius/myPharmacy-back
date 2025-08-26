@@ -40,9 +40,9 @@ class Product extends Model {
    * @param {Object} models - All Sequelize models.
    */
   static associate(models) {
-    Product.belongsTo(models.Supplier, { foreignKey: 'supplier_id' });
-    Product.belongsTo(models.Category, { foreignKey: 'category_id' });
-    Product.belongsTo(models.ProductStatus, { foreignKey: 'status_id' });
+    Product.belongsTo(models.Supplier, { foreignKey: 'supplier_id', as: 'shop' });
+    Product.belongsTo(models.Category, { foreignKey: 'category_id', as: 'category' });
+    Product.belongsTo(models.ProductStatus, { foreignKey: 'status_id', as: 'status' });
     Product.hasMany(models.Discount, { foreignKey: 'product_id' });
     Product.hasMany(models.CartItem, { foreignKey: 'product_id' });
     Product.hasMany(models.OrderItem, { foreignKey: 'product_id' });
