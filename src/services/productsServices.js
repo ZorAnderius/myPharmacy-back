@@ -16,7 +16,6 @@ import buildAddresRes from '../utils/builderFunc/buildAddresRes.js';
 import ProductStatus from '../db/models/ProductStatus.js';
 
 export const findProduct = async (query, option = {}) => {
-  console.log(query);
   return await Product.findOne({ where: query, option });
 };
 

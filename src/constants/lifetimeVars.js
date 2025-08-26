@@ -16,4 +16,4 @@ export const SENSITIVE_ATTEMPTS_LIMIT = 30; // Maximum sensitive request attempt
 export const SENSITIVE_ATTEMPTS_WINDOW = 60 * 1000; // 1 minute window for sensitive request attempts
 
 
-export const MAX_STRING_LENGTH = 500; // Maximum string length
+export const MAX_STRING_LENGTH = 1000; // Maximum string length

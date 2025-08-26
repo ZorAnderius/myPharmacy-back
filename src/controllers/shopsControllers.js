@@ -5,6 +5,9 @@ import parsePaginationQuery from '../utils/pagination/parsePaginationQuery.js';
 import ShopDTO from '../dto/shop/ShopDTO.js';
 import ProductDTO from '../dto/product/ProductDTO.js';
 import { createNewProduct, getAllProductsByShopId, getFullProductInfo, getProductReview, updateProduct } from '../services/productsServices.js';
+import { productStatuses } from '../constants/inputVars.js';
+import { createReviews } from '../services/reviewsServices.js';
+import ReviewDTO from '../dto/review/reviewDTO.js';
 
 /**
  * Controller to handle creating a new shop.
@@ -118,6 +121,19 @@ export const getProductByIdController = async (req, res, next) => {
   res.json({
     status: 200,
     message: 'Product info was retrieved successfully',
+    data,
+  });
+};
+
+export const createProductReviewController = async (req, res, next) => {
+  const { id: supplier_id, productId: product_id } = req.params;
+  if (!supplier_id || !product_id) throw createHttpError(404, 'Product not found');
+  const user = req.user;
+  const dataDTO = new ReviewDTO(req.body);
+  const data = await createReviews({ data: dataDTO, user, supplier_id, product_id });
+  res.status(201).json({
+    status: 201,
+    message: 'Review was created successfully.',
     data,
   });
 };
