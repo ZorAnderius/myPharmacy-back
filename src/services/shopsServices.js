@@ -9,6 +9,7 @@ import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
 import { defaultPagination } from '../constants/defaultPagination.js';
 import { createNewAddress, updateAddress } from './addressServices.js';
 import { createZipCode } from './zipCodeServices.js';
+import Product from '../db/models/Product.js';
 
 /**
  * Finds a single shop (Supplier) matching the given query.
@@ -128,7 +129,7 @@ export const getShopById = async ({ id, ...options }) => {
     },
   ];
 
-  const shop = await findShop({ id }, options);
+  const shop = await findShop({ id }, {...options, include});
   return {
     id: shop.id,
     title: shop.name,

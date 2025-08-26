@@ -31,26 +31,26 @@ shopsRouter.use(auth);
 
 shopsRouter.post('/create', [...inputSanitizationGuards, validateBody(createShopSchema), ...sensitiveLimiter], ctrlWrapper(createShopController));
 
-shopsRouter.get('/', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getShopByIdController));
+shopsRouter.get('/:id', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getShopByIdController));
 
-shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, validateBody(updateShopSchema)], ctrlWrapper(updateShopController));
+// shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, validateBody(updateShopSchema)], ctrlWrapper(updateShopController));
 
-shopsRouter.get('/:id/product/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
+// shopsRouter.get('/:id/product/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
 
-shopsRouter.get('/:id/product/:productId', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductByIdController));
+// shopsRouter.get('/:id/product/:productId', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductByIdController));
 
-shopsRouter.patch(
-  ':id/product/:productId/edit',
-  [...inputSanitizationGuards, upload.single('product_image'), validateBody(updateProductSchema), sensitiveLimiter],
-  ctrlWrapper(updateProductController)
-);
+// shopsRouter.patch(
+//   ':id/product/:productId/edit',
+//   [...inputSanitizationGuards, upload.single('product_image'), validateBody(updateProductSchema), sensitiveLimiter],
+//   ctrlWrapper(updateProductController)
+// );
 
-shopsRouter.post(
-  '/:id/product/add',
-  [...inputSanitizationGuards, upload.single('product_image'), ...sensitiveLimiter, validateBody(createProductSchema)],
-  ctrlWrapper(createNewProductController)
-);
+// shopsRouter.post(
+//   '/:id/product/add',
+//   [...inputSanitizationGuards, upload.single('product_image'), ...sensitiveLimiter, validateBody(createProductSchema)],
+//   ctrlWrapper(createNewProductController)
+// );
 
-shopsRouter.get('/:id/product', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllProductsByShopIdController));
+// shopsRouter.get('/:id/product', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllProductsByShopIdController));
 
 export default shopsRouter;
