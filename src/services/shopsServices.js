@@ -93,14 +93,45 @@ export const createShop = async ({ name, ownerName, phone, email, street, city, 
  */
 export const getAllShops = async ({ pagination: { page = defaultPagination.page, limit = defaultPagination.limit }, query = {} }) => {
   const offset = (page - 1) * limit;
-  const { count, rows: shops } = await Supplier.findAndCountAll({
+  const { count, rows } = await Supplier.findAndCountAll({
     where: query,
+    attributes: { exclude: ['address_id'] },
+    include: [
+      {
+        model: Address,
+        as: 'address',
+        attributes: ['street', 'apartment'],
+        include: [
+          {
+            model: ZipCode,
+            as: 'zipCode',
+            attributes: ['city', 'code'],
+          },
+        ],
+      },
+    ],
     offset,
     limit,
   });
 
   const paginationValues = countPaginationQuery(count, page, limit);
   if (page > paginationValues.totalPages || page < 1) throw createHttpError(400, 'Page is out of range');
+
+  const shops = rows.map(shop => {
+    const plain = shop.get({ plain: true });
+    return {
+      ...plain,
+      address: plain.address
+        ? {
+            street: plain.address.street,
+            apartment: plain.address.apartment,
+            zipCode: plain.address.zipCode?.code,
+            city: plain.address.zipCode?.city,
+          }
+        : null,
+    };
+  });
+
   return shops?.length > 0
     ? {
         shops,
@@ -142,8 +173,6 @@ export const getShopById = async ({ id, ...options }) => {
       apartment: shop.address.apartment,
       zipCode: shop.address.zipCode.code,
       city: shop.address.zipCode.city,
-      region: shop.address.zipCode.region,
-      country: shop.address.zipCode.country,
     },
     products: shop.Products.map(product => {
       return {
