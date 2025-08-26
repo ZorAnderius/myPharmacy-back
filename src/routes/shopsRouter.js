@@ -19,8 +19,10 @@ import {
   getAllShopsController,
   getProductByIdController,
   getShopByIdController,
+  updateProductReviewController,
   updateShopController,
 } from '../controllers/shopsControllers.js';
+import updateReviesSchema from '../schemas/reviewsSchema/updateReviewsSchema.js';
 
 const shopsRouter = express.Router();
 
@@ -36,8 +38,17 @@ shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, valid
 
 // shopsRouter.get('/:id/products/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
 
-shopsRouter.post('/:id/products/:productId/review', [...inputSanitizationGuards, validateBody(createReviewSchema), ...sensitiveLimiter],
-  ctrlWrapper(createProductReviewController));
+shopsRouter.post(
+  '/:id/products/:productId/review',
+  [...inputSanitizationGuards, validateBody(createReviewSchema), ...sensitiveLimiter],
+  ctrlWrapper(createProductReviewController)
+);
+
+shopsRouter.patch(
+  '/:id/products/:productId/review/:reviewId',
+  [...inputSanitizationGuards, validateBody(updateReviesSchema), ...sensitiveLimiter],
+  ctrlWrapper(updateProductReviewController)
+);
 
 shopsRouter.get('/:id/products/:productId', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductByIdController));
 

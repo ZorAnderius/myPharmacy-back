@@ -6,8 +6,9 @@ import ShopDTO from '../dto/shop/ShopDTO.js';
 import ProductDTO from '../dto/product/ProductDTO.js';
 import { createNewProduct, getAllProductsByShopId, getFullProductInfo, getProductReview, updateProduct } from '../services/productsServices.js';
 import { productStatuses } from '../constants/inputVars.js';
-import { createReviews } from '../services/reviewsServices.js';
+import { createReviews, updateReview } from '../services/reviewsServices.js';
 import ReviewDTO from '../dto/review/reviewDTO.js';
+import { json } from 'sequelize';
 
 /**
  * Controller to handle creating a new shop.
@@ -146,6 +147,19 @@ export const getProductReviewsController = async (req, res, next) => {
   res.json({
     status: 200,
     message: 'Product reviews was successfully retrieved.',
+    data,
+  });
+};
+
+export const updateProductReviewController = async (req, res, next) => {
+  const { id: supplier_id, productId: product_id, reviewId: id } = req.params;
+  if (!id || !product_id || !supplier_id) throw createHttpError(404, 'Product not found');
+  const user = req.user;
+  const dataDTO = new ReviewDTO(req.body);
+  const data = await updateReview({ id, product_id, user, newReview: dataDTO });
+  res.json({
+    status: 200,
+    message: 'Review was updated successfully.',
     data,
   });
 };
