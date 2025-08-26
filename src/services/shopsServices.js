@@ -4,12 +4,13 @@ import Supplier from '../db/models/Supplier.js';
 import Address from '../db/models/Address.js';
 import ZipCode from '../db/models/ZipCode.js';
 import Category from '../db/models/Category.js';
+import Product from '../db/models/Product.js';
 import updateObjects from '../utils/updateObjects.js';
 import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
+import buildAddresRes from '../utils/builderFunc/buildAddresRes.js';
 import { defaultPagination } from '../constants/defaultPagination.js';
 import { createNewAddress, updateAddress } from './addressServices.js';
 import { createZipCode } from './zipCodeServices.js';
-import Product from '../db/models/Product.js';
 
 /**
  * Finds a single shop (Supplier) matching the given query.
@@ -121,14 +122,7 @@ export const getAllShops = async ({ pagination: { page = defaultPagination.page,
     const plain = shop.get({ plain: true });
     return {
       ...plain,
-      address: plain.address
-        ? {
-            street: plain.address.street,
-            apartment: plain.address.apartment,
-            zipCode: plain.address.zipCode?.code,
-            city: plain.address.zipCode?.city,
-          }
-        : null,
+      address: buildAddresRes(plain.address),
     };
   });
 
@@ -168,12 +162,7 @@ export const getShopById = async ({ id, ...options }) => {
     owner: shop.ownerName,
     phone: shop.phone,
     email: shop.email,
-    address: {
-      street: shop.address.street,
-      apartment: shop.address.apartment,
-      zipCode: shop.address.zipCode.code,
-      city: shop.address.zipCode.city,
-    },
+    address: buildAddresRes(shop.address),
     products: shop.Products.map(product => {
       return {
         id: product.id,
@@ -225,14 +214,7 @@ export const updateShop = async ({ query, data }) => {
     const shop = rowShop.get({ plain: true });
     return {
       ...shop,
-      address: shop.address
-        ? {
-            street: shop.address.street,
-            apartment: shop.address.apartment,
-            zipCode: shop.address.zipCode?.code,
-            city: shop.address.zipCode?.city,
-          }
-        : null,
+      address: buildAddresRes(shop.address),
     };
   });
 };
