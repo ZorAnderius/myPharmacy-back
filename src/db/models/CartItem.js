@@ -23,7 +23,7 @@ class CartItem extends Model {
         sequelize,
         modelName: 'CartItem',
         tableName: 'cart_items',
-        timestamps: false,
+        timestamps: true,
         underscored: true,
       }
     );
@@ -36,7 +36,7 @@ class CartItem extends Model {
    */
   static associate(models) {
     CartItem.belongsTo(models.Cart, { foreignKey: 'cart_id' });
-    CartItem.belongsTo(models.Product, { foreignKey: 'product_id' });
+    CartItem.belongsTo(models.Product, { foreignKey: 'product_id', as: 'product' });
   }
 }
 

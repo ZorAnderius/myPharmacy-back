@@ -5,6 +5,7 @@ import errorHandler from './middlewares/errorHandler.js';
 import usersRouter from './routes/usersRouter.js';
 import shopsRouter from './routes/shopsRouter.js';
 import storesRouter from './routes/storesRouter.js';
+import cartsRouter from './routes/cartsRouter.js';
 
 
 app.use('/api/users', usersRouter);
@@ -14,6 +15,9 @@ app.use('/api/shops', shopsRouter);
 
 //route for client
 app.use('/api/stores', storesRouter);
+
+//route for carts
+app.use('api/carts', cartsRouter);
 
 //if route is not correct
 app.use(notFoundHandler);
