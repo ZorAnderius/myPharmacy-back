@@ -106,16 +106,16 @@ export const getFullProductInfo = async query => {
   };
 };
 
-export const getProductReview = async ({ pagination: { page = defaultPaginationReview.page, limit = defaultPaginationReview.limit } }, ...query) => {
+export const getProductReview = async ({ pagination: { page = defaultPaginationReview.page, limit = defaultPaginationReview.limit }, ...query}) => {
   const offset = (page - 1) * limit;
   const product = await findProduct(query);
   if (!product) throw createHttpError(404, 'Product not found');
   const { count, rows: reviews } = await Review.findAndCountAll({
-    where: { product_id: query.id },
+    where: { product_id: product.id },
     include: [{ model: User, as: 'user', attributes: ['firstName', 'lastName', 'avatarUrl'] }],
     offset,
     limit,
-    order: [['createAt', 'DESC']],
+    order: [['createdAt', 'DESC']],
   });
   const paginationValues = countPaginationQuery(count, page, limit);
   if (page > paginationValues.totalPages || page < 1) throw createHttpError(400, 'Page is out of range');

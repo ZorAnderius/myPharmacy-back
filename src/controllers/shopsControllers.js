@@ -141,9 +141,9 @@ export const createProductReviewController = async (req, res, next) => {
 
 export const getProductReviewsController = async (req, res, next) => {
   const pagination = parsePaginationQuery(req.query);
-  const { id: supplier_id, productId: id } = req.params;
-  if (!id || !supplier_id) throw createHttpError(404, 'Product not found');
-  const data = await getProductReview({ pagination, supplier_id, id });
+  const { id: supplier_id, productId } = req.params;
+  if (!productId || !supplier_id) throw createHttpError(404, 'Product not found');
+  const data = await getProductReview({ pagination, supplier_id, id: productId });
   res.json({
     status: 200,
     message: 'Product reviews was successfully retrieved.',

@@ -18,6 +18,7 @@ import {
   getAllProductsByShopIdController,
   getAllShopsController,
   getProductByIdController,
+  getProductReviewsController,
   getShopByIdController,
   updateProductController,
   updateProductReviewController,
@@ -38,16 +39,16 @@ shopsRouter.get('/:id', [...originGuards, secureInput, ...apiLimit], ctrlWrapper
 
 shopsRouter.patch('/:id/update', [...inputSanitizationGuards, ...apiLimit, validateBody(updateShopSchema)], ctrlWrapper(updateShopController));
 
-// shopsRouter.get('/:id/products/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
+shopsRouter.get('/:id/products/:productId/reviews', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductReviewsController));
 
 shopsRouter.post(
-  '/:id/products/:productId/review',
+  '/:id/products/:productId/reviews',
   [...inputSanitizationGuards, validateBody(createReviewSchema), ...sensitiveLimiter],
   ctrlWrapper(createProductReviewController)
 );
 
 shopsRouter.patch(
-  '/:id/products/:productId/review/:reviewId',
+  '/:id/products/:productId/reviews/:reviewId',
   [...inputSanitizationGuards, validateBody(updateReviesSchema), ...sensitiveLimiter],
   ctrlWrapper(updateProductReviewController)
 );
