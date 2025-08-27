@@ -1,6 +1,5 @@
 import createHttpError from 'http-errors';
 import countPaginationQuery from '../utils/pagination/countPaginationQuery.js';
-import sequelize from '../db/sequelize.js';
 import saveToCloudinary from '../utils/saveToClaudinary.js';
 import Category from '../db/models/Category.js';
 import Product from '../db/models/Product.js';
@@ -14,7 +13,6 @@ import { defaultPagination, defaultPaginationReview } from '../constants/default
 import { PRODUCT_IMAGE_FOLDER } from '../constants/cloudinary.js';
 import buildAddresRes from '../utils/builderFunc/buildAddresRes.js';
 import ProductStatus from '../db/models/ProductStatus.js';
-import { Transaction } from 'sequelize';
 
 export const findProduct = async (query, option = {}) => {
   return await Product.findOne({ where: query, option });
@@ -41,13 +39,8 @@ export const getAllProductsByShopId = async ({ pagination: { page = defaultPagin
 };
 
 export const createNewProduct = async ({ supplier_id, name, description, price, quantity, category_id, status_id, file, folderName = 'products' }) => {
-  return await sequelize.transaction(async t => {
     const existProduct = await findProduct(
       { name, supplier_id, category_id },
-      {
-        transaction: t,
-        lock: Transaction.LOCK.UPDATE,
-      }
     );
     if (existProduct) throw createHttpError(409, 'Product already created');
     let image_url = '';
@@ -67,9 +60,7 @@ export const createNewProduct = async ({ supplier_id, name, description, price, 
         category_id,
         status_id,
       },
-      { transaction: t }
     );
-  });
 };
 
 export const getFullProductInfo = async query => {
@@ -135,8 +126,7 @@ export const getProductReview = async ({ pagination: { page = defaultPaginationR
 };
 
 export const updateProduct = async ({ query, data, file = null, folderName = PRODUCT_IMAGE_FOLDER }) => {
-  return sequelize.transaction(async t => {
-    const product = await findProduct(query, { transaction: t, lock: Transaction.LOCK.UPDATE });
+    const product = await findProduct(query);
     if (!product) throw createHttpError(404, 'Product not found');
     const updatedData = updateObjects(data) || {};
     let image_url = '';
@@ -146,16 +136,13 @@ export const updateProduct = async ({ query, data, file = null, folderName = PRO
       throw createHttpError(500, 'Failed to save product image');
     }
     if (image_url) updatedData.image_url = image_url;
-    const updatedProduct = await product.update({ ...updatedData }, { returning: true, transaction: t });
+    const updatedProduct = await product.update({ ...updatedData }, { returning: true });
     return updatedProduct;
-  });
 };
 
 export const deleteProductById = async query => {
-  return sequelize.transaction(async t => {
-    const product = await findProduct(query, { transaction: t, lock: Transaction.LOCK.UPDATE });
+    const product = await findProduct(query);
     if (!product) throw createHttpError(404, 'Product not found');
-    await product.destroy({ transaction: t });
+    await product.destroy();
     return product;
-  });
 };
