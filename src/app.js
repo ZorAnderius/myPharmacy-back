@@ -17,7 +17,7 @@ app.use('/api/shops', shopsRouter);
 app.use('/api/stores', storesRouter);
 
 //route for carts
-app.use('api/carts', cartsRouter);
+app.use('/api/carts', cartsRouter);
 
 //if route is not correct
 app.use(notFoundHandler);
