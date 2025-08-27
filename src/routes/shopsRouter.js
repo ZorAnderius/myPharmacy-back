@@ -15,6 +15,7 @@ import {
   createNewProductController,
   createProductReviewController,
   createShopController,
+  deleteProductByIdController,
   getAllProductsByShopIdController,
   getAllShopsController,
   getProductByIdController,
@@ -60,6 +61,8 @@ shopsRouter.patch(
   [upload.single('product_image'), ...inputSanitizationGuards, validateBody(updateProductSchema), ...apiLimit],
   ctrlWrapper(updateProductController)
 );
+
+shopsRouter.delete('/:id/products/:productId/delete', [...originGuards, secureInput, sensitiveLimiter], ctrlWrapper(deleteProductByIdController));
 
 shopsRouter.post(
   '/:id/products/add',

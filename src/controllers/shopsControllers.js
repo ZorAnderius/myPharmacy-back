@@ -4,7 +4,14 @@ import parseFilterQuery from '../utils/pagination/parseFilterQuery.js';
 import parsePaginationQuery from '../utils/pagination/parsePaginationQuery.js';
 import ShopDTO from '../dto/shop/ShopDTO.js';
 import ProductDTO from '../dto/product/ProductDTO.js';
-import { createNewProduct, getAllProductsByShopId, getFullProductInfo, getProductReview, updateProduct } from '../services/productsServices.js';
+import {
+  createNewProduct,
+  deleteProductById,
+  getAllProductsByShopId,
+  getFullProductInfo,
+  getProductReview,
+  updateProduct,
+} from '../services/productsServices.js';
 import { productStatuses } from '../constants/inputVars.js';
 import { createReviews, updateReview } from '../services/reviewsServices.js';
 import ReviewDTO from '../dto/review/reviewDTO.js';
@@ -174,4 +181,11 @@ export const updateProductController = async (req, res, next) => {
     message: 'Product was updated successfully',
     data,
   });
+};
+
+export const deleteProductByIdController = async (req, res, next) => {
+  const { id: supplier_id, productId: id } = req.params;
+  if (!supplier_id || !id) throw createHttpError(404, 'Product not found');
+  await deleteProductById({ supplier_id, id });
+  res.status(204).send();
 };

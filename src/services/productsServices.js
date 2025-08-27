@@ -14,6 +14,7 @@ import { defaultPagination, defaultPaginationReview } from '../constants/default
 import { PRODUCT_IMAGE_FOLDER } from '../constants/cloudinary.js';
 import buildAddresRes from '../utils/builderFunc/buildAddresRes.js';
 import ProductStatus from '../db/models/ProductStatus.js';
+import { Transaction } from 'sequelize';
 
 export const findProduct = async (query, option = {}) => {
   return await Product.findOne({ where: query, option });
@@ -45,7 +46,7 @@ export const createNewProduct = async ({ supplier_id, name, description, price, 
       { name, supplier_id, category_id },
       {
         transaction: t,
-        lock: t.LOCK.UPDATE,
+        lock: Transaction.LOCK.UPDATE,
       }
     );
     if (existProduct) throw createHttpError(409, 'Product already created');
@@ -106,7 +107,7 @@ export const getFullProductInfo = async query => {
   };
 };
 
-export const getProductReview = async ({ pagination: { page = defaultPaginationReview.page, limit = defaultPaginationReview.limit }, ...query}) => {
+export const getProductReview = async ({ pagination: { page = defaultPaginationReview.page, limit = defaultPaginationReview.limit }, ...query }) => {
   const offset = (page - 1) * limit;
   const product = await findProduct(query);
   if (!product) throw createHttpError(404, 'Product not found');
@@ -135,7 +136,7 @@ export const getProductReview = async ({ pagination: { page = defaultPaginationR
 
 export const updateProduct = async ({ query, data, file = null, folderName = PRODUCT_IMAGE_FOLDER }) => {
   return sequelize.transaction(async t => {
-    const product = await findProduct(query, { transaction: t, lock: t.LOCK.UPDATE });
+    const product = await findProduct(query, { transaction: t, lock: Transaction.LOCK.UPDATE });
     if (!product) throw createHttpError(404, 'Product not found');
     const updatedData = updateObjects(data) || {};
     let image_url = '';
@@ -147,5 +148,14 @@ export const updateProduct = async ({ query, data, file = null, folderName = PRO
     if (image_url) updatedData.image_url = image_url;
     const updatedProduct = await product.update({ ...updatedData }, { returning: true, transaction: t });
     return updatedProduct;
+  });
+};
+
+export const deleteProductById = async query => {
+  return sequelize.transaction(async t => {
+    const product = await findProduct(query, { transaction: t, lock: Transaction.LOCK.UPDATE });
+    if (!product) throw createHttpError(404, 'Product not found');
+    await product.destroy({ transaction: t });
+    return product;
   });
 };
