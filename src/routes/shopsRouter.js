@@ -19,10 +19,12 @@ import {
   getAllShopsController,
   getProductByIdController,
   getShopByIdController,
+  updateProductController,
   updateProductReviewController,
   updateShopController,
 } from '../controllers/shopsControllers.js';
 import updateReviesSchema from '../schemas/reviewsSchema/updateReviewsSchema.js';
+import updateProductSchema from '../schemas/productSchema/updateProductSchema.js';
 
 const shopsRouter = express.Router();
 
@@ -52,11 +54,11 @@ shopsRouter.patch(
 
 shopsRouter.get('/:id/products/:productId', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getProductByIdController));
 
-// shopsRouter.patch(
-//   ':id/products/:productId/edit',
-//   [...inputSanitizationGuards, upload.single('product_image'), validateBody(updateProductSchema), sensitiveLimiter],
-//   ctrlWrapper(updateProductController)
-// );
+shopsRouter.patch(
+  '/:id/products/:productId/edit',
+  [upload.single('product_image'), ...inputSanitizationGuards, validateBody(updateProductSchema), ...apiLimit],
+  ctrlWrapper(updateProductController)
+);
 
 shopsRouter.post(
   '/:id/products/add',

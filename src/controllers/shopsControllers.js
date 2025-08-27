@@ -165,10 +165,10 @@ export const updateProductReviewController = async (req, res, next) => {
 };
 
 export const updateProductController = async (req, res, next) => {
-  const { id: supplier_id, product_id: id } = req.params;
-  if (!id || !supplier_id) throw createHttpError(404, 'Product not found');
+  const { id: supplier_id, productId } = req.params;
+  if (!productId || !supplier_id) throw createHttpError(404, 'Product not found');
   const dataDTO = new ProductDTO(req.body);
-  const data = updateProduct({ query: { id, supplier_id }, data: dataDTO, file: req.file });
+  const data = await updateProduct({ query: { id: productId, supplier_id }, data: dataDTO, file: req.file });
   res.json({
     status: 200,
     message: 'Product was updated successfully',

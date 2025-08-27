@@ -133,11 +133,11 @@ export const getProductReview = async ({ pagination: { page = defaultPaginationR
       };
 };
 
-export const updateProduct = async ({ query, data, file = '', folderName = PRODUCT_IMAGE_FOLDER }) => {
+export const updateProduct = async ({ query, data, file = null, folderName = PRODUCT_IMAGE_FOLDER }) => {
   return sequelize.transaction(async t => {
     const product = await findProduct(query, { transaction: t, lock: t.LOCK.UPDATE });
     if (!product) throw createHttpError(404, 'Product not found');
-    const updatedData = updateObjects(data);
+    const updatedData = updateObjects(data) || {};
     let image_url = '';
     try {
       if (file) image_url = await saveToCloudinary(file, folderName);
