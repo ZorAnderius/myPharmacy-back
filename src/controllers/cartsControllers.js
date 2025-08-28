@@ -14,10 +14,10 @@ export const getCartItemsController = async (req, res, next) => {
 export const createCartItemController = async (req, res, next) => {
   const user_id = req.user.id;
   const dataDTO = new CartItemDTO(req.body);
-  const data = await createCartItem({ user_id, data: dataDTO });
+  const {cart, message} = await createCartItem({ user_id, data: dataDTO });
   res.status(201).json({
     status: 201,
-    message: 'CartItem was created and added to cart successfully',
-    data,
+    message,
+    data: cart,
   });
 };
