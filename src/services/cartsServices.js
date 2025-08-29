@@ -15,9 +15,10 @@ export const findCart = async (query, { transaction } = {}) => {
   });
 };
 
-export const findCartItem = async (query, { transaction } = {}) => {
+export const findCartItem = async (query, option = {}, { transaction } = {}) => {
   return await CartItem.findOne({
     where: query,
+    ...option,
     transaction,
   });
 };
@@ -87,7 +88,7 @@ export const createCartItem = async ({ user_id, data }) => {
         { transaction: t }
       );
     }
-    
+
     if (!message) {
       message =
         newQuantity < quantity
@@ -95,6 +96,58 @@ export const createCartItem = async ({ user_id, data }) => {
           : 'Item was added to cart successfully.';
     }
 
+    return {
+      cart: await getCartItems({ user_id }, { transaction: t }),
+      message,
+    };
+  });
+};
+
+export const updateCart = async ({ user_id, id, quantity }) => {
+  return await sequelize.transaction(async t => {
+    const cartItem = await findCartItem(
+      { id },
+      {
+        include: [
+          { model: Cart, where: { user_id } },
+          {
+            model: Product,
+            as: 'product',
+            attributes: { exclude: ['supplier_id', 'category_id', 'status_id'] },
+            include: [
+              { model: Supplier, as: 'shop', attributes: ['name'] },
+
+              { model: Category, as: 'category', attributes: ['name'] },
+            ],
+          },
+        ],
+      },
+      { transaction: t }
+    );
+
+    if (!cartItem) throw createHttpError(404, 'Cart item not found');
+
+    const currentProduct = cartItem.product;
+    if (!currentProduct) throw createHttpError(404, 'Product not found');
+
+    const requeiredQuantity = cartItem.quantity + quantity;
+    let newQuantity = requeiredQuantity;
+    if (newQuantity < 0) newQuantity = 0;
+    if (newQuantity > currentProduct.quantity) newQuantity = currentProduct.quantity;
+
+    let message = '';
+    if (newQuantity === 0) {
+      await cartItem.destroy({ transaction: t });
+      message = `Removed ${currentProduct.name} from cart.`;
+    } else {
+      await cartItem.update({ quantity: newQuantity }, { transaction: t });
+      message =
+        newQuantity < requeiredQuantity
+          ? `We set ${newQuantity} of ${currentProduct.name} instead of ${quantity}, because ${quantity - newQuantity} items are out of stock.`
+          : quantity > 0
+            ? 'Number of items was increased.'
+            : 'Number of items was decreased.';
+    }
     return {
       cart: await getCartItems({ user_id }, { transaction: t }),
       message,
