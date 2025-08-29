@@ -143,7 +143,11 @@ export const refreshTokenRotation = async jti => {
   const oneDayMs = 24 * 60 * 60 * 1000;
 
   if (tokenAges > oneDayMs) {
-    const newToken = await generateRefreshToken(token);
+    const newToken = await generateRefreshToken({
+      id: token.user_id,
+      ip: token.ip, 
+      userAgent: token.user_agent, 
+    });
     return newToken;
   }
   return token;
