@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { faker } from '@faker-js/faker';
-import OrderStatus from './models/OrderStatus.js';
 import ProductStatus from './models/ProductStatus.js';
 import Category from './models/Category.js';
 import Address from './models/Address.js';
@@ -8,7 +7,7 @@ import User from './models/User.js';
 import Supplier from './models/Supplier.js';
 import Product from './models/Product.js';
 import Review from './models/Review.js';
-import { productStatuses as product_stat, orderStatuses as order_stat, categoryNames } from '../constants/inputVars.js';
+import { productStatuses as product_stat, categoryNames } from '../constants/inputVars.js';
 import ZipCode from './models/ZipCode.js';
 
 /**
@@ -34,28 +33,21 @@ import ZipCode from './models/ZipCode.js';
  * await seedDatabase();
  */
 async function seedDatabase() {
-  // =================== 1. Seed order statuses ===================
-  const orderStatuses = [];
-  for (let name of order_stat) {
-    const status = await OrderStatus.create({ id: uuidv4(), name });
-    orderStatuses.push(status);
-  }
-
-  // =================== 2. Seed product statuses ===================
+  // =================== 1. Seed product statuses ===================
   const productStatuses = [];
   for (let name of product_stat) {
     const status = await ProductStatus.create({ id: uuidv4(), name });
     productStatuses.push(status);
   }
 
-  // =================== 3. Seed categories ===================
+  // =================== 2. Seed categories ===================
   const categories = [];
   for (let name of categoryNames) {
     const category = await Category.create({ id: uuidv4(), name });
     categories.push(category);
   }
 
-  // =================== 4. Seed zip codes (UK) ===================
+  // =================== 3. Seed zip codes (UK) ===================
   const zipCodes = [];
   const sampleZipCodes = ['SW1A 1AA', 'EC1A 1BB', 'W1A 0AX', 'M1 1AE', 'B33 8TH', 'CR2 6XH'];
 
@@ -70,7 +62,7 @@ async function seedDatabase() {
     zipCodes.push(zip);
   }
 
-  // =================== 5. Seed addresses ===================
+  // =================== 4. Seed addresses ===================
   const addresses = [];
   for (let i = 0; i < 6; i++) {
     const address = await Address.create({
@@ -82,7 +74,7 @@ async function seedDatabase() {
     addresses.push(address);
   }
 
-  // =================== 6. Seed users ===================
+  // =================== 5. Seed users ===================
   const users = [];
   for (let i = 0; i < 6; i++) {
     const user = await User.create({
@@ -98,7 +90,7 @@ async function seedDatabase() {
     users.push(user);
   }
 
-  // =================== 7. Seed suppliers ===================
+  // =================== 6. Seed suppliers ===================
   const suppliers = [];
   for (let i = 0; i < 6; i++) {
     const supplier = await Supplier.create({
@@ -112,7 +104,7 @@ async function seedDatabase() {
     suppliers.push(supplier);
   }
 
-  // =================== 8. Seed products ===================
+  // =================== 7. Seed products ===================
   const products = [];
   for (let category of categories) {
     for (let i = 0; i < 5; i++) {
@@ -132,7 +124,7 @@ async function seedDatabase() {
     }
   }
 
-  // =================== 9. Seed reviews ===================
+  // =================== 8. Seed reviews ===================
   const reviews = [];
   for (let i = 0; i < 10; i++) {
     const review = await Review.create({

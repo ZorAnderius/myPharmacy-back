@@ -15,9 +15,9 @@ class Order extends Model {
     return Order.init(
       {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
+        order_number: { type: DataTypes.TEXT, allowNull: false, unique: true },
         user_id: { type: DataTypes.UUID, allowNull: false },
         total_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
-        status_id: { type: DataTypes.UUID, allowNull: false },
         created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW, allowNull: false },
       },
       {
@@ -37,7 +37,6 @@ class Order extends Model {
    */
   static associate(models) {
     Order.belongsTo(models.User, { foreignKey: 'user_id' });
-    Order.belongsTo(models.OrderStatus, { foreignKey: 'status_id' });
     Order.hasMany(models.OrderItem, { foreignKey: 'order_id', onDelete: 'CASCADE' });
   }
 }

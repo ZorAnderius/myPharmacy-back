@@ -1,6 +1,7 @@
 import CartItemDTO from '../dto/cartItem/CartItemDTO.js';
+import CheckoutCartDTO from '../dto/cartItem/CheckpotCartDTO.js';
 import UpdateCartItemDTO from '../dto/cartItem/UpdateCartItemDRO.js';
-import { createCartItem, getCartItems, updateCart } from '../services/cartsServices.js';
+import { checkoutCart, createCartItem, getCartItems, updateCart } from '../services/cartsServices.js';
 
 export const getCartItemsController = async (req, res, next) => {
   const user_id = req.user.id;
@@ -31,5 +32,16 @@ export const updateCartController = async (req, res, next) => {
     status: 200,
     message,
     data: cart,
+  });
+};
+
+export const checkoutCartController = async (req, res, next) => {
+  const user_id = req.user.id;
+  const dataDTO = new CheckoutCartDTO(req.body);
+  const data = await checkoutCart({ user_id, ...dataDTO });
+  res.status(201).json({
+    status: 201,
+    message: 'Order create successsfuly.',
+    data,
   });
 };

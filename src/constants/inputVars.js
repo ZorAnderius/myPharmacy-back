@@ -36,31 +36,6 @@ export const productStatuses = [
 ];
 
 /**
- * List of possible order statuses.
- * Used to track the progress or state of customer orders.
- * 
- * @constant {string[]}
- */
-export const orderStatuses = [
-  'pending',
-  'processing',
-  'shipped',
-  'delivered',
-  'cancelled',
-  'returned',
-  'refunded',
-  'on_hold',
-  'failed',
-  'completed',
-  'partially_shipped',
-  'awaiting_payment',
-  'awaiting_fulfillment',
-  'awaiting_pickup',
-  'awaiting_dispatch',
-  'awaiting_confirmation',
-];
-
-/**
  * List of predefined product category names.
  * Used for categorizing products in the system.
  * 
