@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import { emailRegexp } from '../../constants/inputVars.js';
+import { emailRegexp, userRole } from '../../constants/inputVars.js';
 
 /**
  * Represents an application user.
@@ -23,7 +23,7 @@ class User extends Model {
         phoneNumber: { type: DataTypes.STRING, allowNull: true },
         avatarUrl: { type: DataTypes.STRING, allowNull: true },
         address_id: { type: DataTypes.UUID, allowNull: true },
-        role: { type: DataTypes.STRING, allowNull: false, defaultValue: "customer" },
+        role: { type: DataTypes.STRING, allowNull: false, defaultValue: 'customer', validate: { isIn: [userRole] } },
       },
       {
         sequelize,

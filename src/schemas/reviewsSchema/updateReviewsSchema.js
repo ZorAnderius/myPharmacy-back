@@ -7,7 +7,7 @@ const updateReviesSchema = Joi.object({
     'string.min': `"content" should have a minimum length of {#limit}`,
     'string.max': `"content" should have a maximum length of {#limit}`,
   }),
-  rating: Joi.number().integer().min(1).max(10).messages({
+  rating: Joi.number().integer().min(1).max(5).messages({
     'number.base': `"rating" should be a number`,
     'number.integer': `"rating" must be an integer`,
     'number.min': `"rating" should be at least {#limit}`,

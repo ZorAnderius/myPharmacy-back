@@ -17,7 +17,7 @@ class CartItem extends Model {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         cart_id: { type: DataTypes.UUID, allowNull: false },
         product_id: { type: DataTypes.UUID, allowNull: false },
-        quantity: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
+        quantity: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1, validate: { isInt: true, min: 0 } },
       },
       {
         sequelize,

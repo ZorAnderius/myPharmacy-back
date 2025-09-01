@@ -13,7 +13,7 @@ export const phoneRegexp = /^07\d{9}$/; // UK phone numbers
 /**
  * List of possible product statuses.
  * Used to define or validate the state of products in the system.
- * 
+ *
  * @constant {string[]}
  */
 export const productStatuses = [
@@ -38,7 +38,7 @@ export const productStatuses = [
 /**
  * List of predefined product category names.
  * Used for categorizing products in the system.
- * 
+ *
  * @constant {string[]}
  */
 export const categoryNames = [
@@ -56,3 +56,5 @@ export const categoryNames = [
   'Wellness',
   'Nutrition',
 ];
+
+export const userRole = ['customer', 'administrator', 'moderator', 'supplier'];

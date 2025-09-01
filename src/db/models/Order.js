@@ -17,7 +17,7 @@ class Order extends Model {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         order_number: { type: DataTypes.TEXT, allowNull: false, unique: true },
         user_id: { type: DataTypes.UUID, allowNull: false },
-        total_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+        total_price: { type: DataTypes.DECIMAL(12, 2), allowNull: false, validate: { isDecimal: true, min: 0 } },
       },
       {
         sequelize,

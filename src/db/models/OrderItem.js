@@ -18,7 +18,7 @@ class OrderItem extends Model {
         order_id: { type: DataTypes.UUID, allowNull: false },
         product_id: { type: DataTypes.UUID, allowNull: false },
         quantity: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 1 },
-        price: { type: DataTypes.DECIMAL(10, 2), allowNull: false }, // Price at the time of purchase
+        price: { type: DataTypes.DECIMAL(10, 2), allowNull: false, validate: { isDecimal: true, min: 0 } }, // Price at the time of purchase
       },
       {
         sequelize,

@@ -16,7 +16,7 @@ class Review extends Model {
       {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         content: { type: DataTypes.TEXT, allowNull: false },
-        rating: { type: DataTypes.INTEGER, allowNull: false, validate: { min: 1, max: 10 } },
+        rating: { type: DataTypes.INTEGER, allowNull: false, validate: { min: 1, max: 5 } },
         product_id: { type: DataTypes.UUID, allowNull: false },
         user_id: { type: DataTypes.UUID, allowNull: false },
       },

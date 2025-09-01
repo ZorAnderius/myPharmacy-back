@@ -16,7 +16,7 @@ class Discount extends Model {
       {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         code: { type: DataTypes.STRING, allowNull: false, unique: true },
-        percentage: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0.0 },
+        percentage: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0.0, validate: { isFloat: true, min: 0.0 } },
         start_date: { type: DataTypes.DATE, allowNull: false },
         end_date: { type: DataTypes.DATE, allowNull: false },
         product_id: { type: DataTypes.UUID, allowNull: false },

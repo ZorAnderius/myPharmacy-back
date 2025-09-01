@@ -130,7 +130,7 @@ async function seedDatabase() {
     const review = await Review.create({
       id: uuidv4(),
       content: faker.lorem.sentences(),
-      rating: faker.number.int({ min: 1, max: 10 }),
+      rating: faker.number.int({ min: 1, max: 5 }),
       product_id: faker.helpers.arrayElement(products).id,
       user_id: faker.helpers.arrayElement(users).id,
     });
