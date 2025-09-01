@@ -17,13 +17,12 @@ class Wishlist extends Model {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         user_id: { type: DataTypes.UUID, allowNull: false },
         product_id: { type: DataTypes.UUID, allowNull: false },
-        createdAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW, allowNull: false },
       },
       {
         sequelize,
         modelName: 'Wishlist',
         tableName: 'wishlists',
-        timestamps: false,
+        timestamps: true,
         underscored: true,
         uniqueKeys: {
           unique_wishlist: {

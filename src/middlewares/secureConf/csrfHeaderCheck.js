@@ -11,7 +11,6 @@
  * @returns {void} Calls next() if the header is present or method is safe.
  */
 const csrfHeaderCheck = (req, res, next) => {
-  console.log(req.body);
   const method = req.method.toUpperCase();
   if (['POST', 'PUT', 'DELETE'].includes(method)) {
     if (!req.headers['x-no-csrf']) {

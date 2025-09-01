@@ -7,7 +7,7 @@ class RefreshToken extends Model {
    * @return {typeof RefreshToken} The initialized RefreshToken model.
    */
   static initModel(sequelize) {
-    RefreshToken.init(
+    return RefreshToken.init(
       {
         id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
         user_id: { type: DataTypes.UUID, allowNull: false },

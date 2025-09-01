@@ -18,13 +18,12 @@ class Order extends Model {
         order_number: { type: DataTypes.TEXT, allowNull: false, unique: true },
         user_id: { type: DataTypes.UUID, allowNull: false },
         total_price: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
-        created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW, allowNull: false },
       },
       {
         sequelize,
         modelName: 'Order',
         tableName: 'orders',
-        timestamps: false,
+        timestamps: true,
         underscored: true,
       }
     );
