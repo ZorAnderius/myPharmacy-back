@@ -44,7 +44,7 @@ export const sanitizeRequest =
           }
         }
 
-        Object.assign(req[source], sanitizeObject(req[source], context));
+        Object.assign(req[source], sanitizeObject(req[source], context, 0, new WeakMap(), [], req));
       });
 
       next();

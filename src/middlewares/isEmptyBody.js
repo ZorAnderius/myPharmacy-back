@@ -13,7 +13,6 @@ import createHttpError from 'http-errors';
  * @param {import('express').NextFunction} next - Callback to pass control to the next middleware.
  */
 const isEmptyBody = (req, _, next) => {
-  console.log(req.body);
   if (!Object.keys(req.body).length) {
     return next(createHttpError(400, 'Body must have at least one field'));
   }
