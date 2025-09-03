@@ -36,8 +36,8 @@ class OrderItem extends Model {
    * @param {Object} models - All Sequelize models.
    */
   static associate(models) {
-    OrderItem.belongsTo(models.Order, { foreignKey: 'order_id' });
-    OrderItem.belongsTo(models.Product, { foreignKey: 'product_id' });
+    OrderItem.belongsTo(models.Order, { foreignKey: 'order_id', as: 'orders' });
+    OrderItem.belongsTo(models.Product, { foreignKey: 'product_id', as: 'products' });
   }
 }
 

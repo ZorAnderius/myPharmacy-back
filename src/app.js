@@ -6,7 +6,7 @@ import usersRouter from './routes/usersRouter.js';
 import shopsRouter from './routes/shopsRouter.js';
 import storesRouter from './routes/storesRouter.js';
 import cartsRouter from './routes/cartsRouter.js';
-
+import ordersRouter from './routes/ordersRouter.js';
 
 app.use('/api/users', usersRouter);
 
@@ -18,6 +18,8 @@ app.use('/api/stores', storesRouter);
 
 //route for carts
 app.use('/api/carts', cartsRouter);
+
+app.use('/api/orders', ordersRouter);
 
 //if route is not correct
 app.use(notFoundHandler);

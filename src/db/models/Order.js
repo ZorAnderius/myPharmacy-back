@@ -36,7 +36,7 @@ class Order extends Model {
    */
   static associate(models) {
     Order.belongsTo(models.User, { foreignKey: 'user_id' });
-    Order.hasMany(models.OrderItem, { foreignKey: 'order_id', onDelete: 'CASCADE' });
+    Order.hasMany(models.OrderItem, { foreignKey: 'order_id', onDelete: 'CASCADE', as: 'orderItems' });
   }
 }
 
