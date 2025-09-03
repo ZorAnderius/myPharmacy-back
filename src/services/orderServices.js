@@ -68,3 +68,36 @@ export const getAllOrders = async ({ user_id, pagination: { page = 1, limit = 10
     : orders;
 };
 
+export const getOrderById = async id => {
+  const order = await Order.findOne({
+    where: { id },
+    attributes: { exclude: ['user_id', 'updatedAt'] },
+    include: [
+      {
+        model: User,
+        attributes: ['id', 'firstName', 'lastName'],
+      },
+      {
+        model: OrderItem,
+        as: 'orderItems',
+        attributes: { exclude: ['order_id', 'product_id'] },
+        include: [
+          {
+            model: Product,
+            as: 'products',
+            attributes: ['id', 'name', 'image_url'],
+            include: [
+              { model: ProductStatus, as: 'status', attributes: ['id', 'name'] },
+              { model: Category, as: 'category', attributes: ['id', 'name'] },
+            ],
+          },
+        ],
+      },
+    ],
+    order: [['createdAt', 'DESC']],
+  });
+  if (!order) throw createHttpError(404, 'Order not found');
+  return order;
+};
+
+
