@@ -143,7 +143,7 @@ export const verifyRefreshToken = async (refreshToken, query = {}) => {
     if (!isMatch) throw createHttpError(401, 'Invalid refresh token');
     return { payload: decoded, user: token.User, revoked: token.revoked };
   } catch (error) {
-    throw createHttpError(401, 'Invalid refresh token');
+    throw createHttpError(401, error.message);
   }
 };
 

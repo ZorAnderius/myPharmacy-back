@@ -1,7 +1,7 @@
 import sequelize from '../db/sequelize.js';
 import RefreshToken from '../db/models/RefreshToken.js';
 import User from '../db/models/User.js';
-import { generateRefreshToken } from '../utils/tokenServices.js';
+import { generateRefreshToken, generateTokens, verifyRefreshToken } from '../utils/tokenServices.js';
 import { Op } from 'sequelize';
 
 /**
@@ -145,10 +145,25 @@ export const refreshTokenRotation = async jti => {
   if (tokenAges > oneDayMs) {
     const newToken = await generateRefreshToken({
       id: token.user_id,
-      ip: token.ip, 
-      userAgent: token.user_agent, 
+      ip: token.ip,
+      userAgent: token.user_agent,
     });
     return newToken;
   }
   return token;
+};
+
+export const refreshTokens = async ({ cookieToken, ip, userAgent }) => {
+  const { payload, user } = await verifyRefreshToken(cookieToken);
+  const tokens = await generateTokens({
+    id: user.id,
+    email: user.email,
+    ip,
+    userAgent,
+    previousToken: cookieToken,
+  });
+  return {
+    tokens,
+    user,
+  };
 };

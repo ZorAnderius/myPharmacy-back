@@ -1,6 +1,8 @@
+import createHttpError from 'http-errors';
 import GoogleOAuthDTO from '../dto/user/GoogleOAuthDTO.js';
 import LoginUserDTO from '../dto/user/LoginUserDTO.js';
 import RegisterUserDRO from '../dto/user/registerUserDTO.js';
+import { refreshTokens } from '../services/refreshTokenServices.js';
 import * as service from '../services/usersServices.js';
 import { generateAuthUrl } from '../utils/googleOAuth.js';
 import { setRefreshTokenCookie, clearRefreshTokenCookie } from '../utils/setRefreshTokenCookie.js';
@@ -200,5 +202,24 @@ export const updateAvatarController = async (req, res, next) => {
     status: 200,
     message: 'Avatar updated successfully',
     data,
+  });
+};
+
+export const refreshTokensController = async (req, res, next) => {
+  const { refreshToken: cookieToken } = req.cookies || {};
+  if (!cookieToken) {
+    throw createHttpError(401, 'No refresh token provided');
+  }
+  const ip = req.ip;
+  const userAgent = req.get('User-Agent');
+  const { user, tokens } = await refreshTokens({ cookieToken, ip, userAgent });
+  setRefreshTokenCookie(res, tokens.refreshToken);
+  res.json({
+    status: 200,
+    message: 'Refresh token was syccessfully retrived',
+    data: {
+      user,
+      accessToken: tokens.accessToken,
+    }
   });
 };

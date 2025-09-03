@@ -5,6 +5,7 @@ import {
   currentUserController,
   loginController,
   logoutController,
+  refreshTokensController,
   registerController,
   updateAvatarController,
   userGoogleOAuthController,
@@ -21,6 +22,8 @@ import upload from '../middlewares/upload.js';
 import registerLimit from '../middlewares/requestLimit/authLimit/registerLimit.js';
 import authLimit from '../middlewares/requestLimit/authLimit/authLimit.js';
 import sensitiveLimiter from '../middlewares/requestLimit/sensitiveLimit.js';
+import secureInput from '../middlewares/secureInput.js';
+import apiLimit from '../middlewares/requestLimit/apiLimit.js';
 
 const usersRouter = express.Router();
 
@@ -31,6 +34,8 @@ usersRouter.post('/login', [...inputSanitizationGuards, validateBody(userLoginSc
 usersRouter.post('/logout', [...originGuards, auth], ctrlWrapper(logoutController));
 
 usersRouter.get('/current', [auth], ctrlWrapper(currentUserController));
+
+usersRouter.post('/refresh', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(refreshTokensController));
 
 usersRouter.get('/request-google-oauth', [...originGuards], ctrlWrapper(userGoogleOAuthController));
 
