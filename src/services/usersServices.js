@@ -81,7 +81,7 @@ export const register = async ({ userData, ip, userAgent }) => {
     phoneNumber,
     avatarUrl,
   });
-  const { accessToken, refreshToken } = await generateTokens({ id: newUser.id, email: newUser.email, ip, userAgent });
+  const tokens = await generateTokens({ id: newUser.id, email: newUser.email, ip, userAgent });
   return {
     user: {
       id: newUser.id,
@@ -91,8 +91,7 @@ export const register = async ({ userData, ip, userAgent }) => {
       phoneNumber: newUser.phoneNumber,
       avatarUrl: newUser.avatarUrl,
     },
-    accessToken,
-    refreshToken,
+    tokens
   };
 };
 
@@ -135,7 +134,7 @@ export const login = async ({ userData, ip, userAgent }) => {
   if (!isPasswordValid) {
     throw createHttpError(401, 'Invalid email or password');
   }
-  const { accessToken, refreshToken } = await generateTokens({
+  const tokens = await generateTokens({
     id: user.id,
     email: user.email,
     ip,
@@ -150,8 +149,7 @@ export const login = async ({ userData, ip, userAgent }) => {
       phoneNumber: user.phoneNumber,
       avatarUrl: user.avatarUrl,
     },
-    accessToken,
-    refreshToken,
+    tokens,
   };
 };
 
@@ -205,7 +203,7 @@ export const authenticateWithGoogleOAuth = async ({ code, ip, userAgent }) => {
       avatarUrl: payload.picture,
     });
   }
-  const { accessToken, refreshToken } = await generateTokens({
+  const tokens = await generateTokens({
     id: user.id,
     email: user.email,
     ip,
@@ -221,8 +219,7 @@ export const authenticateWithGoogleOAuth = async ({ code, ip, userAgent }) => {
       phoneNumber: user.phoneNumber,
       avatarUrl: user.avatarUrl,
     },
-    accessToken,
-    refreshToken,
+    tokens
   };
 };
 

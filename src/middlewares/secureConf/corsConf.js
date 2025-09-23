@@ -1,4 +1,4 @@
-const whitelist = ['http://localhost:3000'];
+const whitelist = ['http://localhost:3000', 'http://localhost:5179'];
 
 /**
  * CORS configuration options for Express.
@@ -21,7 +21,7 @@ const corsOptions = {
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-No-CSRF'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
   credentials: true,
 };
 

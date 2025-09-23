@@ -6,6 +6,7 @@ import ENV_VARIABLES from '../constants/ENV_VARIABLES.js';
 import createHttpError from 'http-errors';
 import { createAndRevokeOldRefreshTokens, getRefreshTokenAndUser } from '../services/refreshTokenServices.js';
 import { MAX_AGE_ACCESS_TOKENS, MAX_AGE_REFRESH_TOKENS } from '../constants/lifetimeVars.js';
+import generateCsrfToken from './generateCSRFToken.js';
 
 /**
  * JWT secrets for signing access and refresh tokens.
@@ -94,7 +95,8 @@ export const generateRefreshToken = async ({ id, ip, userAgent }) => {
 export const generateTokens = async ({ id, email, ip, userAgent, previousToken = null }) => {
   const accessToken = generateAccessToken(id, email);
   const refreshToken = await generateRefreshToken({ id, ip, userAgent, previousToken });
-  return { accessToken, refreshToken };
+  const csrfToken = generateCsrfToken();
+  return { accessToken, refreshToken, csrfToken };
 };
 
 /**

@@ -26,7 +26,6 @@ const app = express();
 app.use(morgan('tiny-colored'));
 app.use(cors(corsOptions));
 app.use(helmet(helmetOptions));
-app.use(csrfHeaderCheck);
 app.use(cookieParser());
 app.use(
   express.json({

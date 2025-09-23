@@ -1,11 +1,12 @@
 import createHttpError from 'http-errors';
+import { refreshTokens } from '../services/refreshTokenServices.js';
+import { generateAuthUrl } from '../utils/googleOAuth.js';
+import { setRefreshTokenCookie, clearRefreshTokenCookie } from '../utils/setRefreshTokenCookie.js';
+import { setCSRFTokenCookie, clearCSRFTokenCookie } from '../utils/setCRSFTokenCookie.js';
+import * as service from '../services/usersServices.js';
 import GoogleOAuthDTO from '../dto/user/GoogleOAuthDTO.js';
 import LoginUserDTO from '../dto/user/LoginUserDTO.js';
 import RegisterUserDRO from '../dto/user/registerUserDTO.js';
-import { refreshTokens } from '../services/refreshTokenServices.js';
-import * as service from '../services/usersServices.js';
-import { generateAuthUrl } from '../utils/googleOAuth.js';
-import { setRefreshTokenCookie, clearRefreshTokenCookie } from '../utils/setRefreshTokenCookie.js';
 
 /**
  * Controller for registering a new user.
@@ -21,14 +22,15 @@ export const registerController = async (req, res, next) => {
   const userData = new RegisterUserDRO(req.body);
   const ip = req.ip;
   const userAgent = req.get('User-Agent');
-  const { user, accessToken, refreshToken } = await service.register({ userData, ip, userAgent });
-  setRefreshTokenCookie(res, refreshToken);
+  const { user, tokens } = await service.register({ userData, ip, userAgent });
+  setRefreshTokenCookie(res, tokens.refreshToken);
+  setCSRFTokenCookie(res, tokens.csrfToken);
   res.status(201).json({
     status: 201,
     message: 'User registered successfully',
     data: {
       user,
-      accessToken,
+      accessToken: tokens.accessToken,
     },
   });
 };
@@ -47,14 +49,15 @@ export const loginController = async (req, res, next) => {
   const userData = new LoginUserDTO(req.body);
   const ip = req.ip;
   const userAgent = req.get('User-Agent');
-  const { user, accessToken, refreshToken } = await service.login({ userData, ip, userAgent });
-  setRefreshTokenCookie(res, refreshToken);
+  const tokens = await service.login({ userData, ip, userAgent });
+  setRefreshTokenCookie(res, tokens.refreshToken);
+  setCSRFTokenCookie(res, tokens.csrfToken);
   res.json({
     status: 200,
     message: 'Login successful',
     data: {
       user,
-      accessToken,
+      accessToken: tokens.accessToken,
     },
   });
 };
@@ -86,14 +89,15 @@ export const authenticateWithGoogleOAuthController = async (req, res, next) => {
   const { code } = new GoogleOAuthDTO(req.body);
   const ip = req.ip;
   const userAgent = req.get('User-Agent');
-  const { user, accessToken, refreshToken } = await service.authenticateWithGoogleOAuth({ code, ip, userAgent });
-  setRefreshTokenCookie(res, refreshToken);
+  const tokens = await service.authenticateWithGoogleOAuth({ code, ip, userAgent });
+  setRefreshTokenCookie(res, tokens.refreshToken);
+  setCSRFTokenCookie(res, tokens.csrfToken);
   res.json({
     status: 200,
     message: 'Google OAuth authentication successful',
     data: {
       user,
-      accessToken,
+      accessToken: tokens.accessToken,
     },
   });
 };
@@ -118,6 +122,7 @@ export const logoutController = async (req, res, next) => {
   const jti = req.jti;
   await service.logout({ userId, jti });
   clearRefreshTokenCookie(res);
+  clearCSRFTokenCookie(res);
   res.status(204).send();
 };
 
@@ -220,6 +225,6 @@ export const refreshTokensController = async (req, res, next) => {
     data: {
       user,
       accessToken: tokens.accessToken,
-    }
+    },
   });
 };

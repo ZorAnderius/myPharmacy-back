@@ -20,3 +20,6 @@ export const originGuards = [csrfHeaderCheck, clientCheck];
  * POST/PUT/PATCH/DELETE when a body is expected
  */
 export const inputSanitizationGuards = [...originGuards, isEmptyBody, secureInput];
+
+export const secureGuards = [clientCheck, isEmptyBody, secureInput];
+

@@ -10,7 +10,7 @@ import {
   updateAvatarController,
   userGoogleOAuthController,
 } from '../controllers/usersControllers.js';
-import { inputSanitizationGuards, originGuards } from '../middlewares/middlewaresSet.js';
+import { inputSanitizationGuards, originGuards, secureGuards } from '../middlewares/middlewaresSet.js';
 
 import validateBody from '../utils/validateBody.js';
 import ctrlWrapper from '../utils/controllerWrapper.js';
@@ -24,12 +24,13 @@ import authLimit from '../middlewares/requestLimit/authLimit/authLimit.js';
 import sensitiveLimiter from '../middlewares/requestLimit/sensitiveLimit.js';
 import secureInput from '../middlewares/secureInput.js';
 import apiLimit from '../middlewares/requestLimit/apiLimit.js';
+import clientCheck from '../middlewares/clientCheck.js.js';
 
 const usersRouter = express.Router();
 
-usersRouter.post('/register', [...inputSanitizationGuards, validateBody(userRegisterSchema), ...registerLimit], ctrlWrapper(registerController));
+usersRouter.post('/register', [...secureGuards, validateBody(userRegisterSchema), ...registerLimit], ctrlWrapper(registerController));
 
-usersRouter.post('/login', [...inputSanitizationGuards, validateBody(userLoginSchema), authLimit], ctrlWrapper(loginController));
+usersRouter.post('/login', [...secureGuards, validateBody(userLoginSchema), authLimit], ctrlWrapper(loginController));
 
 usersRouter.post('/logout', [...originGuards, auth], ctrlWrapper(logoutController));
 
@@ -37,13 +38,9 @@ usersRouter.get('/current', [auth], ctrlWrapper(currentUserController));
 
 usersRouter.post('/refresh', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(refreshTokensController));
 
-usersRouter.get('/request-google-oauth', [...originGuards], ctrlWrapper(userGoogleOAuthController));
+usersRouter.get('/request-google-oauth', [clientCheck], ctrlWrapper(userGoogleOAuthController));
 
-usersRouter.post(
-  '/confirm-oauth',
-  [...inputSanitizationGuards, validateBody(authWithGoogleOAuthSchema), authLimit],
-  ctrlWrapper(authenticateWithGoogleOAuthController)
-);
+usersRouter.post('/confirm-oauth', [...secureGuards, validateBody(authWithGoogleOAuthSchema), authLimit], ctrlWrapper(authenticateWithGoogleOAuthController));
 
 usersRouter.patch('/update-avatar', [auth, ...originGuards, upload.single('avatar'), ...sensitiveLimiter], ctrlWrapper(updateAvatarController));
 
