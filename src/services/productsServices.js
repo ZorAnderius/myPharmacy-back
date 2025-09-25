@@ -39,28 +39,30 @@ export const getAllProductsByShopId = async ({ pagination: { page = defaultPagin
 };
 
 export const createNewProduct = async ({ supplier_id, name, description, price, quantity, category_id, status_id, file, folderName = 'products' }) => {
-    const existProduct = await findProduct(
-      { name, supplier_id, category_id },
-    );
-    if (existProduct) throw createHttpError(409, 'Product already created');
-    let image_url = '';
-    try {
-      image_url = await saveToCloudinary(file, folderName);
-    } catch (error) {
-      throw createHttpError(500, 'Failed to save product image');
-    }
-    return Product.create(
-      {
-        name,
-        description,
-        price,
-        quantity,
-        image_url,
-        supplier_id,
-        category_id,
-        status_id,
-      },
-    );
+  const existProduct = await findProduct({ name, supplier_id, category_id });
+  if (existProduct) throw createHttpError(409, 'Product already created');
+  let image_url = '';
+  try {
+    image_url = await saveToCloudinary(file, folderName);
+  } catch (error) {
+    throw createHttpError(500, 'Failed to save product image');
+  }
+  const newProduct = await Product.create({
+    name,
+    description,
+    price,
+    quantity,
+    image_url,
+    supplier_id,
+    category_id,
+    status_id,
+  });
+  const include = [
+      { model: Category, as: 'category', attributes: ['id', 'name'] },
+      { model: ProductStatus, as: 'status' }];
+
+  const product = await findProduct({ id: newProduct.id }, include);
+  return product;
 };
 
 export const getFullProductInfo = async query => {
@@ -126,23 +128,23 @@ export const getProductReview = async ({ pagination: { page = defaultPaginationR
 };
 
 export const updateProduct = async ({ query, data, file = null, folderName = PRODUCT_IMAGE_FOLDER }) => {
-    const product = await findProduct(query);
-    if (!product) throw createHttpError(404, 'Product not found');
-    const updatedData = updateObjects(data) || {};
-    let image_url = '';
-    try {
-      if (file) image_url = await saveToCloudinary(file, folderName);
-    } catch (error) {
-      throw createHttpError(500, 'Failed to save product image');
-    }
-    if (image_url) updatedData.image_url = image_url;
-    const updatedProduct = await product.update({ ...updatedData }, { returning: true });
-    return updatedProduct;
+  const product = await findProduct(query);
+  if (!product) throw createHttpError(404, 'Product not found');
+  const updatedData = updateObjects(data) || {};
+  let image_url = '';
+  try {
+    if (file) image_url = await saveToCloudinary(file, folderName);
+  } catch (error) {
+    throw createHttpError(500, 'Failed to save product image');
+  }
+  if (image_url) updatedData.image_url = image_url;
+  const updatedProduct = await product.update({ ...updatedData }, { returning: true });
+  return updatedProduct;
 };
 
 export const deleteProductById = async query => {
-    const product = await findProduct(query);
-    if (!product) throw createHttpError(404, 'Product not found');
-    await product.destroy();
-    return product;
+  const product = await findProduct(query);
+  if (!product) throw createHttpError(404, 'Product not found');
+  await product.destroy();
+  return product;
 };

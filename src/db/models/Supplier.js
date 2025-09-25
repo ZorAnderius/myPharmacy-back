@@ -22,6 +22,7 @@ class Supplier extends Model {
         email: { type: DataTypes.STRING, allowNull: false, validate: { isEmail: true, is: emailRegexp } },
         hasDelivery: { type: DataTypes.BOOLEAN, defaultValue: false },
         address_id: { type: DataTypes.UUID, allowNull: false },
+        user_id: { type: DataTypes.UUID, allowNull: false },
       },
       {
         sequelize,
@@ -39,8 +40,9 @@ class Supplier extends Model {
    * @param {Object} models - All Sequelize models.
    */
   static associate(models) {
-    Supplier.belongsTo(models.Address, {as: 'address', foreignKey: 'address_id' });
+    Supplier.belongsTo(models.Address, { as: 'address', foreignKey: 'address_id' });
     Supplier.hasMany(models.Product, { foreignKey: 'supplier_id', onDelete: 'CASCADE' });
+    Supplier.belongsTo(models.User, { as: 'user', foreignKey: 'user_id' });
   }
 }
 

@@ -32,9 +32,9 @@ usersRouter.post('/register', [...secureGuards, validateBody(userRegisterSchema)
 
 usersRouter.post('/login', [...secureGuards, validateBody(userLoginSchema), authLimit], ctrlWrapper(loginController));
 
-usersRouter.post('/logout', [...originGuards, auth], ctrlWrapper(logoutController));
+usersRouter.post('/logout', [...originGuards, auth, ...apiLimit], ctrlWrapper(logoutController));
 
-usersRouter.get('/current', [auth], ctrlWrapper(currentUserController));
+usersRouter.get('/current', [auth, ...apiLimit], ctrlWrapper(currentUserController));
 
 usersRouter.post('/refresh', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(refreshTokensController));
 

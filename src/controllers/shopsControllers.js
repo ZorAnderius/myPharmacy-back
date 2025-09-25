@@ -12,10 +12,8 @@ import {
   getProductReview,
   updateProduct,
 } from '../services/productsServices.js';
-import { productStatuses } from '../constants/inputVars.js';
 import { createReviews, updateReview } from '../services/reviewsServices.js';
 import ReviewDTO from '../dto/review/reviewDTO.js';
-import { json } from 'sequelize';
 
 /**
  * Controller to handle creating a new shop.
@@ -32,8 +30,9 @@ import { json } from 'sequelize';
  * @returns {Promise<void>} Sends a JSON response with status 201 and the created shop data.
  */
 export const createShopController = async (req, res, next) => {
+  const id = req.user.id;
   const dataDTO = new ShopDTO(req.body);
-  const data = await services.createShop(dataDTO);
+  const data = await services.createShop({ user_id: id, data: dataDTO });
   res.status(201).json({
     status: 201,
     message: 'Shop was created successfully',
@@ -60,6 +59,17 @@ export const getAllShopsController = async (req, res, next) => {
   res.json({
     status: 200,
     message: 'Shops retrieved successfully',
+    data: result,
+  });
+};
+
+export const getAllUserShops = async (req, res, next) => {
+  const pagination = parsePaginationQuery(req.query);
+  const id = req.user.id;
+  const result = await services.getAllShops({ pagination, query: { user_id: id } });
+  res.json({
+    status: 200,
+    message: 'Users shops retrieved successfully',
     data: result,
   });
 };

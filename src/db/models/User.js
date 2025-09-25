@@ -47,6 +47,7 @@ class User extends Model {
     User.hasMany(models.Review, { foreignKey: 'user_id', onDelete: 'CASCADE' });
     User.hasMany(models.Wishlist, { foreignKey: 'user_id', onDelete: 'CASCADE' });
     User.hasMany(models.RefreshToken, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+    User.hasMany(models.Supplier, { foreignKey: 'user_id', onDelete: 'CASCADE' });
   }
 }
 

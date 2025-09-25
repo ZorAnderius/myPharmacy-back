@@ -49,7 +49,7 @@ export const loginController = async (req, res, next) => {
   const userData = new LoginUserDTO(req.body);
   const ip = req.ip;
   const userAgent = req.get('User-Agent');
-  const tokens = await service.login({ userData, ip, userAgent });
+  const { user, tokens } = await service.login({ userData, ip, userAgent });
   setRefreshTokenCookie(res, tokens.refreshToken);
   setCSRFTokenCookie(res, tokens.csrfToken);
   res.json({
@@ -89,7 +89,7 @@ export const authenticateWithGoogleOAuthController = async (req, res, next) => {
   const { code } = new GoogleOAuthDTO(req.body);
   const ip = req.ip;
   const userAgent = req.get('User-Agent');
-  const tokens = await service.authenticateWithGoogleOAuth({ code, ip, userAgent });
+  const { user, tokens } = await service.authenticateWithGoogleOAuth({ code, ip, userAgent });
   setRefreshTokenCookie(res, tokens.refreshToken);
   setCSRFTokenCookie(res, tokens.csrfToken);
   res.json({
@@ -219,6 +219,7 @@ export const refreshTokensController = async (req, res, next) => {
   const userAgent = req.get('User-Agent');
   const { user, tokens } = await refreshTokens({ cookieToken, ip, userAgent });
   setRefreshTokenCookie(res, tokens.refreshToken);
+  setCSRFTokenCookie(res, tokens.csrfToken);
   res.json({
     status: 200,
     message: 'Refresh token was syccessfully retrived',

@@ -12,8 +12,8 @@
  */
 const csrfHeaderCheck = (req, res, next) => {
   const method = req.method.toUpperCase();
-  if (['POST', 'PUT', 'DELETE'].includes(method)) {
-    if (!req.headers['x-no-csrf']) {
+  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
+    if (!req.headers['x-csrf-token']) {
       return res.status(403).json({ message: 'CSRF header missing' });
     }
   }

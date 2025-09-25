@@ -18,6 +18,7 @@ import {
   deleteProductByIdController,
   getAllProductsByShopIdController,
   getAllShopsController,
+  getAllUserShops,
   getProductByIdController,
   getProductReviewsController,
   getShopByIdController,
@@ -33,6 +34,8 @@ const shopsRouter = express.Router();
 shopsRouter.get('/', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllShopsController));
 
 shopsRouter.use(auth);
+
+shopsRouter.get('/my-shop', [...originGuards, secureInput, ...apiLimit], ctrlWrapper(getAllUserShops));
 
 shopsRouter.post('/create', [...inputSanitizationGuards, validateBody(createShopSchema), ...sensitiveLimiter], ctrlWrapper(createShopController));
 

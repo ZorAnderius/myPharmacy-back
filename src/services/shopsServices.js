@@ -11,6 +11,7 @@ import buildAddresRes from '../utils/builderFunc/buildAddresRes.js';
 import { defaultPagination } from '../constants/defaultPagination.js';
 import { createNewAddress, updateAddress } from './addressServices.js';
 import { createZipCode } from './zipCodeServices.js';
+import ProductStatus from '../db/models/ProductStatus.js';
 
 /**
  * Finds a single shop (Supplier) matching the given query.
@@ -43,7 +44,7 @@ export const findShop = async (query, option) => {
  *
  * @returns {Promise<Object>} The newly created shop record.
  */
-export const createShop = async ({ name, ownerName, phone, email, street, city, apartment, code, hasDelivery }) => {
+export const createShop = async ({ user_id, data: { name, ownerName, phone, email, street, city, apartment, code, hasDelivery } }) => {
   return await sequelize.transaction(async t => {
     const options = { transaction: t };
 
@@ -59,6 +60,7 @@ export const createShop = async ({ name, ownerName, phone, email, street, city, 
         email,
         address_id: addressId,
         has_delivery: hasDelivery,
+        user_id,
       },
       options
     );
@@ -148,10 +150,18 @@ export const getShopById = async ({ id, ...options }) => {
     },
     {
       model: Product,
-      include: {
-        model: Category,
-        attributes: ['id', 'name'],
-      },
+      include: [
+        {
+          model: Category,
+          as: 'category',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: ProductStatus,
+          as: 'status',
+          attributes: ['id', 'name'],
+        },
+      ],
     },
   ];
 
@@ -171,7 +181,8 @@ export const getShopById = async ({ id, ...options }) => {
         price: product.price,
         quantity: product.quantity,
         image_url: product.image_url,
-        category: product.Category ? { id: product.Category.id, name: product.Category.name } : null,
+        category: product.category ? { id: product.category.id, name: product.category.name } : null,
+        status: product.status ? { id: product.status.id, name: product.status.name } : null,
       };
     }),
   };
