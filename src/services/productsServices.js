@@ -41,9 +41,11 @@ export const getAllProductsByShopId = async ({ pagination: { page = defaultPagin
 export const createNewProduct = async ({ supplier_id, name, description, price, quantity, category_id, status_id, file, folderName = 'products' }) => {
   const existProduct = await findProduct({ name, supplier_id, category_id });
   if (existProduct) throw createHttpError(409, 'Product already created');
-  let image_url = '';
+  let image_url = null;
   try {
-    image_url = await saveToCloudinary(file, folderName);
+    if (file) {
+      image_url = await saveToCloudinary(file, folderName);
+    }
   } catch (error) {
     throw createHttpError(500, 'Failed to save product image');
   }

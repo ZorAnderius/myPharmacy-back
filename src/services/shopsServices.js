@@ -52,18 +52,19 @@ export const createShop = async ({ user_id, data: { name, ownerName, phone, emai
     const addressId = await createNewAddress({ street, apartment, zipCodeId }, options);
     const existsShop = await findShop({ name, phone, email }, options);
     if (existsShop) throw createHttpError(409, 'Shop already exists');
-    return await Supplier.create(
+    const newShop =  await Supplier.create(
       {
         name,
         ownerName,
         phone,
         email,
         address_id: addressId,
-        has_delivery: hasDelivery,
+        hasDelivery,
         user_id,
       },
       options
     );
+    return await getShopById({ id: newShop.id, ...options });
   });
 };
 
@@ -172,6 +173,7 @@ export const getShopById = async ({ id, ...options }) => {
     owner: shop.ownerName,
     phone: shop.phone,
     email: shop.email,
+    hasDelivery: shop.hasDelivery,
     address: buildAddresRes(shop.address),
     products: shop.Products.map(product => {
       return {

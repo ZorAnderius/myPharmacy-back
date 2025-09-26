@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from 'uuid';
-import { faker } from '@faker-js/faker';
 import ProductStatus from './models/ProductStatus.js';
 import Category from './models/Category.js';
 import Address from './models/Address.js';
@@ -33,6 +32,21 @@ import ZipCode from './models/ZipCode.js';
  * await seedDatabase();
  */
 async function seedDatabase() {
+  // Check if we should seed data - only in development
+  if (process.env.NODE_ENV === 'production') {
+    console.log('Skipping database seeding in production environment');
+    return;
+  }
+
+  // Try to import faker dynamically
+  let faker;
+  try {
+    const fakerModule = await import('@faker-js/faker');
+    faker = fakerModule.faker;
+  } catch (error) {
+    console.log('Faker not available, skipping seeding...');
+    return;
+  }
   // =================== 1. Seed product statuses ===================
   const productStatuses = [];
   for (let name of product_stat) {
