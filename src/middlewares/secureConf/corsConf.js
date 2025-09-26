@@ -1,4 +1,4 @@
-const whitelist = ['http://localhost:3000', 'http://localhost:5179'];
+const whitelist = ['https://my-pharmacy-web-green.vercel.app/', 'http://localhost:3000', 'http://localhost:5179'];
 
 /**
  * CORS configuration options for Express.
