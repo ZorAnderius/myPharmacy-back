@@ -1,0 +1,6 @@
+# User-related schemas
+register.yaml:
+  $ref: './register.yaml'
+
+user.yaml:
+  $ref: './user.yaml'

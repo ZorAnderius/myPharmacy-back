@@ -54,6 +54,9 @@
     "pg": "^8.13.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.5",
-    "uuid": "^11.1.0"
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "uuid": "^11.1.0",
+    "yaml": "^2.8.1"
   }
 }

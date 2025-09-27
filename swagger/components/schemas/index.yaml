@@ -1,0 +1,6 @@
+# Import all schema files
+users:
+  $ref: './users/index.yaml'
+
+errors.yaml:
+  $ref: './errors.yaml'

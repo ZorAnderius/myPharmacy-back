@@ -1,0 +1,47 @@
+User:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+      description: Unique user identifier
+      example: "550e8400-e29b-41d4-a716-446655440000"
+    firstName:
+      type: string
+      description: User's first name
+      example: "John"
+    lastName:
+      type: string
+      description: User's last name
+      example: "Doe"
+    email:
+      type: string
+      format: email
+      description: User's email address
+      example: "john.doe@example.com"
+    phoneNumber:
+      type: string
+      description: User's phone number
+      example: "07123456789"
+    avatarUrl:
+      type: string
+      format: uri
+      nullable: true
+      description: URL to user's avatar image
+      example: "https://res.cloudinary.com/mypharmacy/image/upload/v1234567890/avatars/user123.jpg"
+    address_id:
+      type: string
+      format: uuid
+      nullable: true
+      description: ID of user's address
+      example: null
+    createdAt:
+      type: string
+      format: date-time
+      description: User creation timestamp
+      example: "2023-12-01T10:30:00.000Z"
+    updatedAt:
+      type: string
+      format: date-time
+      description: User last update timestamp
+      example: "2023-12-01T10:30:00.000Z"

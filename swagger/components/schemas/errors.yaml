@@ -1,0 +1,115 @@
+Error:
+  type: object
+  properties:
+    status:
+      type: integer
+      description: HTTP status code
+      example: 400
+    message:
+      type: string
+      description: Error message
+      example: "Validation error"
+    details:
+      type: object
+      description: Additional error details
+      nullable: true
+
+ValidationError:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 400
+      description: HTTP status code
+    message:
+      type: string
+      example: "Validation failed"
+      description: Error message
+    details:
+      type: array
+      items:
+        type: object
+        properties:
+          field:
+            type: string
+            example: "email"
+            description: Field name that failed validation
+          message:
+            type: string
+            example: "Email must be a valid email address"
+            description: Specific validation error message
+        required:
+          - field
+          - message
+
+UnauthorizedError:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 401
+      description: HTTP status code
+    message:
+      type: string
+      example: "Unauthorized"
+      description: Error message
+
+ForbiddenError:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 403
+      description: HTTP status code
+    message:
+      type: string
+      example: "Forbidden"
+      description: Error message
+
+NotFoundError:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 404
+      description: HTTP status code
+    message:
+      type: string
+      example: "Not found"
+      description: Error message
+
+ConflictError:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 409
+      description: HTTP status code
+    message:
+      type: string
+      example: "User with this email already exists"
+      description: Error message
+
+TooManyRequestsError:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 429
+      description: HTTP status code
+    message:
+      type: string
+      example: "Too many requests, please try again later"
+      description: Error message
+
+InternalServerError:
+  type: object
+  properties:
+    status:
+      type: integer
+      example: 500
+      description: HTTP status code
+    message:
+      type: string
+      example: "Internal server error"
+      description: Error message

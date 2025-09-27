@@ -8,6 +8,7 @@ import storesRouter from './routes/storesRouter.js';
 import cartsRouter from './routes/cartsRouter.js';
 import ordersRouter from './routes/ordersRouter.js';
 import othersRouter from './routes/othersRouter.js';
+import { swaggerUi, specs } from './config/swagger.js';
 
 app.use('/api/users', usersRouter);
 
@@ -23,6 +24,13 @@ app.use('/api/carts', cartsRouter);
 app.use('/api/orders', ordersRouter);
 
 app.use('/api', othersRouter);
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+  explorer: true,
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'MyPharmacy API Documentation',
+}));
 
 //if route is not correct
 app.use(notFoundHandler);

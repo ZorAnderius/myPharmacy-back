@@ -1,0 +1,22 @@
+description: Validation error or bad request
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/errors.yaml#/ValidationError'
+    examples:
+      validation_error:
+        summary: Field validation failed
+        value:
+          status: 400
+          message: "Validation failed"
+          details:
+            - field: "email"
+              message: "Email must be a valid email address"
+      missing_fields:
+        summary: Required fields missing
+        value:
+          status: 400
+          message: "Validation failed"
+          details:
+            - field: "firstName"
+              message: "firstName is a required field"

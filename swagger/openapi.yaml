@@ -1,0 +1,368 @@
+openapi: 3.0.0
+info:
+  title: MyPharmacy API
+  version: 1.0.0
+  description: |
+    RESTful backend API for user authentication, medicine catalog, pharmacy locations, and order processing.
+    
+    ## Features
+    - User authentication and authorization
+    - Medicine catalog management
+    - Pharmacy location services
+    - Order processing and tracking
+    - Secure API with rate limiting and CSRF protection
+    
+
+servers:
+  - url: http://localhost:3000
+    description: Development server
+  - url: https://your-production-url.onrender.com
+    description: Production server
+
+# Global security - will be overridden per endpoint
+# security:
+#   - bearerAuth: []
+#   - cookieAuth: []
+#   - csrfToken: []
+
+paths:
+  /api/users/register:
+    post:
+      summary: Register a new user
+      description: |
+        Creates a new user account with the provided information.
+        
+        **Security Features:**
+        - Rate limiting to prevent spam registrations
+        - Input validation and sanitization
+        - CSRF protection
+        - Secure headers
+        
+        **Response includes:**
+        - User information (without sensitive data)
+        - Access token for immediate authentication
+        - Refresh token set as HTTP-only cookie
+        - CSRF token set as cookie
+        
+        **Authentication:** This endpoint does NOT require authentication - it's used to create new accounts.
+      tags: [Authentication]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUser'
+            examples:
+              valid_user:
+                summary: Valid user registration
+                value:
+                  firstName: "John"
+                  lastName: "Doe"
+                  email: "john.doe@example.com"
+                  password: "securePassword123"
+                  phoneNumber: "07123456789"
+              invalid_email:
+                summary: Invalid email format
+                value:
+                  firstName: "Jane"
+                  lastName: "Smith"
+                  email: "invalid-email"
+                  password: "password123"
+                  phoneNumber: "07123456789"
+              short_password:
+                summary: Password too short
+                value:
+                  firstName: "Bob"
+                  lastName: "Wilson"
+                  email: "bob.wilson@example.com"
+                  password: "123"
+                  phoneNumber: "07123456789"
+              invalid_phone:
+                summary: Invalid phone number format
+                value:
+                  firstName: "Alice"
+                  lastName: "Brown"
+                  email: "alice.brown@example.com"
+                  password: "securePassword123"
+                  phoneNumber: "1234567890"
+      responses:
+        '201':
+          description: |
+            User registered successfully. 
+            
+            **Important:** After successful registration, you receive:
+            - `accessToken` in the response body - use this for authenticated requests
+            - `refreshToken` in HTTP-only cookie - automatically handled by browser
+            - CSRF token in cookie - include in subsequent requests as `X-CSRF-Token` header
+            
+            You can now use these tokens for authenticated endpoints.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+              example:
+                status: 201
+                message: "User registered successfully"
+                data:
+                  user:
+                    id: "550e8400-e29b-41d4-a716-446655440000"
+                    firstName: "John"
+                    lastName: "Doe"
+                    email: "john.doe@example.com"
+                    phoneNumber: "07123456789"
+                    avatarUrl: null
+                    address_id: null
+                    createdAt: "2023-12-01T10:30:00.000Z"
+                    updatedAt: "2023-12-01T10:30:00.000Z"
+                  accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+          headers:
+            Set-Cookie:
+              description: |
+                HTTP-only cookies automatically set by the server:
+                - refreshToken: Used for token refresh (handled automatically by browser)
+                - csrfToken: CSRF protection token (include in X-CSRF-Token header)
+              schema:
+                type: string
+                example: "refreshToken=abc123...; HttpOnly; Secure; SameSite=Strict"
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        Access token received after successful login/registration.
+        Enter your access token (without "Bearer " prefix).
+        **Note:** This token is automatically returned after authentication and stored in your client.
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: refreshToken
+      description: |
+        Refresh token automatically set as HTTP-only cookie after login/registration.
+        **Note:** This is handled automatically by the browser - no manual input required.
+    csrfToken:
+      type: apiKey
+      in: header
+      name: X-CSRF-Token
+      description: |
+        CSRF protection token received after login/registration.
+        **Note:** This token is returned in the response and should be included in subsequent requests.
+
+  schemas:
+    # User schemas
+    RegisterUser:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - email
+        - password
+        - phoneNumber
+      properties:
+        firstName:
+          type: string
+          minLength: 3
+          maxLength: 30
+          description: User's first name
+          example: "John"
+        lastName:
+          type: string
+          minLength: 3
+          maxLength: 30
+          description: User's last name
+          example: "Doe"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "john.doe@example.com"
+        password:
+          type: string
+          minLength: 8
+          maxLength: 50
+          description: User's password
+          example: "securePassword123"
+        phoneNumber:
+          type: string
+          pattern: '^07\d{9}$'
+          description: UK phone number starting with 07
+          example: "07123456789"
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique user identifier
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        firstName:
+          type: string
+          description: User's first name
+          example: "John"
+        lastName:
+          type: string
+          description: User's last name
+          example: "Doe"
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: "john.doe@example.com"
+        phoneNumber:
+          type: string
+          description: User's phone number
+          example: "07123456789"
+        avatarUrl:
+          type: string
+          format: uri
+          nullable: true
+          description: URL to user's avatar image
+          example: "https://res.cloudinary.com/mypharmacy/image/upload/v1234567890/avatars/user123.jpg"
+        address_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: ID of user's address
+          example: null
+        createdAt:
+          type: string
+          format: date-time
+          description: User creation timestamp
+          example: "2023-12-01T10:30:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: User last update timestamp
+          example: "2023-12-01T10:30:00.000Z"
+
+    RegisterResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 201
+          description: HTTP status code
+        message:
+          type: string
+          example: "User registered successfully"
+          description: Response message
+        data:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            accessToken:
+              type: string
+              description: JWT access token for authentication
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+    ValidationError:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 400
+          description: HTTP status code
+        message:
+          type: string
+          example: "Validation failed"
+          description: Error message
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                example: "email"
+                description: Field name that failed validation
+              message:
+                type: string
+                example: "Email must be a valid email address"
+                description: Specific validation error message
+            required:
+              - field
+              - message
+
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        message:
+          type: string
+          description: Error message
+          example: "Validation error"
+        details:
+          type: object
+          description: Additional error details
+          nullable: true
+
+  responses:
+    BadRequest:
+      description: Validation error or bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+          examples:
+            validation_error:
+              summary: Field validation failed
+              value:
+                status: 400
+                message: "Validation failed"
+                details:
+                  - field: "email"
+                    message: "Email must be a valid email address"
+            missing_fields:
+              summary: Required fields missing
+              value:
+                status: 400
+                message: "Validation failed"
+                details:
+                  - field: "firstName"
+                    message: "firstName is a required field"
+
+    Conflict:
+      description: Conflict - Resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: 409
+            message: "User with this email already exists"
+
+    TooManyRequests:
+      description: Too many requests - Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: 429
+            message: "Too many requests, please try again later"
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            status: 500
+            message: "Internal server error"

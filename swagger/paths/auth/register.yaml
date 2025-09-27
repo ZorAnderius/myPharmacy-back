@@ -1,0 +1,93 @@
+post:
+  summary: Register a new user
+  description: |
+    Creates a new user account with the provided information.
+    
+    **Security Features:**
+    - Rate limiting to prevent spam registrations
+    - Input validation and sanitization
+    - CSRF protection
+    - Secure headers
+    
+    **Response includes:**
+    - User information (without sensitive data)
+    - Access token for immediate authentication
+    - Refresh token set as HTTP-only cookie
+    - CSRF token set as cookie
+  tags: [Authentication]
+  security: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/users/register.yaml#/RegisterUser'
+        examples:
+          valid_user:
+            summary: Valid user registration
+            value:
+              firstName: "John"
+              lastName: "Doe"
+              email: "john.doe@example.com"
+              password: "securePassword123"
+              phoneNumber: "07123456789"
+          invalid_email:
+            summary: Invalid email format
+            value:
+              firstName: "Jane"
+              lastName: "Smith"
+              email: "invalid-email"
+              password: "password123"
+              phoneNumber: "07123456789"
+          short_password:
+            summary: Password too short
+            value:
+              firstName: "Bob"
+              lastName: "Wilson"
+              email: "bob.wilson@example.com"
+              password: "123"
+              phoneNumber: "07123456789"
+          invalid_phone:
+            summary: Invalid phone number format
+            value:
+              firstName: "Alice"
+              lastName: "Brown"
+              email: "alice.brown@example.com"
+              password: "securePassword123"
+              phoneNumber: "1234567890"
+  responses:
+    '201':
+      description: User registered successfully
+      content:
+        application/json:
+          schema:
+            $ref: '../../components/schemas/users/register.yaml#/RegisterResponse'
+          example:
+            status: 201
+            message: "User registered successfully"
+            data:
+              user:
+                id: "550e8400-e29b-41d4-a716-446655440000"
+                firstName: "John"
+                lastName: "Doe"
+                email: "john.doe@example.com"
+                phoneNumber: "07123456789"
+                avatarUrl: null
+                address_id: null
+                createdAt: "2023-12-01T10:30:00.000Z"
+                updatedAt: "2023-12-01T10:30:00.000Z"
+              accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      headers:
+        Set-Cookie:
+          description: HTTP-only cookies for refresh token and CSRF protection
+          schema:
+            type: string
+            example: "refreshToken=abc123...; HttpOnly; Secure; SameSite=Strict"
+    '400':
+      $ref: '../../components/responses/400.yaml'
+    '409':
+      $ref: '../../components/responses/409.yaml'
+    '429':
+      $ref: '../../components/responses/429.yaml'
+    '500':
+      $ref: '../../components/responses/500.yaml'
