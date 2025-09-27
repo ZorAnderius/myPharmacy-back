@@ -16,7 +16,7 @@ export const setRefreshTokenCookie = (res, token) => {
   const cookieOptions = {
     httpOnly: true,
     secure: env(ENV_VARIABLES.NODE_ENV) === 'production',
-    sameSite: 'Strict',
+    sameSite: 'None',
     maxAge: MAX_AGE_REFRESH_TOKENS * 1000, // 7 days
   };
   res.cookie(REFRESH_TOKEN_COOKIE, token, cookieOptions);
@@ -35,6 +35,6 @@ export const clearRefreshTokenCookie = res => {
   res.clearCookie(REFRESH_TOKEN_COOKIE, {
     httpOnly: true,
     secure: env(ENV_VARIABLES.NODE_ENV) === 'production',
-    sameSite: 'Strict',
+    sameSite: 'None',
   });
 };
