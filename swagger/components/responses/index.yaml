@@ -1,15 +1,2 @@
-# Import all response files
-'400':
-  $ref: './400.yaml'
-'401':
-  $ref: './401.yaml'
-'403':
-  $ref: './403.yaml'
-'404':
-  $ref: './404.yaml'
-'409':
-  $ref: './409.yaml'
-'429':
-  $ref: './429.yaml'
-'500':
-  $ref: './500.yaml'
+# Response definitions
+# Note: Responses are now defined inline in path files for better organization

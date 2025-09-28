@@ -1,8 +1,0 @@
-description: Forbidden - Access denied
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/errors.yaml#/ForbiddenError'
-    example:
-      status: 403
-      message: "Forbidden"

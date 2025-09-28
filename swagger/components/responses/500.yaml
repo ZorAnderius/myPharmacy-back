@@ -1,8 +1,0 @@
-description: Internal server error
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/errors.yaml#/InternalServerError'
-    example:
-      status: 500
-      message: "Internal server error"

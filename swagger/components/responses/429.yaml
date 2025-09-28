@@ -1,8 +1,0 @@
-description: Too many requests - Rate limit exceeded
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/errors.yaml#/TooManyRequestsError'
-    example:
-      status: 429
-      message: "Too many requests, please try again later"

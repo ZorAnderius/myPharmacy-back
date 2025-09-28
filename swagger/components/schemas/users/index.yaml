@@ -1,6 +1,2 @@
 # User-related schemas
-register.yaml:
-  $ref: './register.yaml'
-
-user.yaml:
-  $ref: './user.yaml'
+# Note: User schemas are now defined inline in path files for better organization

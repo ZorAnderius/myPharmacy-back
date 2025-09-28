@@ -1,8 +1,0 @@
-description: Not found
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/errors.yaml#/NotFoundError'
-    example:
-      status: 404
-      message: "Not found"

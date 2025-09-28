@@ -1,23 +1,22 @@
 tags:
   - Authentication
-summary: Register a new user
+summary: Login user
 description: |
-  Creates a new user account with the provided information.
+  Authenticates a user with email and password.
   
   **Security Features:**
-  - Rate limiting to prevent spam registrations
+  - Rate limiting to prevent brute force attacks
   - Input validation and sanitization
-  - CSRF protection
-  - Secure headers
+  - Secure password verification
   
   **Response includes:**
   - User information (without sensitive data)
-  - Access token for immediate authentication
+  - Access token for authentication
   - Refresh token set as HTTP-only cookie
   - CSRF token set as cookie
   
-  **Authentication:** This endpoint does NOT require authentication - it's used to create new accounts.
-operationId: registerUser
+  **Authentication:** This endpoint does NOT require authentication - it's used to authenticate users.
+operationId: loginUser
 security: []
 requestBody:
   required: true
@@ -26,24 +25,9 @@ requestBody:
       schema:
         type: object
         required:
-          - firstName
-          - lastName
           - email
           - password
-          - phoneNumber
         properties:
-          firstName:
-            type: string
-            minLength: 3
-            maxLength: 30
-            description: User's first name
-            example: "John"
-          lastName:
-            type: string
-            minLength: 3
-            maxLength: 30
-            description: User's last name
-            example: "Doe"
           email:
             type: string
             format: email
@@ -55,50 +39,33 @@ requestBody:
             maxLength: 50
             description: User's password
             example: "securePassword123"
-          phoneNumber:
-            type: string
-            pattern: '^07\d{9}$'
-            description: UK phone number starting with 07
-            example: "07123456789"
       examples:
-        valid_user:
-          summary: Valid user registration
+        valid_login:
+          summary: Valid user login
           value:
-            firstName: "John"
-            lastName: "Doe"
             email: "john.doe@example.com"
             password: "securePassword123"
-            phoneNumber: "07123456789"
         invalid_email:
           summary: Invalid email format
           value:
-            firstName: "Jane"
-            lastName: "Smith"
             email: "invalid-email"
             password: "password123"
-            phoneNumber: "07123456789"
         short_password:
           summary: Password too short
           value:
-            firstName: "Bob"
-            lastName: "Wilson"
-            email: "bob.wilson@example.com"
+            email: "user@example.com"
             password: "123"
-            phoneNumber: "07123456789"
-        invalid_phone:
-          summary: Invalid phone number format
+        wrong_credentials:
+          summary: Wrong email or password
           value:
-            firstName: "Alice"
-            lastName: "Brown"
-            email: "alice.brown@example.com"
-            password: "securePassword123"
-            phoneNumber: "1234567890"
+            email: "wrong@example.com"
+            password: "wrongpassword"
 responses:
-  '201':
+  '200':
     description: |
-      User registered successfully.
+      User logged in successfully.
       
-      **Important:** After successful registration, you receive:
+      **Important:** After successful login, you receive:
       - `accessToken` in the response body - use this for authenticated requests
       - `refreshToken` in HTTP-only cookie - automatically handled by browser
       - CSRF token in cookie - include in subsequent requests as `X-CSRF-Token` header
@@ -115,11 +82,11 @@ responses:
           properties:
             status:
               type: integer
-              example: 201
+              example: 200
               description: HTTP status code
             message:
               type: string
-              example: "User registered successfully"
+              example: "Login successful"
               description: Response message
             data:
               type: object
@@ -208,8 +175,8 @@ responses:
                   message:
                     type: string
                     example: "Email must be a valid email address"
-  '409':
-    description: Conflict - User already exists
+  '401':
+    description: Unauthorized - Invalid credentials
     content:
       application/json:
         schema:
@@ -217,10 +184,10 @@ responses:
           properties:
             status:
               type: integer
-              example: 409
+              example: 401
             message:
               type: string
-              example: "User with this email already exists"
+              example: "Invalid email or password"
   '429':
     description: Too many requests - Rate limit exceeded
     content:

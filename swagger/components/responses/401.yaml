@@ -1,8 +1,0 @@
-description: Unauthorized - Authentication required
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/errors.yaml#/UnauthorizedError'
-    example:
-      status: 401
-      message: "Unauthorized"
