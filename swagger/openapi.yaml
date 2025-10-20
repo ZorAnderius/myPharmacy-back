@@ -15,7 +15,7 @@ info:
 servers:
   - url: http://localhost:3000
     description: Development server
-  - url: https://your-production-url.onrender.com
+  - url: https://mypharmacy-back.onrender.com
     description: Production server
 
 paths:
@@ -25,6 +25,9 @@ paths:
   /api/users/login:
     post:
       $ref: './paths/auth/login.yaml'
+  /api/users/refresh:
+    post:
+      $ref: './paths/auth/refresh.yaml'
 
 components:
   securitySchemes:

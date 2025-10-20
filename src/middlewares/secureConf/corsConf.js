@@ -1,4 +1,12 @@
-const whitelist = ['https://my-pharmacy-web-green.vercel.app', 'http://localhost:3000', 'http://localhost:5179'];
+const whitelist = [
+  'https://my-pharmacy-web-green.vercel.app', 
+  'http://localhost:3000', 
+  'http://localhost:5179', 
+  'https://fixer-upper-front.vercel.app', 
+  'https://fixerupper-front.vercel.app',
+  'https://fixerupper-front.vercel.app',
+  'https://fixer-upper-front.vercel.app'
+];
 
 /**
  * CORS configuration options for Express.
@@ -13,15 +21,24 @@ const whitelist = ['https://my-pharmacy-web-green.vercel.app', 'http://localhost
  */
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
+    console.log('CORS Origin:', origin);
+    console.log('CORS Whitelist:', whitelist);
+    
+    if (!origin) {
+      console.log('CORS: No origin, allowing');
+      return callback(null, true);
+    }
+    
     if (whitelist.includes(origin)) {
+      console.log('CORS: Origin allowed');
       callback(null, true);
     } else {
+      console.log('CORS: Origin blocked:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-csrf-token', 'Accept'],
   credentials: true,
 };
 

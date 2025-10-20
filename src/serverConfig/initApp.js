@@ -32,7 +32,7 @@ app.use(
     type: ['application/json'],
   })
 );
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+app.use(express.urlencoded({ extended: true, limit: '200kb' }));
 app.use(express.static('public'));
 
 app.use(sanitizeRequest());

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "RESTful backend for user auth, medicine catalog, pharmacy locations, and order processing.",
   "type": "module",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
     "coverage": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
