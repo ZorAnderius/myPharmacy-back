@@ -5,10 +5,11 @@
  * 'X-CSRF-Token' header is present. If the header is missing, it responds
  * with 403 Forbidden.
  *
- * Security Note: Exceptions are made for /logout and /refresh endpoints
- * because they are protected by httpOnly secure cookies (refresh tokens)
- * which cannot be accessed via JavaScript, making CSRF protection via
- * header checks redundant. These endpoints validate tokens server-side.
+ * Security Note: Exceptions are made for:
+ * - Authentication endpoints (login, register, confirm-oauth, request-google-oauth): 
+ *   Public endpoints that don't require CSRF protection
+ * - Session management (logout, refresh): Protected by httpOnly secure cookies (refresh tokens)
+ *   which cannot be accessed via JavaScript, making CSRF protection via header checks redundant
  *
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
@@ -18,9 +19,17 @@
 const csrfHeaderCheck = (req, res, next) => {
   const method = req.method.toUpperCase();
   
-  // Виняток для logout та refresh - вони використовують httpOnly secure cookies для аутентифікації
-  // Refresh token валідується сервером, тому CSRF protection через header не потрібна
-  const exemptPaths = ['/users/logout', '/users/refresh'];
+  // Винятки для аутентифікаційних ендпоінтів та логіну/реєстрації
+  // - login/register/confirm-oauth: публічні ендпоінти, CSRF не застосовується
+  // - logout/refresh: використовують httpOnly secure cookies для аутентифікації
+  const exemptPaths = [
+    '/users/logout',
+    '/users/refresh',
+    '/users/login',
+    '/users/register',
+    '/users/confirm-oauth',
+    '/users/request-google-oauth'
+  ];
   const isExempt = exemptPaths.some(path => req.path.includes(path));
   
   if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(method) && !isExempt) {
