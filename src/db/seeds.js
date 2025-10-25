@@ -34,7 +34,6 @@ import ZipCode from './models/ZipCode.js';
 async function seedDatabase() {
   // Check if we should seed data - only in development
   if (process.env.NODE_ENV === 'production') {
-    console.log('Skipping database seeding in production environment');
     return;
   }
 
@@ -44,7 +43,6 @@ async function seedDatabase() {
     const fakerModule = await import('@faker-js/faker');
     faker = fakerModule.faker;
   } catch (error) {
-    console.log('Faker not available, skipping seeding...');
     return;
   }
   // =================== 1. Seed product statuses ===================
@@ -150,8 +148,6 @@ async function seedDatabase() {
     });
     reviews.push(review);
   }
-
-  console.log('Database seeded successfully!');
 }
 
 export default seedDatabase;

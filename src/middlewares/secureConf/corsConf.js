@@ -21,19 +21,13 @@ const whitelist = [
  */
 const corsOptions = {
   origin: (origin, callback) => {
-    console.log('CORS Origin:', origin);
-    console.log('CORS Whitelist:', whitelist);
-    
     if (!origin) {
-      console.log('CORS: No origin, allowing');
       return callback(null, true);
     }
     
     if (whitelist.includes(origin)) {
-      console.log('CORS: Origin allowed');
       callback(null, true);
     } else {
-      console.log('CORS: Origin blocked:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },

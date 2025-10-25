@@ -15,7 +15,7 @@ import env from './envConfig.js';
 export const setRefreshTokenCookie = (res, token) => {
   const cookieOptions = {
     httpOnly: true,
-    secure: env(ENV_VARIABLES.NODE_ENV) === 'production',
+    secure: true, // Always secure for cross-origin requests
     sameSite: 'None',
     maxAge: MAX_AGE_REFRESH_TOKENS * 1000, // 7 days
   };
@@ -34,7 +34,7 @@ export const setRefreshTokenCookie = (res, token) => {
 export const clearRefreshTokenCookie = res => {
   res.clearCookie(REFRESH_TOKEN_COOKIE, {
     httpOnly: true,
-    secure: env(ENV_VARIABLES.NODE_ENV) === 'production',
+    secure: true, // Always secure for cross-origin requests
     sameSite: 'None',
   });
 };

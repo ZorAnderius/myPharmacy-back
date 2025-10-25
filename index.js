@@ -14,7 +14,6 @@ const bootstrap = () => {
     try {
         setupServer();
     } catch (error) {
-        console.error('Error during server setup:', error);
         process.exit(1); // if server broken down when its run first time
     }
 }

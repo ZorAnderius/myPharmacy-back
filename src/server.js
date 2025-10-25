@@ -15,7 +15,6 @@ const PORT = env(ENV_VARIABLES.PORT, 3000);
 const setupServer = async () => {
   try {
     await db.sequelize.authenticate();
-    console.log('\x1b[32mDatabase connected successfully!\x1b[0m');
     
     // Seed database with dynamic import and conditional logic
     // try {
@@ -27,7 +26,7 @@ const setupServer = async () => {
     // }
 
     app.listen(PORT, () => {
-      console.log(`\x1b[35mServer is running on the port ${PORT}\x1b[0m`);
+      // Server started successfully
     });
   } catch (error) {
     throw new Error(error);

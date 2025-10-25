@@ -49,7 +49,7 @@ const userRegisterSchema = Joi.object({
     .messages({
       'string.base': `"phoneNumber" should be a type of 'text'`,
       'string.empty': `"phoneNumber" cannot be an empty field`,
-      'string.pattern.base': `"phoneNumber" must be a valid phone number as 07XXXXXXXXX`,
+      'string.pattern.base': `"phoneNumber" must be a valid phone number starting with 07`,
       'any.required': `"phoneNumber" is a required field`,
     }),
 });

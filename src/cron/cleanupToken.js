@@ -33,6 +33,4 @@ cron.schedule('0 3 * * *', async () => {
       ],
     },
   });
-
-  console.log('Cleanup of expired and revoked tokens completed at', now);
 });
