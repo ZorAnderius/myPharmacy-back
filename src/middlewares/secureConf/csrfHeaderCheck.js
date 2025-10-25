@@ -1,48 +1,27 @@
 /**
- * Middleware to protect against CSRF attacks using a custom header.
+ * Middleware to protect against CSRF attacks using CSRF token from cookies.
  *
  * For state-changing HTTP methods (POST, PUT, DELETE), it checks if the
- * 'X-CSRF-Token' header is present. If the header is missing, it responds
+ * CSRF token is present in cookies. If the token is missing, it responds
  * with 403 Forbidden.
  *
- * Security Note: Exceptions are made for:
- * - Authentication endpoints (login, register, confirm-oauth, request-google-oauth): 
- *   Public endpoints that don't require CSRF protection
- * - Session management (logout, refresh): Protected by httpOnly secure cookies (refresh tokens)
- *   which cannot be accessed via JavaScript, making CSRF protection via header checks redundant
+ * Security Note: Exceptions are made for authentication endpoints as they are
+ * public and don't require CSRF protection.
  *
  * @param {import('express').Request} req - Express request object
  * @param {import('express').Response} res - Express response object
  * @param {import('express').NextFunction} next - Express next middleware function
- * @returns {void} Calls next() if the header is present or method is safe.
+ * @returns {void} Calls next() if the cookie is present or method is safe.
  */
 const csrfHeaderCheck = (req, res, next) => {
   const method = req.method.toUpperCase();
   
-  // CSRF захист застосовується тільки для state-changing методів (POST, PUT, DELETE, PATCH)
-  // GET запити не потребують CSRF захисту
-  
-  // Винятки для аутентифікаційних ендпоінтів та логіну/реєстрації
-  // - login/register/confirm-oauth: публічні ендпоінти, CSRF не застосовується
-  // - logout/refresh: використовують httpOnly secure cookies для аутентифікації
-  const exemptPaths = [
-    '/users/logout',
-    '/users/refresh',
-    '/users/login',
-    '/users/register',
-    '/users/confirm-oauth',
-    '/users/request-google-oauth'
-  ];
-  const isExempt = exemptPaths.some(path => req.path.includes(path));
-  
   // Перевіряємо CSRF тільки для state-changing методів
-  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(method) && !isExempt) {
-    // Перевіряємо наявність CSRF токена в різних можливих заголовках
+  if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
+    // Перевіряємо наявність CSRF токена в header (frontend додає його з cookies)
     const csrfToken = req.headers['x-csrf-token'] || 
                       req.headers['X-CSRF-Token'] ||
-                      req.headers['X-Csrf-Token'] ||
-                      req.headers['x-csrftoken'] ||
-                      req.headers['csrf-token'];
+                      req.headers['X-Csrf-Token'];
     
     if (!csrfToken) {
       return res.status(403).json({ message: 'CSRF header missing' });
