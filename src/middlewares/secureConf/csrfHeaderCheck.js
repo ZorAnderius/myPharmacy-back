@@ -19,6 +19,9 @@
 const csrfHeaderCheck = (req, res, next) => {
   const method = req.method.toUpperCase();
   
+  // CSRF захист застосовується тільки для state-changing методів (POST, PUT, DELETE, PATCH)
+  // GET запити не потребують CSRF захисту
+  
   // Винятки для аутентифікаційних ендпоінтів та логіну/реєстрації
   // - login/register/confirm-oauth: публічні ендпоінти, CSRF не застосовується
   // - logout/refresh: використовують httpOnly secure cookies для аутентифікації
@@ -32,11 +35,21 @@ const csrfHeaderCheck = (req, res, next) => {
   ];
   const isExempt = exemptPaths.some(path => req.path.includes(path));
   
+  // Перевіряємо CSRF тільки для state-changing методів
   if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(method) && !isExempt) {
-    if (!req.headers['x-csrf-token']) {
+    // Перевіряємо наявність CSRF токена в різних можливих заголовках
+    const csrfToken = req.headers['x-csrf-token'] || 
+                      req.headers['X-CSRF-Token'] ||
+                      req.headers['X-Csrf-Token'] ||
+                      req.headers['x-csrftoken'] ||
+                      req.headers['csrf-token'];
+    
+    if (!csrfToken) {
       return res.status(403).json({ message: 'CSRF header missing' });
     }
   }
+  
+  // Для GET та інших read-only методів завжди дозволяємо
   next();
 }
 
